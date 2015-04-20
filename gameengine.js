@@ -3,13 +3,12 @@ var weapon=0;
 var medicine=0;
 var day=0;
 var time=8;
-var defence=0;
 var defence = new Array(10);
 for (var i = -5; i < 6; i++) {
 	defence[i] = new Array(10);
-	for (var q=-5); i<6; i++){
+	for (var q=-5; q<6; q++){
 	defence[i][q]=0;
-}
+};
 };
 var health=100;
 var playerX=0;
@@ -28,33 +27,68 @@ function updatePanel(){
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>20) {
-report("Night Falls","It's too dark outside to move around safely. I need to stay in for the night. I'll eat as much food as I can, and patch up my wounds as best as i'm able. If i'm lucky, the defenses I have set up in this area will hold the zombies at bay.");
+report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defenses you set up in this area will hold the zombies at bay.");
 	};
 	updatePanel();
 };
 
 function sleep() {
+var result="";
 	console.log("Food: "+food);
 	if (food>=3){
 		food-=3;
+		result+="You ate your fill tonight.";
 		increaseHealth(6);
 	} else {
 		if (food==0){
 			increaseHealth(-20);
-		};
-		increaseHealth(food);
+			result+="No food tonight, starvation will kill you almost as fast as a zombie.";
+		}
+		else {
+		result+="You ran out of food tonight, you are going to be in a bad state tomorrow unless you find some quick.";
+		increaseHealth(food);		
+		};	
 		food=0;
 	};
-	var nightTerrors=(Math.random()*25);
-	if (nightTerrors>defence){
-		console.log("nightEncounter()");
+	var nightTerrors=(Math.random()*4);
+	if (nightTerrors>defence[playerX][playerY]){
+		defence[playerX][playerY]=0;
+		result+=" "+nightEncounter();
 	} else {
-		defence-=parseInt(Math.random()*3);
+		result+= " The dead were snooping around outside, they didn't get in, but they did a number on the defences I had set up.  I wonder if there are any hardware stores nearby, or maybe some schools?";
+		defence[playerX][playerY]-=parseInt(Math.random()*3);
 	};
 	day+=1;
 	time=8;
+	report("Sleeping",result);
 	updatePanel();
 };
+
+function nightEncounter(){
+	var randomSeed= parseInt(Math.random() * (2));
+	switch (randomSeed){
+		case 0:
+		if (weapon==0){
+		food=0;
+		increaseHealth(-20);
+		return "Found at night, and without any weapons, the zombies make quick work disuading you of the notion that you had found a 'safe' space for the night.  You are able to scramble out at the last minute, but with only the clothes on your back.";			
+		}
+		else {
+			if (weapon>3){
+				increaseHealth(-20);
+				return "A few zombies made it through tonight, but you were able to hold your own against them.  So much for a good night's sleep.";
+			}
+			else {
+				weapon-=1;
+				updatePanel();
+				return "Zombies made it through your defences... of course that's not really a problem for you.  A couple quick blows allow both you, and the hordes of undead, to rest in peace for the night.";
+			}
+		}
+default:
+increaseHealth(-15);
+return "A zombie made it into your area tonight, you hid quietly, hoping he wouldn't find you."
+	}
+}
 
 function increaseHealth(number){
 	if (health+number>100){
@@ -63,9 +97,7 @@ function increaseHealth(number){
 		health=health+number;
 	};
 	if (health<1) {
-		alert("Game Over;");
-		initialize();
-		recolorGrid(0,0);
+		alert("Game over!");
 	};
 };
 

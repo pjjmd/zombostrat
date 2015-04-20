@@ -9,15 +9,6 @@ for (var i = -5; i < 6; i++) {
 var movementButtons=[];
 
 function initialize() {
-	var food=4;
-	var weapon=0;
-	var medicine=0;
-	var day=0;
-	var time=8;
-	var defence=0;
-	var health=100;
-	var playerX=0;
-	var playerY=0;
 	geocoder = new google.maps.Geocoder();
 	codeAddress(prompt("Please enter your starting location", "79 Broadview Avenue, Toronto, Ontario"));	
 };
