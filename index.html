@@ -1,39 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body, #map-canvas {
-        height: 90%;
-        margin: 0px;
-        padding: 0px
-      }
-    </style>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-    <script src="main.js"></script>
-    <script src="gameengine.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script src="jquery-1.11.2.min.js"></script>
-  </head>
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <style>
+  html, body, #map-canvas {
+    height: 90%;
+    margin: 0px;
+    padding: 0px
+  }
+  </style>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+  <script src="jquery-1.11.2.min.js"></script>
+  <script src="main.js"></script>
+  <script src="gameengine.js"></script>
+  <link href='style.css' rel='stylesheet'>
   <body>
-    <div id="map-canvas"></div>
-<div class="col-md-4">    
-<h4><div id="day">Day: 0</div></h4>
-<h4><div id="medecine">Medecine: 0 units</div></h4>
-<h4><div id="food">Food: 4 Units</div></h4>
-</div>
-<div class="col-md-4">
-<h4><div id="health">Health: 100%</div></h4>
-<h4><div id="defence">Defence: 0</div></h4>
-<h4><div id="weapons">Weapons: 0</div></h4>
-</div>
-<div class="col-md-4">
-<h4><div id="time">Time: 8:00</div></h4>
-<button type="button" class="btn btn-default btn-lg" onclick="sleep()">Sleep</button>
-<button type="button" class="btn btn-default btn-lg" onclick="scout(0,0)">Scout</button>
-</div>
-
-  </body>
-</html>
+    <div class="updates">
+      <div class="up">
+        <h3> Survival Log </h3>
+      </div>
+      <div class="log">
+        <div class="up">
+          <h3>Day 0</h3>
+          <p> I've been hiding for the past 2 weeks, waiting for this to 'blow over'.  It hasn't, i'm almost out of food, and last night, I heard the dead scrounging around my place.  I need to find food, weapons, and a safe place to sleep tonight.</p>
+        </div>
+      </div>
+    </div>  
+    <div class="display">
+      <div id="map-canvas"></div>
+    </div>
+    <div class="data">
+      <div class="content">
+        <div style="width:33%;float:left;">    
+          <h4><div id="day">Day: 0</div></h4>
+          <h4><div id="medecine">Medecine: 0 units</div></h4>
+          <h4><div id="food">Food: 4 Units</div></h4>
+        </div>
+        <div style="width:33%;float:left;">
+          <h4><div id="health">Health: 100%</div></h4>
+          <h4><div id="defence">Defence: 0</div></h4>
+          <h4><div id="weapons">Weapons: 0</div></h4>
+        </div>
+        <div style="width:33%;float:left;">
+          <h4><div id="time">Time: 8:00</div></h4>
+          <button type="button" class="btn btn-default btn-lg" onclick="sleep()">Sleep</button>
+          <button type="button" class="btn btn-default btn-lg" onclick="scout(0,0)">Scout</button>
+        </div>
+      </div>
+    </div>
+  </body>  </head>
+  </html>

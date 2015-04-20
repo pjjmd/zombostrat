@@ -171,9 +171,14 @@ function createMarker(place) {
     position: place.geometry.location
   });
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name+ '   ' + place.types[0]+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+playerX+','+playerY+','+"\'" + place.types[0]+" \'" +')">Loot</button>');
+    infowindow.setContent(place.name+ '   ' + place.types[0]+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+playerX+','+playerY+','+"\'" + place.types[0]+"\'" +')">Loot</button>');
     infowindow.open(map, this);
   });
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+function report(title,message){
+	console.log("Report!");
+	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
+}
