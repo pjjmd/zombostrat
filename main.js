@@ -19,16 +19,12 @@ function codeAddress(address) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			myLatlng= results[0].geometry.location;
 			var mapOptions = {
-				zoom: 14,
+				zoom: 15,
 				center: myLatlng
 			};
 
 			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 			map.setCenter(results[0].geometry.location);
-			var marker = new google.maps.Marker({
-				map: map,
-				position: results[0].geometry.location
-			});
 			createGraph();
 			recolorGrid(0,0);
 		} else {
@@ -138,36 +134,63 @@ function recolorGrid(locationX,locationY){
 		};
 	};
 	mapGrid[locationX][locationY].setOptions({fillColor:'green'});
+	map.setCenter(offsetLatLng(myLatlng,locationX*1000,locationY*1000));
 };
 function fillSpaces(closeX,closeY){
 	infowindow = new google.maps.InfoWindow();
 	var request = {
 		bounds:mapGrid[closeX][closeY].getBounds(),
-    types: ['store','restaurant']
-  };
-var service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, callback);
+		types: ['school','pharmacy','hospital','factory','church','store','restaurant']
+	};
+	var service = new google.maps.places.PlacesService(map);
+	service.nearbySearch(request, callback);
 
 }
 function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
-    }
-  }
-}
+	var randomSeed= parseInt(Math.random() * (4))+4;
+	if (status == google.maps.places.PlacesServiceStatus.OK) {
+		if (randomSeed>results.length){
+			for (var i = 0; i < results.length; i++) {
+				createMarker(results[i]);
+			};
+		}
+		else {
+			var randomResults=[];
+			var randIsUnique=true;
+			var randomNum=0;
+			while (randomResults.length<randomSeed){	
+				randomNum=parseInt(Math.random()*results.length);
+				randIsUnique=true;
+				for (var i=0;i<randomResults.length;i++){
+					if (randomNum===randomResults[i]) {
+						randIsUnique=false;
+					};
+				};
+				if (randIsUnique){
+					randomResults.push(randomNum);
+				};
+			};
+			for (var i = 0; i < randomResults.length; i++) {
+				createMarker(results[randomResults[i]]);
+			};	
+		};
+	};
+};
+
 function createMarker(place) {
   var placeLoc = place.geometry.location;
+ var type=recognizePlace(place.types);
   var marker = new google.maps.Marker({
     map: map,
-    position: place.geometry.location
+    position: place.geometry.location,
+    icon: "png/"+type+".png"
   });
   var markerX=playerX;
   var markerY=playerY;
   var mNum=markers.length;
 
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + place.types[0]+"\',"+mNum+')">Loot</button>');
+    infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+')">Loot</button>');
     infowindow.open(map, this);
   });
   markers.push(marker);
@@ -175,58 +198,60 @@ console.log("Marker Number: "+markers.length);
 };
 
 function recognizePlace(list){
-var result="store";
-for (var i=0;i<list.length;i++){
-switch (list[i]){
-	case "hardware_store":
-	case "factory":
-	result="factory";
-	i=list.length;
-	break;
-	case "grocery_or_supermarket"
-case "grocery"
-	result="grocery"
-	i=list.length;
-	break;
-case "gas_station"
-	result="gas_station";
-	i=list.length;
-	break;
-case "cafe"
-	result="cafe";
-	i=list.length;
-	break;
-case "doctor"
-case "hospital"
-case "pharmacy"
-	result="pharmacy";
-	i=list.length;
-	break;
-case "food"
-case "restaurant":
-	result="restaurant";
-	i=list.length;
-	break;
-case "school"
-case "university"
-	result="school";
-	i=list.length;
-	break;
-case "church":
-case "synagogue"
-case "mosque"
-	result="church";
-	i=list.length;
-	break;
-case "bar"
-case "nightclub"
-	result="bar";
-	i=list.length;
-	break;
-}
-}
+	var result="shop";
+	for (var i=0;i<list.length;i++){
+		switch (list[i]){
+			case "hardware_store":
+			case "factory":
+			result="factory";
+			i=list.length;
+			break;
+			case "grocery_or_supermarket":
+			case "grocery":
+			result="grocery"
+			i=list.length;
+			break;
+			case "gas_station":
+			result="gas_station";
+			i=list.length;
+			break;
+			case "cafe":
+			result="cafe";
+			i=list.length;
+			break;
+			case "doctor":
+			case "hospital":
+			case "pharmacy":
+			result="pharmacy";
+			i=list.length;
+			break;
+			case "food":
+			case "restaurant":
+			result="restaurant";
+			i=list.length;
+			break;
+			case "school":
+			case "university":
+			result="school";
+			i=list.length;
+			break;
+			case "church":
+			case "synagogue":
+			case "mosque":
+			result="church";
+			i=list.length;
+			break;
+			case "bar":
+			case "nightclub":
+			result="bar";
+			i=list.length;
+			break;
+		};
+	};
+	return result;
+};
 
-}
+
 
 function deleteMarker(x){
 	markers[x].setMap(null);
@@ -237,4 +262,5 @@ google.maps.event.addDomListener(window, 'load', initialize);
 function report(title,message){
 	console.log("Report!");
 	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
+updatePanel();
 };

@@ -10,6 +10,13 @@ for (var i = -5; i < 6; i++) {
 	defence[i][q]=0;
 };
 };
+var scouted = new Array(10);
+for (var i = -5; i < 6; i++) {
+	scouted[i] = new Array(10);
+	for (var q=-5; q<6; q++){
+	scouted[i][q]=false;
+};
+};
 var health=100;
 var playerX=0;
 var playerY=0;
@@ -118,12 +125,19 @@ deleteMarker(markerNum);
 function scout(scoutX,scoutY){
 	var distance=Math.abs(scoutX-playerX)+Math.abs(scoutY-playerY) 
 	if (time+4+(distance*2)>26) {
-		alert("There aren't enough hours left in the day to attempt this");
+		report("Scouting Failed","There aren't enough hours left in the day to attempt this.");
 	} 
 	else {
+		if (scouted[playerX][playerY]===true) {
+			report("Scouting Failed","This location has already been scouted");
+		}
+else {
+report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
 		advanceTime(4+(distance*2));
 		fillSpaces(playerX,playerY);
-	}
+		scouted[playerX][playerY]=true;
+	};
+};
 	updatePanel();
 };
 
