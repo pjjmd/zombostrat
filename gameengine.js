@@ -123,8 +123,8 @@ deleteMarker(markerNum);
 };
 
 function scout(scoutX,scoutY){
-	var distance=Math.abs(scoutX-playerX)+Math.abs(scoutY-playerY) 
-	if (time+4+(distance*2)>26) {
+
+	if ((time+6)>24) {
 		report("Scouting Failed","There aren't enough hours left in the day to attempt this.");
 	} 
 	else {
@@ -133,7 +133,7 @@ function scout(scoutX,scoutY){
 		}
 else {
 report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
-		advanceTime(4+(distance*2));
+		advanceTime(6);
 		fillSpaces(playerX,playerY);
 		scouted[playerX][playerY]=true;
 	};
