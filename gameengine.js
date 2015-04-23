@@ -7,15 +7,15 @@ var defence = new Array(10);
 for (var i = -5; i < 6; i++) {
 	defence[i] = new Array(10);
 	for (var q=-5; q<6; q++){
-	defence[i][q]=0;
-};
+		defence[i][q]=0;
+	};
 };
 var scouted = new Array(10);
 for (var i = -5; i < 6; i++) {
 	scouted[i] = new Array(10);
 	for (var q=-5; q<6; q++){
-	scouted[i][q]=false;
-};
+		scouted[i][q]=false;
+	};
 };
 var health=100;
 var playerX=0;
@@ -34,13 +34,13 @@ function updatePanel(){
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>20) {
-report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defenses you set up in this area will hold the zombies at bay.");
+		report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defenses you set up in this area will hold the zombies at bay.");
 	};
 	updatePanel();
 };
 
 function sleep() {
-var result="";
+	var result="";
 	console.log("Food: "+food);
 	if (food>=3){
 		food-=3;
@@ -52,8 +52,8 @@ var result="";
 			result+="No food tonight, starvation will kill you almost as fast as a zombie.";
 		}
 		else {
-		result+="You ran out of food tonight, you are going to be in a bad state tomorrow unless you find some quick.";
-		increaseHealth(food);		
+			result+="You ran out of food tonight, you are going to be in a bad state tomorrow unless you find some quick.";
+			increaseHealth(food);		
 		};	
 		food=0;
 	};
@@ -76,9 +76,9 @@ function nightEncounter(){
 	switch (randomSeed){
 		case 0:
 		if (weapon==0){
-		food=0;
-		increaseHealth(-20);
-		return "Found at night, and without any weapons, the zombies make quick work disuading you of the notion that you had found a 'safe' space for the night.  You are able to scramble out at the last minute, but with only the clothes on your back.";			
+			food=0;
+			increaseHealth(-20);
+			return "Found at night, and without any weapons, the zombies make quick work disuading you of the notion that you had found a 'safe' space for the night.  You are able to scramble out at the last minute, but with only the clothes on your back.";			
 		}
 		else {
 			if (weapon>3){
@@ -91,9 +91,9 @@ function nightEncounter(){
 				return "Zombies made it through your defences... of course that's not really a problem for you.  A couple quick blows allow both you, and the hordes of undead, to rest in peace for the night.";
 			}
 		}
-default:
-increaseHealth(-15);
-return "A zombie made it into your area tonight, you hid quietly, hoping he wouldn't find you."
+		default:
+		increaseHealth(-15);
+		return "A zombie made it into your area tonight, you hid quietly, hoping he wouldn't find you."
 	}
 }
 
@@ -111,14 +111,14 @@ function increaseHealth(number){
 function loot(buildingX,buildingY,type,markerNum){
 	var distance=Math.abs(buildingX-playerX)+Math.abs(buildingY-playerY) 
 	if (time+2+(distance*2)>26) {
-		alert("There aren't enough hours left in the day to attempt this");
+		report("Looting Failed","There aren't enough hours left in the day to attempt this");
 	} 
 	else {
 		advanceTime(2+(distance*2));
 		//randomEncounter(type);
 		randomLoot(type);
 		console.log("was passed" +markerNum);
-deleteMarker(markerNum);
+		deleteMarker(markerNum);
 	};
 };
 
@@ -131,13 +131,13 @@ function scout(scoutX,scoutY){
 		if (scouted[playerX][playerY]===true) {
 			report("Scouting Failed","This location has already been scouted");
 		}
-else {
-report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
-		advanceTime(6);
-		fillSpaces(playerX,playerY);
-		scouted[playerX][playerY]=true;
+		else {
+			report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
+			advanceTime(6);
+			fillSpaces(playerX,playerY);
+			scouted[playerX][playerY]=true;
+		};
 	};
-};
 	updatePanel();
 };
 
@@ -145,7 +145,7 @@ function travel(grid){
 	var distance=Math.abs(grid.x-playerX)+Math.abs(grid.y-playerY);
 	console.log("Distance " + distance);
 	if (time+(distance*5)>26) {
-		alert("There aren't enough hours left in the day to attempt this");
+		report("Travel Failed","There aren't enough hours left in the day to attempt this");
 	} else {
 		playerX=grid.x;
 		playerY=grid.y;
@@ -161,7 +161,7 @@ function randomLoot(type) {
 	switch (type) {
 		case "restaurant":
 		console.log("Here!");
-			switch (randomSeed) {
+		switch (randomSeed) {
 			case 0:
 			result+="This place hadn't been as picked through as you thought. You load up your pack with food, and head back to base.";
 			food+=10;
@@ -171,28 +171,11 @@ function randomLoot(type) {
 			food+=1;	
 		}
 		break;
-		case "church":
-		switch (randomSeed) {
-			case 0:
-			reesult="You find the church mostly abandoned. It looks like the place has been ransacked already, but careful exploration reveals the remains of a food drive collection.  You grab a box stuffed with baked beans and other basics.  +10 Food ";
-			food+=10;
-			break;
-			case 1:
-			report="The church door is barricaded, but it doesn't take long for you to pry it open. It looks like a group of people tried to convert this place into a sanctuary, the smell of corpses cries of their failure as you open the door. ";
-			if (weapons>5){
-				result+="You quickly reach down to check your weapons.  This isn't going to be easy, but hopefully there will be supplies left among the dead.  Taking a step inside reveals "
-			} else
-			{
-				result+="An onimous feeling comes over you... maybe you should be better armed before trying to enter a place like this.";
-			}
-			break;	
-		}
-		break;
 		default:
 		console.log("Default");
 		result+="You find basic supplies.";
 		food+=1;
-		weapons+=1;
+		weapon+=1;
 	};
 	report("Looting",result);
 };

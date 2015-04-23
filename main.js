@@ -31,7 +31,7 @@ function codeAddress(address) {
 			alert('Geocode was not successful for the following reason: ' + status);
 		};
 	});
-updatePanel();
+	updatePanel();
 };
 
 function createGrid(location,x,y){
@@ -178,23 +178,23 @@ function callback(results, status) {
 };
 
 function createMarker(place) {
-  var placeLoc = place.geometry.location;
- var type=recognizePlace(place.types);
-  var marker = new google.maps.Marker({
-    map: map,
-    position: place.geometry.location,
-    icon: "png/"+type+".png"
-  });
-  var markerX=playerX;
-  var markerY=playerY;
-  var mNum=markers.length;
+	var placeLoc = place.geometry.location;
+	var type=recognizePlace(place.types);
+	var marker = new google.maps.Marker({
+		map: map,
+		position: place.geometry.location,
+		icon: "png/"+type+".png"
+	});
+	var markerX=playerX;
+	var markerY=playerY;
+	var mNum=markers.length;
 
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+')">Loot</button>');
-    infowindow.open(map, this);
-  });
-  markers.push(marker);
-console.log("Marker Number: "+markers.length);
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+')">Loot</button>');
+		infowindow.open(map, this);
+	});
+	markers.push(marker);
+	console.log("Marker Number: "+markers.length);
 };
 
 function recognizePlace(list){
@@ -262,5 +262,5 @@ google.maps.event.addDomListener(window, 'load', initialize);
 function report(title,message){
 	console.log("Report!");
 	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
-updatePanel();
+	updatePanel();
 };
