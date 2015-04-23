@@ -101,7 +101,7 @@ function increaseHealth(number){
 	};
 };
 
-function loot(buildingX,buildingY,type){
+function loot(buildingX,buildingY,type,markerNum){
 	var distance=Math.abs(buildingX-playerX)+Math.abs(buildingY-playerY) 
 	if (time+2+(distance*2)>26) {
 		alert("There aren't enough hours left in the day to attempt this");
@@ -110,6 +110,8 @@ function loot(buildingX,buildingY,type){
 		advanceTime(2+(distance*2));
 		//randomEncounter(type);
 		randomLoot(type);
+		console.log("was passed" +markerNum);
+deleteMarker(markerNum);
 	};
 };
 

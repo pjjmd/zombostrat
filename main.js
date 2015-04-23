@@ -1,5 +1,6 @@
 var map;
 var infowindow;
+var markers=[];
 var geocoder;
 var myLatlng;
 var mapGrid = new Array(10);
@@ -161,15 +162,79 @@ function createMarker(place) {
     map: map,
     position: place.geometry.location
   });
+  var markerX=playerX;
+  var markerY=playerY;
+  var mNum=markers.length;
+
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name+ '   ' + place.types[0]+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+playerX+','+playerY+','+"\'" + place.types[0]+"\'" +')">Loot</button>');
+    infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + place.types[0]+"\',"+mNum+')">Loot</button>');
     infowindow.open(map, this);
   });
+  markers.push(marker);
+console.log("Marker Number: "+markers.length);
+};
+
+function recognizePlace(list){
+var result="store";
+for (var i=0;i<list.length;i++){
+switch (list[i]){
+	case "hardware_store":
+	case "factory":
+	result="factory";
+	i=list.length;
+	break;
+	case "grocery_or_supermarket"
+case "grocery"
+	result="grocery"
+	i=list.length;
+	break;
+case "gas_station"
+	result="gas_station";
+	i=list.length;
+	break;
+case "cafe"
+	result="cafe";
+	i=list.length;
+	break;
+case "doctor"
+case "hospital"
+case "pharmacy"
+	result="pharmacy";
+	i=list.length;
+	break;
+case "food"
+case "restaurant":
+	result="restaurant";
+	i=list.length;
+	break;
+case "school"
+case "university"
+	result="school";
+	i=list.length;
+	break;
+case "church":
+case "synagogue"
+case "mosque"
+	result="church";
+	i=list.length;
+	break;
+case "bar"
+case "nightclub"
+	result="bar";
+	i=list.length;
+	break;
 }
+}
+
+}
+
+function deleteMarker(x){
+	markers[x].setMap(null);
+};
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function report(title,message){
 	console.log("Report!");
 	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
-}
+};
