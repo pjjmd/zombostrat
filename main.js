@@ -181,7 +181,8 @@ function createMarker(place) {
 	var placeLoc = place.geometry.location;
 	var type=recognizePlace(place.types);
 var placeName=place.name;
-placeName.replace(/["']/g, "")
+placeName=placeName.replace(/["']/g, "");
+
 	var marker = new google.maps.Marker({
 		map: map,
 		position: place.geometry.location,
