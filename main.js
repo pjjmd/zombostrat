@@ -180,6 +180,8 @@ function callback(results, status) {
 function createMarker(place) {
 	var placeLoc = place.geometry.location;
 	var type=recognizePlace(place.types);
+var placeName=place.name;
+placeName.replace(/["']/g, "")
 	var marker = new google.maps.Marker({
 		map: map,
 		position: place.geometry.location,
@@ -190,11 +192,27 @@ function createMarker(place) {
 	var mNum=markers.length;
 
 	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+')">Loot</button>');
+		infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+','+"\'"+ placeName+"\'"+')">Loot</button>');
 		infowindow.open(map, this);
 	});
 	markers.push(marker);
 	console.log("Marker Number: "+markers.length);
+};
+
+function addExtraction(exX,exY){
+
+var marker = new google.maps.Marker({
+		map: map,
+		position: offsetLatLng(myLatlng,exX*1000,exY*1000),
+		icon: "png/award.png"
+	});
+
+
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent("Extraction Zone"+ '<button type="button" class="btn btn-default btn-lg" onclick="escape()">Evacuate</button>');
+		infowindow.open(map, this);
+	});
+
 };
 
 function recognizePlace(list){
