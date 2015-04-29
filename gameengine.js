@@ -37,7 +37,7 @@ function updatePanel(){
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>20) {
-		report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defenses you set up in this area will hold the zombies at bay.");
+		report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defences you set up in this area will hold the zombies at bay.");
 	};
 	updatePanel();
 };
@@ -115,7 +115,7 @@ function increaseHealth(number){
 
 function loot(buildingX,buildingY,type,markerNum,buildingName){
 	var distance=Math.abs(buildingX-playerX)+Math.abs(buildingY-playerY) 
-	if (time+2+(distance*2)>26) {
+	if (time+2+(distance*2)>24) {
 		report("Looting Failed","There aren't enough hours left in the day to attempt this");
 	} 
 	else {
@@ -149,7 +149,7 @@ function scout(scoutX,scoutY){
 function travel(grid){
 	var distance=Math.abs(grid.x-playerX)+Math.abs(grid.y-playerY);
 	console.log("Distance " + distance);
-	if (time+(distance*5)>26) {
+	if (time+(distance*5)>24) {
 		report("Travel Failed","There aren't enough hours left in the day to attempt this");
 	} else {
 		playerX=grid.x;
@@ -207,7 +207,7 @@ function randomLoot(type,name) {
 			case 3:
 			case 4:
 			result += "You find basic some heavy equipment here, as well as a few wooden pallets.  Excellent equipment for securing a defensive site!";
-			defense[playerX][playerY]+=2;
+			defence[playerX][playerY]+=2;
 			weapons+=1;
 			break;
 			case 5:
@@ -221,11 +221,11 @@ function randomLoot(type,name) {
 			result+= "The site seems mostly abandoned, I guess if a place doesn’t have food or weapons, people don’t swarm to it during an apocalypse.  You make off with a giant pile of defensive supplies, off to reinforce your location.  You bring with you as much as you can carry, but half way along your trip, you attract the attention of a throng of zombies. ";
 			if (weapons>0) {
 				result+= "You put down the supplies momentarily, readying yourself to deal with the dead before they become more numerous. "+combatZombies(4); 
-				defense[playerX][playerY]+=8;
+				defence[playerX][playerY]+=8;
 			}
 			else {
 				result+= " Even though there aren’t many zombies now, without a weapon, you are unable to defeat them ‘safely’.  You decide to lighten your load, and simply outpace them. ";
-				defense[playerX][playerY]+=2;
+				defence[playerX][playerY]+=2;
 			};
 		};
 		break;
@@ -235,7 +235,7 @@ function randomLoot(type,name) {
 			case 2:
 			case 3:
 			result+= "Class is out for the apocalypse.  Desks and chairs might not make great weapons, but they are sturdy and modular enough for some easy defensive structures.  You cart back a number of them to your base. ";
-			defense[playerX][playerY]+=2;
+			defence[playerX][playerY]+=2;
 			break;
 			case 4:
 			case 5:
