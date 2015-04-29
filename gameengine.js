@@ -77,6 +77,9 @@ function sleep() {
 	} else {
 		result+= " The dead were snooping around outside, they didn't get in, but they did a number on the defences you had set up.  You wonder if there are any hardware stores nearby, or maybe some schools?";
 		defence[playerX][playerY]-=parseInt(Math.random()*3);
+		if (defence[playerX][playerY]<0){
+			defence[playerX][playerY]=0;
+		};
 	};
 	day+=1;
 	time=8;
@@ -166,9 +169,9 @@ function randomLoot(type,name) {
 			case 2:
 			case 3:
 			result+= "You find a boarded up building, it looks like a group of people tried to hold out here.  "
-			if (defence<5){
+			if (defence[playerX][playerY]<5){
 				result+= "You decide to check the place out, it might be a decent place to sleep for the night.  ";
-				defense=5;
+				defence[playerX][playerY]=5;
 			}
 			else {
 				result+= "You decide to check out the place for supplies.  ";
