@@ -130,7 +130,7 @@ function loot(buildingX,buildingY,type,markerNum,buildingName){
 
 function scout(scoutX,scoutY){
 
-	if ((time+6)>24) {
+	if ((time+3)>24) {
 		report("Scouting Failed","There aren't enough hours left in the day to attempt this.");
 	} 
 	else {
@@ -139,7 +139,7 @@ function scout(scoutX,scoutY){
 		}
 		else {
 			report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
-			advanceTime(6);
+			advanceTime(3);
 			fillSpaces(playerX,playerY);
 			scouted[playerX][playerY]=true;
 		};
