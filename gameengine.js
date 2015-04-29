@@ -95,7 +95,7 @@ function sleep() {
 		report("Pamphlets dropped from the sky","Another plane flies overhead.  It drops leaflets, informing you that the extraction zone will be in the: "+extraction+".  Report there alive in 5 days.");
 	};
 	if (day===30){
-		addExtraction(extraction);
+		addExtraction(exX,exY);
 	};
 
 	updatePanel();
@@ -110,6 +110,7 @@ function increaseHealth(number){
 	};
 	if (health<1) {
 		alert("Game over!");
+		window.location.reload();
 	};
 };
 
