@@ -6,12 +6,15 @@ var myLatlng;
 var mapGrid = new Array(10);
 for (var i = -5; i < 6; i++) {
 	mapGrid[i] = new Array(10);
+	for (var q=-5; q<6; q++){
+		mapGrid[i][q]={rect:"",defenceMarker:"start"};
+	};
 };
 var movementButtons=[];
 
 function initialize() {
 	geocoder = new google.maps.Geocoder();
-	codeAddress(prompt("Please enter your starting location", "79 Broadview Avenue, Toronto, Ontario"));	
+	codeAddress(prompt("Please enter your starting location", "52 Broadview Avenue, Toronto, Ontario"));	
 };
 
 function codeAddress(address) {
@@ -27,6 +30,7 @@ function codeAddress(address) {
 			map.setCenter(results[0].geometry.location);
 			createGraph();
 			recolorGrid(0,0);
+		updateDefence(0,0,2);
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
 		};
@@ -35,7 +39,7 @@ function codeAddress(address) {
 };
 
 function createGrid(location,x,y){
-	mapGrid[x][y]= new google.maps.Rectangle({
+	mapGrid[x][y].rect= new google.maps.Rectangle({
 		strokeColor: '#FF0000',
 		strokeOpacity: 0.8,
 		strokeWeight: 2,
@@ -100,7 +104,7 @@ function recolorGrid(locationX,locationY){
 	clearMovementButtons();
 	for (var gridX=-5;gridX<6;gridX++){
 		for (var gridY=-5;gridY<6;gridY++){
-			mapGrid[gridX][gridY].setOptions({fillColor:'red'});
+			mapGrid[gridX][gridY].rect.setOptions({fillColor:'red'});
 		};
 	};
 	for (var gridX=-1;gridX<2;gridX++) {
@@ -128,18 +132,18 @@ function recolorGrid(locationX,locationY){
 				flag=true;
 			}
 			if (flag==false){
-				mapGrid[closeX][closeY].setOptions({fillColor:'yellow'});
+				mapGrid[closeX][closeY].rect.setOptions({fillColor:'yellow'});
 				createMovementButton(offsetLatLng(myLatlng,closeX*1000,closeY*1000),closeX,closeY);
 			};
 		};
 	};
-	mapGrid[locationX][locationY].setOptions({fillColor:'green'});
+	mapGrid[locationX][locationY].rect.setOptions({fillColor:'green'});
 	map.setCenter(offsetLatLng(myLatlng,locationX*1000,locationY*1000));
 };
 function fillSpaces(closeX,closeY){
 	infowindow = new google.maps.InfoWindow();
 	var request = {
-		bounds:mapGrid[closeX][closeY].getBounds(),
+		bounds:mapGrid[closeX][closeY].rect.getBounds(),
 		types: ['school','pharmacy','hospital','factory','church','store','restaurant']
 	};
 	var service = new google.maps.places.PlacesService(map);
@@ -180,8 +184,8 @@ function callback(results, status) {
 function createMarker(place) {
 	var placeLoc = place.geometry.location;
 	var type=recognizePlace(place.types);
-var placeName=place.name;
-placeName=placeName.replace(/["']/g, "");
+	var placeName=place.name;
+	placeName=placeName.replace(/["']/g, "");
 
 	var marker = new google.maps.Marker({
 		map: map,
@@ -200,9 +204,18 @@ placeName=placeName.replace(/["']/g, "");
 	console.log("Marker Number: "+markers.length);
 };
 
+function destroyDefence(pX,pY){
+	if (mapGrid[pX][pY].defenceMarker != "start"){
+	mapGrid[pX][pY].defenceMarker.setMap(null);
+mapGrid[pX][pY].defenceMarker="start";	
+	};
+
+};
+
+
 function addExtraction(exX,exY){
 
-var marker = new google.maps.Marker({
+	var marker = new google.maps.Marker({
 		map: map,
 		position: offsetLatLng(myLatlng,exX*1000,exY*1000),
 		icon: "png/award.png"
@@ -213,6 +226,7 @@ var marker = new google.maps.Marker({
 		infowindow.setContent("Extraction Zone"+ '<button type="button" class="btn btn-default btn-lg" onclick="escape()">Evacuate</button>');
 		infowindow.open(map, this);
 	});
+	map.setCenter(offsetLatLng(myLatlng,locationX*1000,locationY*1000));
 
 };
 
@@ -282,4 +296,21 @@ function report(title,message){
 	console.log("Report!");
 	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
 	updatePanel();
+};
+
+function updateDefence(pX,pY,def){
+	destroyDefence(pX,pY);
+	if (def!=0){
+		var marker = new google.maps.Marker({
+			map: map,
+			position: offsetLatLng(myLatlng,pX*1000,pY*1000),
+			icon: "png/fort.png"
+		});
+infowindow = new google.maps.InfoWindow();
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent("Home Base, Defense Level: "+def+ '<button type="button" class="btn btn-default btn-lg" onclick="baseSleep('+pX+','+pY+')">Sleep</button>');
+			infowindow.open(map, this);
+		});
+		mapGrid[pX][pY].defenceMarker = marker;
+	};
 };

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple Map</title>
+  <title>Corpseburg</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
   <style>
@@ -19,13 +19,22 @@
   <body>
     <div class="updates">
       <div class="up">
-        <h3> Survival Log </h3>
+        <h3> Corpseburg 1.3</h3>
       </div>
       <div class="log">
         <div class="up">
           <h3>Day 0</h3>
-          <p> You've been hiding for the past 2 weeks, waiting for this to 'blow over'.  It hasn't, you are almost out of food, and last night, I heard the dead scrounging around my place. You need to find food, weapons, and a safe place to sleep tonight.  Try scouting your local area, or moving to neighboring areas. </p>
+          <p> You've been hiding for the past 2 weeks, waiting for this to 'blow over'. It hasn't, you are almost out of food, and last night, you heard the dead scrounging around your place. You need to find food, weapons, and a safe place to sleep tonight. Try scouting your local area, or moving to neighboring areas.</p>
         </div>
+          <div class="up">
+          <h3>Welcome to Corpseburg</h3>
+          <p> A zombie survival game based wherever you want it. Developed by <a href="http://www.twitter.com/pjjmd">PJJMD</a>. If you want to join the community, come on over to the <a href="http://www.reddit.com/r/corpseburg">Corpseburg Subreddit</a>. If you want to support continued development of the game, take a look at the game's <a href="https://www.patreon.com/pjjmd">Patreon Page</a></p>
+        </div>
+        <div class="up">
+          <h3>About the Author</h3>
+          <p> Hi, I'm Peter, a late-20-something trying to make a career shift into programming. I made this game as a practice project while studying Web development.  If you know anyone in the Toronto area who is hiring a Jr. Web Developer (or Jr. anything developer really), I would love to show them my portfolio! Please get in touch with me at peter@jjmacdonald.com! If you don't know anyone in the area, maybe one of your friends does? Help me out, and share it with them on social media.</p>
+        </div>
+      </div>
       </div>
     </div>  
     <div class="display">
@@ -35,20 +44,34 @@
       <div class="content">
         <div style="width:33%;float:left;background-color: #D3D3D3;">    
           <h4><div id="day">Day: 0</div></h4>
-          <h4><div id="medicine">Medicine: 0 units</div></h4>
-          <h4><div id="food">Food: 4 Units</div></h4>
+          <h4><div id="time">Time: 8:00</div></h4>
+         <h4>Sleep at your current location? <button type="button" class="btn btn-default btn-lg" onclick="sleep()">Sleep</button></h4>
         </div>
         <div style="width:33%;float:left;background-color: #D3D3D3;">
           <h4><div id="health">Health: 100%</div></h4>
-          <h4><div id="defence">Defence: 0</div></h4>
-          <h4><div id="weapons">Weapons: 0</div></h4>
+          <h4><div id="medicine">Medicine: 0 units</div></h4>
+          
+        <h4>You have <div id="defence" style="display:inline">2</div> defensive supplies. <button type="button" class="btn btn-default btn-lg" onclick="fortify()">Fortify</button></div></h4>
         </div>
         <div style="width:33%;float:left;background-color: #D3D3D3;">
-          <h4><div id="time">Time: 8:00</div></h4>
-          <button type="button" class="btn btn-default btn-lg" onclick="sleep()">Sleep</button>
-          <button type="button" class="btn btn-default btn-lg" onclick="scout(0,0)">Scout</button>
+          <h4><div id="weapons">Weapons: 0</div></h4>
+          <h4><div id="food">Food: 4 Units</div></h4>
+        <h4>Investigate your area: <button type="button" class="btn btn-default btn-lg" onclick="scout(0,0)">Scout</button></h4>
         </div>
       </div>
     </div>
   </body>  </head>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var $_Tawk_API={},$_Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/554281f12bf2162c5a0d9faa/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
   </html>

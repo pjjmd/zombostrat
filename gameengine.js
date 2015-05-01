@@ -6,6 +6,7 @@ var time=8;
 var extraction="";
 var exX=0;
 var exY=0;
+var defenceSupply=2;
 var defence = new Array(10);
 for (var i = -5; i < 6; i++) {
 	defence[i] = new Array(10);
@@ -13,6 +14,7 @@ for (var i = -5; i < 6; i++) {
 		defence[i][q]=0;
 	};
 };
+defence[0][0]=2;
 var scouted = new Array(10);
 for (var i = -5; i < 6; i++) {
 	scouted[i] = new Array(10);
@@ -29,15 +31,19 @@ function updatePanel(){
 	$("#time").text("Time: "+time+":00 hours.");
 	$("#day").text("Day: "+day);
 	$("#medicine").text("Medicine: "+med);
-	$("#defence").text("Defence: "+defence[playerX][playerY]);
+	$("#defence").text(defenceSupply);
 	$("#weapons").text("Weapons: "+weapons);
 	$("#food").text("Food: "+food);
+	if (health<1) {
+		alert("Game over!");
+		window.location.reload();
+	};
 }
 
 function advanceTime(ammount){
 	time+=ammount;
-	if (time>20) {
-		report("Night Falls","It's too dark outside to move around safely. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defences you set up in this area will hold the zombies at bay.");
+	if (time>18) {
+		report("Night Falls","It's too dark outside to move around safely. Any moving around you do on the street will result in many more zombies finding you. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defences you set up in this area will hold the zombies at bay.");
 	};
 	updatePanel();
 };
@@ -48,7 +54,7 @@ function sleep() {
 	if (food>=3){
 		food-=3;
 		result+="You ate your fill tonight, regaining 6 health.";
-		increaseHealth(6);
+		increaseHealth(10);
 	} else {
 		if (food==0){
 			increaseHealth(-20);
@@ -70,34 +76,44 @@ function sleep() {
 		med-=healing;
 		result+="You healed "+ healing +" damage using medicine.";
 	};
-	var nightTerrors=parseInt(Math.random()*4);
+	var nightTerrors=parseInt(Math.random()*6+1);
 	if (nightTerrors>defence[playerX][playerY]){
-		defence[playerX][playerY]=0;
-		result+="Your defences were not enough to keep the dead out, they came in the night. "+combatZombies(parseInt(Math.random() * (10)+1));
+		destroyDefence(playerX,playerY);
+		result+="Your defences were not enough to keep the dead out, they came in the night. "+combatZombies(parseInt(Math.random() * (10)+5));
 	} else {
 		result+= " The dead were snooping around outside, they didn't get in, but they did a number on the defences you had set up.  You wonder if there are any hardware stores nearby, or maybe some schools?";
-		defence[playerX][playerY]-=parseInt(Math.random()*3);
+		defence[playerX][playerY]-=parseInt(Math.random()*2+2);
 		if (defence[playerX][playerY]<0){
 			defence[playerX][playerY]=0;
 		};
+		updateDefence(playerX,playerY,defence[playerX][playerY]);
 	};
 	day+=1;
 	time=8;
 	
 	report("Sleeping on Day "+day,result);
-	if (day===1){
-		report("Pamphlets dropped from the sky","You see a plane fly overhead, dropping hundreds of leaflets over the cityscape.  Picking one up, you read that the city is quaruntined for the next month.  Any survivors are to hold out for the next 30 days, and report to extraction point.  The military will anounce the extraction point 5 days before the quaruntine is lifted.")
-	};
-	if (day===24){
+	switch(day){
+		case 1:
+		report("Pamphlets dropped from the sky","You see a plane fly overhead, dropping hundreds of leaflets over the cityscape.  Picking one up, you read that the city is quaruntined for the next month.  Any survivors are to hold out for the next 30 days, and report to extraction point.  The military will anounce the extraction point 5 days before the quaruntine is lifted.");
+		break;
+		case 7:
+		case 14:
+		case 21:
+		case 28:
+		for (var i = -5; i < 6; i++) {
+			for (var q=-5; q<6; q++){
+				scouted[i][q]=false;
+			};
+		};
+		report("The dead have shifted","Locations you have been to before are scoutable again.  Maybe you will find more places to loot.");
+		break;
+		case 24:
 		calculateExtraction();
-	};
-	if (day===25){
+		break;
+		case 25:
 		report("Pamphlets dropped from the sky","Another plane flies overhead.  It drops leaflets, informing you that the extraction zone will be in the: "+extraction+".  Report there alive in 5 days.");
-	};
-	if (day===30){
 		addExtraction(exX,exY);
 	};
-
 	updatePanel();
 };
 
@@ -108,11 +124,8 @@ function increaseHealth(number){
 	} else {
 		health=health+number;
 	};
-	if (health<1) {
-		alert("Game over!");
-		window.location.reload();
-	};
 };
+
 
 function loot(buildingX,buildingY,type,markerNum,buildingName){
 	var distance=Math.abs(buildingX-playerX)+Math.abs(buildingY-playerY) 
@@ -122,10 +135,19 @@ function loot(buildingX,buildingY,type,markerNum,buildingName){
 	else {
 		advanceTime(2+(distance*2));
 		randomLoot(type,buildingName);
-		console.log("was passed" +markerNum);
 		deleteMarker(markerNum);
 	};
 	updatePanel();
+	updateDefence(playerX,playerY,defence[playerX][playerY]);
+};
+function baseSleep(x,y){
+	if (playerX==x&&playerY==y){
+		sleep();
+	}
+	else
+	{
+		report("Sleep Failed","You need to be in the same square to sleep at a base.");
+	};
 };
 
 function scout(scoutX,scoutY){
@@ -155,14 +177,25 @@ function travel(grid){
 	} else {
 		playerX=grid.x;
 		playerY=grid.y;
-		advanceTime(4);
+		advanceTime(1);
+	report("Travel","You made it, on your way youn encountered zombies."+combatZombies(calculateStreetWalkers()));
 	};
 	recolorGrid(playerX,playerY);
 };
 
+
+function calculateStreetWalkers(){
+var numWalker=parseInt(Math.random()*3+1);
+if (time>20){
+	numWalker+=5;
+};
+return numWalker;
+};
+
 function randomLoot(type,name) {
 	var randomSeed= parseInt(Math.random() * (9)+1);
-	var result="";
+	var streetWalkers=calculateStreetWalkers();
+	var result="On your way to the "+name+", you encounter "+streetWalkers+" zombies. "+combatZombies(streetWalkers)+" ";
 	switch (type) {
 		case "church":
 		switch (randomSeed){
@@ -208,7 +241,7 @@ function randomLoot(type,name) {
 			case 3:
 			case 4:
 			result += "You find basic some heavy equipment here, as well as a few wooden pallets.  Excellent equipment for securing a defensive site!";
-			defence[playerX][playerY]+=2;
+			defenceSupply+=2;
 			weapons+=1;
 			break;
 			case 5:
@@ -222,11 +255,11 @@ function randomLoot(type,name) {
 			result+= "The site seems mostly abandoned, I guess if a place doesn’t have food or weapons, people don’t swarm to it during an apocalypse.  You make off with a giant pile of defensive supplies, off to reinforce your location.  You bring with you as much as you can carry, but half way along your trip, you attract the attention of a throng of zombies. ";
 			if (weapons>0) {
 				result+= "You put down the supplies momentarily, readying yourself to deal with the dead before they become more numerous. "+combatZombies(4); 
-				defence[playerX][playerY]+=8;
+				defenceSupply+=8;
 			}
 			else {
 				result+= " Even though there aren’t many zombies now, without a weapon, you are unable to defeat them ‘safely’.  You decide to lighten your load, and simply outpace them. ";
-				defence[playerX][playerY]+=2;
+				defenceSupply+=2;
 			};
 		};
 		break;
@@ -236,7 +269,7 @@ function randomLoot(type,name) {
 			case 2:
 			case 3:
 			result+= "Class is out for the apocalypse.  Desks and chairs might not make great weapons, but they are sturdy and modular enough for some easy defensive structures.  You cart back a number of them to your base. ";
-			defence[playerX][playerY]+=2;
+			defenceSupply+=2;
 			break;
 			case 4:
 			case 5:
@@ -245,14 +278,15 @@ function randomLoot(type,name) {
 			break;
 			case 6:
 			case 7:
-			result+= "Art supplies!  Whoever said you shouldn’t run with scissors clearly hadn’t survived the zombie apocalypse. "
+			result+= "Art supplies!  Whoever said you shouldn’t run with scissors clearly hadn’t survived the zombie apocalypse. You gain makeshift weapons and defensive supplies."
 			weapons+=1;
+			defenceSupply+=2;
 			break;
 			case 8:
 			case 9:
 			case 10:
 			result+= "The cafeteria has been thoroughly ransacked, but there is a snack machine on the second floor just begging to get smashed and share a wealth of chocolate bars with you. ";
-			if (weapons>2){
+			if (weapons>0){
 				result+= " You smash the glass and make off like a champion. ";
 				food+=5;
 			} else {
@@ -300,7 +334,7 @@ function randomLoot(type,name) {
 			break;
 			case 3:
 			case 4:
-			result+= "The kitchen has been looted, and an investigation of the store room indicates that a pair of people who drank themselves to death.  You do find a baseball bat behind the bar tho, so it’s not a total loss. ";
+			result+= "The kitchen has been looted, and an investigation of the store room finds a pair of people who drank themselves to death. You do find a baseball bat behind the bar tho, so it’s not a total loss. ";
 			weapons+=1;
 			break;
 			case 5:
@@ -312,7 +346,8 @@ function randomLoot(type,name) {
 			case 8:
 			case 9:
 			case 10:
-			result+= "Three zombies defend the bar.  "+combatZombies(3)+  " After defeating them, all you can find is broken bottles and spoiled food. ";
+			result+= "Three zombies defend the bar.  "+combatZombies(3)+  " After defeating them, all you can find is broken bottles and spoiled food. A couple of tables can be broken down into basic defensive supplies.";
+		defenceSupply+=3;
 		};
 		break;
 		case "pharmacy":
@@ -327,7 +362,7 @@ function randomLoot(type,name) {
 			case 5:
 			case 6:
 			result+= "It looks like this place was hit by a few groups of looters.  The drug supply area has been thoroughly ransacked, with both high end drugs, and basic first aid supplies missing.  However, you do spot a crate of meal replacement shakes meant for the elderly.  As long as you don’t mind chocolate, this will keep you full for a week. "
-			food+=15;
+			food+=10;
 			break;
 			case 7:
 			case 8:
@@ -346,8 +381,8 @@ function randomLoot(type,name) {
 			break;
 			case 3:
 			case 4:
-			result+= "This shop was boarded up before the owner abandoned it. While pretty much everything of value is missing, you salvage some of the defensive materials. "
-			defence[playerX][playerY]+=3;
+			result+= "This shop was boarded up before the owner abandoned it. While pretty much everything of value is missing, you salvage some of the defensive materials."
+			defenceSupply+=3;
 			break;
 			case 5:
 			case 6:
@@ -415,11 +450,31 @@ function calculateExtraction(){
 };
 
 function escape(){
-	if (playerX==exX&&playerY==exY){
-		report("You win!","Thank you for playing!");
+	if (playerX==exX&&playerY==exY&&day>29){
+		report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
 	}
 	else
 	{
-		report("You are not in the right area.","Please move to the "+extraction);
+		report("You are not in the right area, or you are too early.","On day 30, please move to the "+extraction);
 	};
+};
+
+function fortify(){
+	if (time>=20){
+		report("Fortifying Failed","It is too late at night to fortify.");
+	}
+	else {
+		if (defenceSupply>0){
+			defenceSupply-=1;
+			defence[playerX][playerY]+=1;
+			advanceTime(2);
+			report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
+		}
+		else {
+			defence[playerX][playerY]+=1;
+			advanceTime(4);
+			report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
+		};
+	};
+	updateDefence(playerX,playerY,defence[playerX][playerY]);
 };
