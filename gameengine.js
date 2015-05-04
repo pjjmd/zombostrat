@@ -14,12 +14,15 @@ for (var i = -5; i < 6; i++) {
 		defence[i][q]=0;
 	};
 };
-defence[0][0]=2;
+defence[0][0]=4;
 var scouted = new Array(10);
+var density=new Array(10);
 for (var i = -5; i < 6; i++) {
+density[i]= new Array(10);
 	scouted[i] = new Array(10);
 	for (var q=-5; q<6; q++){
 		scouted[i][q]=false;
+		density[i][q]="high";
 	};
 };
 var health=100;
@@ -50,10 +53,9 @@ function advanceTime(ammount){
 
 function sleep() {
 	var result="";
-	console.log("Food: "+food);
 	if (food>=3){
 		food-=3;
-		result+="You ate your fill tonight, regaining 6 health.";
+		result+="You ate your fill tonight, regaining 10 health.";
 		increaseHealth(10);
 	} else {
 		if (food==0){
@@ -77,6 +79,19 @@ function sleep() {
 		result+="You healed "+ healing +" damage using medicine.";
 	};
 	var nightTerrors=parseInt(Math.random()*6+1);
+	switch (mapGrid[playerX][playerY].population){
+		case "sparse":
+		result+=" The were fewer zombies tonight because you slept in a sparsely populated area.";
+		nightTerrors-=2;
+		break;
+case "medium":
+		result+=" The were an average amount of zombies tonight because you slept in a medium populated area.";
+		nightTerrors-=1;
+		break;
+		case "dense":
+		result+=" The were more zombies tonight because you slept in a densely populated area.";
+		break;
+	}
 	if (nightTerrors>defence[playerX][playerY]){
 		destroyDefence(playerX,playerY);
 		result+="Your defences were not enough to keep the dead out, they came in the night. "+combatZombies(parseInt(Math.random() * (10)+5));
@@ -135,7 +150,7 @@ function loot(buildingX,buildingY,type,markerNum,buildingName){
 	else {
 		advanceTime(2+(distance*2));
 		randomLoot(type,buildingName);
-		deleteMarker(markerNum);
+		deleteMarker(buildingX,buildingY,markerNum);
 	};
 	updatePanel();
 	updateDefence(playerX,playerY,defence[playerX][playerY]);
@@ -175,28 +190,65 @@ function travel(grid){
 	if (time+(distance*5)>24) {
 		report("Travel Failed","There aren't enough hours left in the day to attempt this");
 	} else {
-		playerX=grid.x;
-		playerY=grid.y;
+		populateGrid(grid.x,grid.y);
+		};
+};
+
+function travelCallBack(cX,cY){
+	if (day==0&&time==8&&cX==0&&cY==0){
+		console.log("You have started in a "+ mapGrid[0][0].population+" population zone.");
+	}
+	else {
 		advanceTime(1);
-	report("Travel","You made it, on your way youn encountered zombies."+combatZombies(calculateStreetWalkers()));
-	};
-	recolorGrid(playerX,playerY);
+	report("Travel","You made it, on your way you encountered zombies."+combatZombies(calculateStreetWalkers()));
+	recolorGrid(cX,cY);
 };
-
-
+};
 function calculateStreetWalkers(){
-var numWalker=parseInt(Math.random()*3+1);
+var numWalkers=parseInt(Math.random()*3+1);
 if (time>20){
-	numWalker+=5;
+	numWalkers+=5;
 };
-return numWalker;
+if (mapGrid[playerX][playerY].population=="dense"){
+	numWalkers+=2;
+	console.log("Dense!");
+};
+if (mapGrid[playerX][playerY].population=="sparse"){
+	numWalkers-=1;
+};
+return numWalkers;
 };
 
 function randomLoot(type,name) {
 	var randomSeed= parseInt(Math.random() * (9)+1);
-	var streetWalkers=calculateStreetWalkers();
-	var result="On your way to the "+name+", you encounter "+streetWalkers+" zombies. "+combatZombies(streetWalkers)+" ";
+	var result="";
+	if (time>18){
+		result+="It was dark on your way to  "+name+", "+combatZombies(calculateStreetWalkers())+" ";
+	};
 	switch (type) {
+		case "car":
+		switch (randomSeed){
+			case 1:
+			case 2:
+			case 3:
+			result+= "You find a first aid kit in the trunk, as well as a couple bottles of water.";
+			food+=1;
+			med+=10;	
+			break;
+			case 4:
+			case 5:
+			case 6:
+			result+= "The former driver of this vehicle is seatbelted in.  He's dead, but lunges at you when you aproach the vehicle. "+combatZombies(1)+" After dealing with the restrained zombie, you find he has a particularly nasty hunting knife on his belt.";
+			weapons+=1;
+			break;
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			result+= "The vehicle is still mobile, although it's difficult to envision taking it too far given the state of the roads.  Still, it could be helpful for defensive purposes. And there is a flat of instant noodles in the back, score!";
+			food+=4;
+			defenceSupply+=2;
+		}
 		case "church":
 		switch (randomSeed){
 			case 1:
@@ -412,7 +464,7 @@ function combatZombies(numZombie){
 		}
 		else
 		{
-			damage+=parseInt(Math.random()*10);
+			damage+=parseInt(Math.random()*2+3);
 		};
 	} 
 	for (var i=0;i<numZombie;i++){
@@ -422,7 +474,7 @@ function combatZombies(numZombie){
 		};
 	};
 	increaseHealth(0-damage);
-	return "You defeated "+numZombie+" zombies, took "+damage+" damage, and lost "+weaponDegredation+" weapon quality.";
+	return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation+" weapon quality defeating them.";
 };
 
 function calculateExtraction(){

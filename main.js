@@ -7,7 +7,7 @@ var mapGrid = new Array(10);
 for (var i = -5; i < 6; i++) {
 	mapGrid[i] = new Array(10);
 	for (var q=-5; q<6; q++){
-		mapGrid[i][q]={rect:"",defenceMarker:"start"};
+		mapGrid[i][q]={rect:"",defenceMarker:"start",markers:[],population:"sparse"};
 	};
 };
 var movementButtons=[];
@@ -30,11 +30,13 @@ function codeAddress(address) {
 			map.setCenter(results[0].geometry.location);
 			createGraph();
 			recolorGrid(0,0);
-		updateDefence(0,0,2);
+		updateDefence(0,0,4);
+	populateGrid(0,0);
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
 		};
 	});
+
 	updatePanel();
 };
 
@@ -140,19 +142,38 @@ function recolorGrid(locationX,locationY){
 	mapGrid[locationX][locationY].rect.setOptions({fillColor:'green'});
 	map.setCenter(offsetLatLng(myLatlng,locationX*1000,locationY*1000));
 };
-function fillSpaces(closeX,closeY){
+function populateGrid(cX,cY){
+	console.log(cX+" "+cY);
 	infowindow = new google.maps.InfoWindow();
 	var request = {
-		bounds:mapGrid[closeX][closeY].rect.getBounds(),
+		bounds:mapGrid[cX][cY].rect.getBounds(),
 		types: ['school','pharmacy','hospital','factory','church','store','restaurant']
 	};
 	var service = new google.maps.places.PlacesService(map);
+	playerX=cX;
+	playerY=cY;
+	console.log(playerY);
 	service.nearbySearch(request, callback);
+};
 
-}
 function callback(results, status) {
 	var randomSeed= parseInt(Math.random() * (4))+4;
-	if (status == google.maps.places.PlacesServiceStatus.OK) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+		console.log("Results length: "+results.length);
+		if (results.length<5){
+			mapGrid[playerX][playerY].population="sparse";
+addFakeResult("car");
+		}
+		else {
+			if (results.lenght<19){
+				mapGrid[playerX][playerY].population="medium";	
+			}	
+
+			else {
+				mapGrid[playerX][playerY].population="dense";
+			};
+		};
+		travelCallBack(playerX,playerY)
 		if (randomSeed>results.length){
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]);
@@ -179,29 +200,28 @@ function callback(results, status) {
 			};	
 		};
 	};
+
+
 };
 
-function createMarker(place) {
-	var placeLoc = place.geometry.location;
-	var type=recognizePlace(place.types);
-	var placeName=place.name;
-	placeName=placeName.replace(/["']/g, "");
 
-	var marker = new google.maps.Marker({
-		map: map,
-		position: place.geometry.location,
-		icon: "png/"+type+".png"
+function addFakeResult(type){
+console.log("Adding Fake!");
+var marker = new google.maps.Marker({
+		position: offsetLatLng(myLatlng,playerX*1000+(300*parseInt((Math.random()*3)-1)),playerY*1000+(300*parseInt((Math.random()*3)-1))),
+		icon: "png/car.png"
 	});
-	var markerX=playerX;
-	var markerY=playerY;
-	var mNum=markers.length;
+var tempX=playerX;
+var tempY=playerY;
+var placeName="Abadoned Vehicle";
+var mNum=mapGrid[playerX][playerY].markers.length;
 
 	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+markerX+','+markerY+','+"\'" + type+"\',"+mNum+','+"\'"+ placeName+"\'"+')">Loot</button>');
+		infowindow.setContent(placeName+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+tempX+','+tempY+','+"\'" + type+"\',"+mNum+','+"\'"+ placeName+"\'"+')">Loot</button>');
 		infowindow.open(map, this);
 	});
-	markers.push(marker);
-	console.log("Marker Number: "+markers.length);
+	mapGrid[playerX][playerY].markers.push(marker);
+console.log("Length of markers after fake pushed: "+mapGrid[playerX][playerY].markers.length);
 };
 
 function destroyDefence(pX,pY){
@@ -285,9 +305,18 @@ function recognizePlace(list){
 };
 
 
+function fillSpaces(mX,mY){
+	if (mapGrid[mX][mY].markers.length==0){
+addFakeResult("car");
+addFakeResult("car");
+	};
+	for (var i=0;i<mapGrid[mX][mY].markers.length;i++){
+		mapGrid[mX][mY].markers[i].setMap(map);
+	};
+};
 
-function deleteMarker(x){
-	markers[x].setMap(null);
+function deleteMarker(mX,mY,x){
+	mapGrid[mX][mY].markers[x].setMap(null);
 };
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -313,4 +342,25 @@ infowindow = new google.maps.InfoWindow();
 		});
 		mapGrid[pX][pY].defenceMarker = marker;
 	};
+};
+
+function createMarker(place) {
+	var placeLoc = place.geometry.location;
+	var type=recognizePlace(place.types);
+	var placeName=place.name;
+	placeName=placeName.replace(/["']/g, "");
+	var mNum=mapGrid[playerX][playerY].markers.length;
+	var marker = new google.maps.Marker({
+		position: place.geometry.location,
+		icon: "png/"+type+".png"
+	});
+var tempX=playerX;
+var tempY=playerY;
+
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent(place.name+ '<button type="button" class="btn btn-default btn-lg" onclick="loot('+tempX+','+tempY+','+"\'" + type+"\',"+mNum+','+"\'"+ placeName+"\'"+')">Loot</button>');
+		infowindow.open(map, this);
+	});
+
+	mapGrid[playerX][playerY].markers.push(marker);
 };
