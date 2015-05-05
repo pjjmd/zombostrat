@@ -1,16 +1,31 @@
+var gridSize=10;
+var food=4;
+var weapons=0;
+var med=0;
+var day=0;
+var time=8;
+var extraction="";
+var exX=0;
+var exY=0;
+var defenceSupply=2;
+var health=100;
+var playerX=0;
+var playerY=0;
 var map;
 var infowindow;
 var markers=[];
 var geocoder;
 var myLatlng;
-var mapGrid = new Array(10);
+var mapGrid = new Array(gridSize);
 for (var i = -5; i < 6; i++) {
 	mapGrid[i] = new Array(10);
 	for (var q=-5; q<6; q++){
-		mapGrid[i][q]={rect:"",defenceMarker:"start",markers:[],population:"sparse"};
+		mapGrid[i][q]={rect:"",defence:0,scouted:false,density:"sparse",defenceMarker:"start",markers:[],population:"sparse"};
 	};
 };
+mapGrid[0][0].defence=4;
 var movementButtons=[];
+
 
 function initialize() {
 	geocoder = new google.maps.Geocoder();
@@ -18,18 +33,79 @@ function initialize() {
 };
 
 function codeAddress(address) {
+var stylesArray=[
+  {
+    "featureType": "transit",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "poi",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "stylers": [
+      { "invert_lightness": true }
+    ]
+  },{
+    "featureType": "water",
+    "elementType": "labels",
+    "stylers": [
+      { "color": "#7a8080" },
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#000000" }
+    ]
+  },{
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#778379" }
+    ]
+  },{
+    "featureType": "landscape.natural",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#594827" }
+    ]
+  },{
+    "featureType": "landscape.man_made",
+    "stylers": [
+      { "color": "#b4b79a" }
+    ]
+  },{
+    "featureType": "road",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#808080" }
+    ]
+  },{
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "on" },
+      { "weight": 6.2 }
+    ]
+  }
+];
 	geocoder.geocode( { 'address': address}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			myLatlng= results[0].geometry.location;
 			var mapOptions = {
 				zoom: 15,
-				center: myLatlng
+				center: myLatlng,
+				styles: stylesArray
 			};
 
 			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 			map.setCenter(results[0].geometry.location);
 			createGraph();
-			recolorGrid(0,0);
+			recenterGrid(0,0);
 		updateDefence(0,0,4);
 	populateGrid(0,0);
 		} else {
@@ -42,11 +118,11 @@ function codeAddress(address) {
 
 function createGrid(location,x,y){
 	mapGrid[x][y].rect= new google.maps.Rectangle({
-		strokeColor: '#FF0000',
+		strokeColor: '#778379',
 		strokeOpacity: 0.8,
 		strokeWeight: 2,
 		fillColor: '#FF0000',
-		fillOpacity: 0.35,
+		fillOpacity: 0,
 		map: map,
 		clickable:false,
 		bounds: new google.maps.LatLngBounds(
@@ -80,20 +156,62 @@ function createGraph(){
 	};
 };
 
-function createMovementButton(location,x123,y123){
-	movementButtons.push(new google.maps.Rectangle({
-		strokeColor: '#FF0000',
-		strokeOpacity: 0.8,
-		strokeWeight: 2,
-		fillColor: '#FF0000',
-		fillOpacity: 0.35,
-		map: map,
-		bounds: new google.maps.LatLngBounds(
-			offsetLatLng(location,-100,-100),
-			offsetLatLng(location,100,100))
-	}));	
-	google.maps.event.addListener(movementButtons[(movementButtons.length-1)],'mousedown',function() {travel({x:x123,y:y123})});
+function createArrow(location,direction,x123,y123){
+var arrow=""
+switch (direction){
+case "down":
+	var cords=[
+    offsetLatLng(location,-200,000),
+    offsetLatLng(location,-125,050),
+    offsetLatLng(location,-125,025),
+    offsetLatLng(location,-75,25),
+    offsetLatLng(location,-75,-25),
+    offsetLatLng(location,-125,-25),
+    offsetLatLng(location,-125,-50)];
+break;
+case "right":
+	var cords=[
+    offsetLatLng(location,00,200),
+    offsetLatLng(location,50,125),
+    offsetLatLng(location,25,125),
+    offsetLatLng(location,25,75),
+    offsetLatLng(location,-25,75),
+    offsetLatLng(location,-25,125),
+    offsetLatLng(location,-50,125)];
+break;
+case "up":
+	var cords=[
+	offsetLatLng(location,200,000),
+    offsetLatLng(location,125,050),
+    offsetLatLng(location,125,025),
+    offsetLatLng(location,75,25),
+    offsetLatLng(location,75,-25),
+    offsetLatLng(location,125,-25),
+    offsetLatLng(location,125,-50)];
+    break;
+    case "left":
+	var cords=[
+    offsetLatLng(location,00,-200),
+    offsetLatLng(location,50,-125),
+    offsetLatLng(location,25,-125),
+    offsetLatLng(location,25,-75),
+    offsetLatLng(location,-25,-75),
+    offsetLatLng(location,-25,-125),
+    offsetLatLng(location,-50,-125)];
 };
+  movementButtons.push(new google.maps.Polygon({
+    paths: cords,
+    strokeColor: '#994d1f',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#994d1f',
+    fillOpacity: 0.65,
+  map: map
+  }));
+  console.log("Length= "+movementButtons.length)
+google.maps.event.addListener(movementButtons[(movementButtons.length-1)],'mousedown',function() {travel({x:x123,y:y123})});
+};
+
 
 function clearMovementButtons() {
 	while (movementButtons.length>0) {
@@ -102,48 +220,26 @@ function clearMovementButtons() {
 	};
 };
 
-function recolorGrid(locationX,locationY){
+function recenterGrid(locationX,locationY){
 	clearMovementButtons();
-	for (var gridX=-5;gridX<6;gridX++){
-		for (var gridY=-5;gridY<6;gridY++){
-			mapGrid[gridX][gridY].rect.setOptions({fillColor:'red'});
-		};
+	playerX=locationX;
+	playerY=locationY;
+	if (playerY+1<=gridSize*.5){
+			createArrow(offsetLatLng(myLatlng,playerX*1000,playerY*1000+500),"right",playerX,playerY+1);
 	};
-	for (var gridX=-1;gridX<2;gridX++) {
-		for (var gridY=-1;gridY<2;gridY++){
-			var flag=false;
-			var closeX=locationX+gridX;
-			var closeY=locationY+gridY;
-			if (closeX>5){
-				flag=true;
-				closeX=5;
-			};
-			if (closeY>5){
-				flag=true;
-				closeY=5;
-			};
-			if (closeX<-5){
-				flag=true;
-				closeX=-5;
-			};
-			if (closeY<-5){
-				closeY=-5;
-				flag=true;
-			};
-			if (gridX==0&&gridY==0){
-				flag=true;
-			}
-			if (flag==false){
-				mapGrid[closeX][closeY].rect.setOptions({fillColor:'yellow'});
-				createMovementButton(offsetLatLng(myLatlng,closeX*1000,closeY*1000),closeX,closeY);
-			};
-		};
+	if (playerY-1>=-1*gridSize*.5){
+					createArrow(offsetLatLng(myLatlng,playerX*1000,(playerY-1)*1000+500),"left",playerX,playerY-1);;
 	};
-	mapGrid[locationX][locationY].rect.setOptions({fillColor:'green'});
+	if (playerX-1>=-1*gridSize*.5){
+			createArrow(offsetLatLng(myLatlng,(playerX-1)*1000+500,playerY*1000),"down",playerX-1,playerY);
+	};
+		if (playerX+1<=gridSize*.5){
+			createArrow(offsetLatLng(myLatlng,(playerX+1)*1000-500,playerY*1000),"up",playerX+1,playerY);
+	};
 	map.setCenter(offsetLatLng(myLatlng,locationX*1000,locationY*1000));
 };
+
 function populateGrid(cX,cY){
-	console.log(cX+" "+cY);
 	infowindow = new google.maps.InfoWindow();
 	var request = {
 		bounds:mapGrid[cX][cY].rect.getBounds(),
@@ -152,17 +248,17 @@ function populateGrid(cX,cY){
 	var service = new google.maps.places.PlacesService(map);
 	playerX=cX;
 	playerY=cY;
-	console.log(playerY);
+	console.log("Click!");
 	service.nearbySearch(request, callback);
+
 };
 
 function callback(results, status) {
 	var randomSeed= parseInt(Math.random() * (4))+4;
-		if (status == google.maps.places.PlacesServiceStatus.OK) {
-		console.log("Results length: "+results.length);
+	if (status == google.maps.places.PlacesServiceStatus.OK) {
 		if (results.length<5){
 			mapGrid[playerX][playerY].population="sparse";
-addFakeResult("car");
+			addFakeResult("car");
 		}
 		else {
 			if (results.lenght<19){
@@ -199,14 +295,17 @@ addFakeResult("car");
 				createMarker(results[randomResults[i]]);
 			};	
 		};
+	}
+	else {
+	mapGrid[playerX][playerY].population="sparse";
+			addFakeResult("car");
+		travelCallBack(playerX,playerY)
 	};
-
 
 };
 
 
 function addFakeResult(type){
-console.log("Adding Fake!");
 var marker = new google.maps.Marker({
 		position: offsetLatLng(myLatlng,playerX*1000+(300*parseInt((Math.random()*3)-1)),playerY*1000+(300*parseInt((Math.random()*3)-1))),
 		icon: "png/car.png"
@@ -221,7 +320,7 @@ var mNum=mapGrid[playerX][playerY].markers.length;
 		infowindow.open(map, this);
 	});
 	mapGrid[playerX][playerY].markers.push(marker);
-console.log("Length of markers after fake pushed: "+mapGrid[playerX][playerY].markers.length);
+
 };
 
 function destroyDefence(pX,pY){
@@ -322,7 +421,6 @@ function deleteMarker(mX,mY,x){
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function report(title,message){
-	console.log("Report!");
 	$(".log").prepend('<div class="up"><h3>'+title+'</h3><p>'+message+'</p></div>');
 	updatePanel();
 };

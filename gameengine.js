@@ -1,34 +1,3 @@
-var food=4;
-var weapons=0;
-var med=0;
-var day=0;
-var time=8;
-var extraction="";
-var exX=0;
-var exY=0;
-var defenceSupply=2;
-var defence = new Array(10);
-for (var i = -5; i < 6; i++) {
-	defence[i] = new Array(10);
-	for (var q=-5; q<6; q++){
-		defence[i][q]=0;
-	};
-};
-defence[0][0]=4;
-var scouted = new Array(10);
-var density=new Array(10);
-for (var i = -5; i < 6; i++) {
-density[i]= new Array(10);
-	scouted[i] = new Array(10);
-	for (var q=-5; q<6; q++){
-		scouted[i][q]=false;
-		density[i][q]="high";
-	};
-};
-var health=100;
-var playerX=0;
-var playerY=0;
-
 function updatePanel(){
 	$("#health").text("Health: "+health+"%");
 	$("#time").text("Time: "+time+":00 hours.");
@@ -92,16 +61,16 @@ case "medium":
 		result+=" The were more zombies tonight because you slept in a densely populated area.";
 		break;
 	}
-	if (nightTerrors>defence[playerX][playerY]){
+	if (nightTerrors>mapGrid[playerX][playerY].defence){
 		destroyDefence(playerX,playerY);
 		result+="Your defences were not enough to keep the dead out, they came in the night. "+combatZombies(parseInt(Math.random() * (10)+5));
 	} else {
 		result+= " The dead were snooping around outside, they didn't get in, but they did a number on the defences you had set up.  You wonder if there are any hardware stores nearby, or maybe some schools?";
-		defence[playerX][playerY]-=parseInt(Math.random()*2+2);
-		if (defence[playerX][playerY]<0){
-			defence[playerX][playerY]=0;
+		mapGrid[playerX][playerY].defence-=parseInt(Math.random()*2+2);
+		if (mapGrid[playerX][playerY].defence<0){
+			mapGrid[playerX][playerY].defence=0;
 		};
-		updateDefence(playerX,playerY,defence[playerX][playerY]);
+		updateDefence(playerX,playerY,mapGrid[playerX][playerY].defence);
 	};
 	day+=1;
 	time=8;
@@ -115,9 +84,9 @@ case "medium":
 		case 14:
 		case 21:
 		case 28:
-		for (var i = -5; i < 6; i++) {
-			for (var q=-5; q<6; q++){
-				scouted[i][q]=false;
+		for (var i = -1*gridSize*.5; i < (mapGrid*.5)+1; i++) {
+			for (var q=-1*gridSize*.5; q<(mapGrid*.5)+1; q++){
+				mapGrid[playerX][playerY].scouted=false;
 			};
 		};
 		report("The dead have shifted","Locations you have been to before are scoutable again.  Maybe you will find more places to loot.");
@@ -153,7 +122,7 @@ function loot(buildingX,buildingY,type,markerNum,buildingName){
 		deleteMarker(buildingX,buildingY,markerNum);
 	};
 	updatePanel();
-	updateDefence(playerX,playerY,defence[playerX][playerY]);
+	updateDefence(playerX,playerY,mapGrid[playerX][playerY].defence);
 };
 function baseSleep(x,y){
 	if (playerX==x&&playerY==y){
@@ -171,23 +140,21 @@ function scout(scoutX,scoutY){
 		report("Scouting Failed","There aren't enough hours left in the day to attempt this.");
 	} 
 	else {
-		if (scouted[playerX][playerY]===true) {
+		if (mapGrid[playerX][playerY].scouted==true) {
 			report("Scouting Failed","This location has already been scouted");
 		}
 		else {
 			report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
 			advanceTime(3);
 			fillSpaces(playerX,playerY);
-			scouted[playerX][playerY]=true;
+			mapGrid[playerX][playerY].scouted=true;
 		};
 	};
 	updatePanel();
 };
 
 function travel(grid){
-	var distance=Math.abs(grid.x-playerX)+Math.abs(grid.y-playerY);
-	console.log("Distance " + distance);
-	if (time+(distance*5)>24) {
+	if (time+1>23) {
 		report("Travel Failed","There aren't enough hours left in the day to attempt this");
 	} else {
 		populateGrid(grid.x,grid.y);
@@ -201,7 +168,7 @@ function travelCallBack(cX,cY){
 	else {
 		advanceTime(1);
 	report("Travel","You made it, on your way you encountered zombies."+combatZombies(calculateStreetWalkers()));
-	recolorGrid(cX,cY);
+	recenterGrid(cX,cY);
 };
 };
 function calculateStreetWalkers(){
@@ -211,7 +178,6 @@ if (time>20){
 };
 if (mapGrid[playerX][playerY].population=="dense"){
 	numWalkers+=2;
-	console.log("Dense!");
 };
 if (mapGrid[playerX][playerY].population=="sparse"){
 	numWalkers-=1;
@@ -255,9 +221,9 @@ function randomLoot(type,name) {
 			case 2:
 			case 3:
 			result+= "You find a boarded up building, it looks like a group of people tried to hold out here.  "
-			if (defence[playerX][playerY]<5){
+			if (mapGrid[playerX][playerY].defence<5){
 				result+= "You decide to check the place out, it might be a decent place to sleep for the night.  ";
-				defence[playerX][playerY]=5;
+				mapGrid[playerX][playerY].defence=5;
 			}
 			else {
 				result+= "You decide to check out the place for supplies.  ";
@@ -374,11 +340,11 @@ function randomLoot(type,name) {
 			case 1:
 			case 2:
 			result+= "The front of the club is barricaded. Looks like a few people thought it was a good idea to grab a few pints and wait for this all to blow over.  You knock on the door, but don’t hear anything coming from the inside. ";
-			if (weapons>1 && defence[playerX][playerY]<5){
+			if (weapons>1 && mapGrid[playerX][playerY].defence<5){
 				result+= "You climb up to a poorly boarded up window, and bash it in.  Inside you find 2 zombies who must have eaten the rest of the hold outs. "+combatZombies(2)+ " A couple of weapons, and a flat of beans.  And all the booze you can drink. ";
 				food+=5;
 				weapons+=1;
-				defence[playerX][playerY]=5;
+				mapGrid[playerX][playerY].defence=5;
 			}
 			else {
 				result+= " You look around for a chance to get inside, but can’t find any easy way in.  A herd of zombies find you, and you decide to leave instead of fighting for a chance to get in. ";
@@ -518,15 +484,15 @@ function fortify(){
 	else {
 		if (defenceSupply>0){
 			defenceSupply-=1;
-			defence[playerX][playerY]+=1;
+			mapGrid[playerX][playerY].defence+=1;
 			advanceTime(2);
 			report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
 		}
 		else {
-			defence[playerX][playerY]+=1;
+			mapGrid[playerX][playerY].defence+=1;
 			advanceTime(4);
 			report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
 		};
 	};
-	updateDefence(playerX,playerY,defence[playerX][playerY]);
+	updateDefence(playerX,playerY,mapGrid[playerX][playerY].defence);
 };
