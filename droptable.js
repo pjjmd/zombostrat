@@ -28,6 +28,7 @@ function randomLoot(type,name) {
 			food+=4;
 			defenceSupply+=2;
 		}
+		break;
 		case "church":
 		switch (randomSeed){
 			case 1:
