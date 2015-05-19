@@ -116,6 +116,16 @@ var stylesArray=[
 	updatePanel();
 };
 
+function showMap(){
+	$(".map").css('display','block');
+	$(".not-map").css('display','none');
+};
+
+function hideMap(){
+	$(".map").css('display','none');
+	$(".not-map").css('display','block');
+};
+
 function createGrid(location,x,y){
 	mapGrid[x][y].rect= new google.maps.Rectangle({
 		strokeColor: '#778379',
