@@ -1,16 +1,4 @@
-function updatePanel(){
-	$("#health").text("Health: "+health+"%");
-	$("#time").text("Time: "+time+":00 hours.");
-	$("#day").text("Day: "+day);
-	$("#medicine").text("Medicine: "+med);
-	$("#defence").text(defenceSupply);
-	$("#weapons").text("Weapons: "+weapons);
-	$("#food").text("Food: "+food);
-	if (health<1) {
-		alert("Game over!");
-		window.location.reload();
-	};
-}
+
 
 function advanceTime(ammount){
 	time+=ammount;
