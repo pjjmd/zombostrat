@@ -15,6 +15,15 @@ function randomLoot(type,name) {
 			med+=10;	
 			break;
 			case 4:
+			result+= "The rest of the car looks barren and looted, but the trunk remains closed and locked. ";
+			if (weapons>0){
+				result+= "You manage to pry open the trunk and find a bounty of boards, nails and construction tools. ";
+				defenceSupply+=5;
+			}
+			else {
+				result+= "Without a proper way to get the trunk open quickly, you're forced to flee before you attract too much notice. ";
+			};
+			break;
 			case 5:
 			case 6:
 			result+= "The former driver of this vehicle is seatbelted in.  He's dead, but lunges at you when you aproach the vehicle. "+combatZombies(1)+" After dealing with the restrained zombie, you find he has a particularly nasty hunting knife on his belt.";
@@ -46,6 +55,9 @@ function randomLoot(type,name) {
 			break;
 			case 4:
 			case 5:
+			result+= "You find a wide assortment of religious icons and texts, unfortunately they won't be of much use to you. However you also manage to find an old crowbar in a side room, should prove useful. ";
+			weapons+=1;
+			break;
 			case 6:
 			result+= "The doors to the church are flung wide open, it seems as if it has been thoroughly looted.  While you can’t find any food or weapons, a search of what was a play room for children reveals a untouched first aid kit.  Thankful for your luck, you wheel to encounter three zombies.  ";
 			med=4;
@@ -71,6 +83,9 @@ function randomLoot(type,name) {
 			case 1:
 			case 2:
 			case 3:
+			result+= "The doors to this factory have been smashed open and it looks to have been looted, a quick inspection however reveals a first aid kit, looks like the looters were less than thorough in their search. ";
+			med+=4;
+			break;
 			case 4:
 			result += "You find basic some heavy equipment here, as well as a few wooden pallets.  Excellent equipment for securing a defensive site!";
 			defenceSupply+=2;
@@ -191,6 +206,10 @@ function randomLoot(type,name) {
 			med+=15;
 			break;
 			case 4:
+			result+= "The main part of the pharmacy looks to have been looted, but a closer search reveals the backroom is curiously untouched. As you break the door open you see why, the pair of zombies trapped within shamble towards you. " +combatZombies(2)+ " After defeating the lot you take stock of the room; a few basic medical supplies plus enough unspoiled food for a few days. ";
+			med+=5;
+			food+=5;
+			break;
 			case 5:
 			case 6:
 			result+= "It looks like this place was hit by a few groups of looters.  The drug supply area has been thoroughly ransacked, with both high end drugs, and basic first aid supplies missing.  However, you do spot a crate of meal replacement shakes meant for the elderly.  As long as you don’t mind chocolate, this will keep you full for a week. "
