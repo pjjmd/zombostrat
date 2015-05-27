@@ -132,7 +132,7 @@ function codeAddress(address) {
 			updateDefence(0, 0, 4);
 			populateGrid(0, 0);
 			showMap();
-			report("Welcome to Corpseville", "The center grid is your location, use the arrow buttons on the grid to move and the scout button to find places to loot. More zombies are out at night, so keep an eye on the clock, and find a safe place to sleep when the sun goes down.")
+			report("Welcome to Corpseburg", "The center grid is your location, use the arrow buttons on the grid to move and the scout button to find places to loot. More zombies are out at night, so keep an eye on the clock, and find a safe place to sleep when the sun goes down.")
 		}
 		else {
 			alert('Geocode was not successful for the following reason: ' + status);
