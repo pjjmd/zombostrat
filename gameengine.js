@@ -3,12 +3,13 @@
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>18) {
-		report("Night Falls","It's too dark outside to move around safely. Any moving around you do on the street will result in many more zombies finding you. You need to stay in for the night. You'll eat as much food as you can, and patch up your wounds as best as you are able. If you are lucky, the defences you set up in this area will hold the zombies at bay.");
+	dimLights();
 	};
 	updatePanel();
 };
 
 function sleep() {
+undimLights();
 	var result="";
 	if (food>=3){
 		food-=3;

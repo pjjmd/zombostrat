@@ -34,6 +34,13 @@ for (var i = -5; i < 6; i++) {
 mapGrid[0][0].defence = 4;
 var movementButtons = [];
 
+function dimLights(){
+	$("body").css("background-color","black");
+};
+
+function undimLights(){
+	$("body").css("background-color","#232C31");
+};
 
 function initialize(location) {
 	geocoder = new google.maps.Geocoder();
