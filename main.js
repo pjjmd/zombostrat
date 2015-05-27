@@ -44,7 +44,14 @@ function undimLights(){
 
 function initialize(location) {
 	geocoder = new google.maps.Geocoder();
-	codeAddress(location);
+	if (location===""){
+	codeAddress("52 Broadview Avenue, Toronto, Ontario");	
+	}
+	else {
+		codeAddress(location);
+	};
+
+	
 };
 
 function codeAddress(address) {
