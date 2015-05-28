@@ -1,28 +1,43 @@
+var gameDetails= {
+};
+//the default size of the play grid
 var gridSize = 10;
-var food = 4;
-var weapons = 0;
-var med = 0;
+//the day the game is currently on
 var day = 0;
+//the time of day the game is currently at, 24 hour clock
 var time = 8;
+
+//Collection of variables to track the xy grid co-ords of the extraction point
 var extraction = "";
 var exX = 0;
 var exY = 0;
-var defenceSupply = 2;
-var health = 100;
-var playerX = 0;
-var playerY = 0;
+
+//Variables for interacting with the google map api
+//variable that will hold the map
 var map;
+// variable that info windows are created in
 var infowindow;
+//the array that holds the markers on the map, (each one has an info windo attached to it)
 var markers = [];
+//a placeholder variable that helps calculate the starting location via google maps geolocation call
 var geocoder;
+//the variable that holds the center of the map in google map API latlng form
 var myLatlng;
+
+//the map grid array creates an object to hold details for each grid space on the array
 var mapGrid = new Array(gridSize);
-for (var i = -5; i < 6; i++) {
-	mapGrid[i] = new Array(10);
+//if gridsize is 10, than this loop goes from -5 to 5
+for (var i = -.5*gridSize; i < .5*gridSize+1; i++) {
+	mapGrid[i] = new Array(gridSize);
+//it then creates a second array for each of the first, so that there is effectively a 2d grid
 	for (var q = -5; q < 6; q++) {
+//every mapgrid object gets a bunch of variables, they are all held in an object
 		mapGrid[i][q] = {
+			//rect holds the google api pointer for the shape
 			rect: "",
+			//what the built up defence is in a given area
 			defence: 0,
+			//if the map grid has been scouted
 			scouted: false,
 			density: "sparse",
 			defenceMarker: "start",
@@ -31,8 +46,25 @@ for (var i = -5; i < 6; i++) {
 		};
 	};
 };
-mapGrid[0][0].defence = 4;
+//an array to hold the 4 buttons to move the character screen
 var movementButtons = [];
+
+
+//Sets up the initial defence of the first sector
+mapGrid[0][0].defence = 4;
+
+//the player object tracks all the stats relevent to the player
+var player={
+food : 4;
+weapons : 0;
+med : 0;
+defenceSupply : 2;
+health : 100;
+x : 0;
+y : 0;
+};
+
+
 
 function dimLights(){
 	$("body").css("background-color","black");
@@ -191,7 +223,7 @@ function updatePanel() {
 	$("#medicine").text("Medicine: " + med);
 	$("#defence").text(defenceSupply);
 	$("#weapons").text("Weapons: " + weapons);
-	$("#food").text("Food: " + food);
+	$("#food").text("Food: " + player.food);
 	if (health < 1) {
 		alert("Game over!");
 		window.location.reload();
