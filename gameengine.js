@@ -173,11 +173,18 @@ return numWalkers;
 };
 
 
+function increaseWeapons(){
+//Should be modified to produce a random weapon that the player doesn't have.
+player.weapons.push("Club");
+};
+function increaseWeapons(name){
+	player.weapons.push(name);
+};
 function combatZombies(numZombie){
-	var weaponDegredation=0;
+	var weaponDegredation=[];
 	var damage=0;
 	for (var i=0;i<numZombie;i++){
-		if (i<=player.weapons) {
+		if (i<=player.weapons.length) {
 			damage+=parseInt(Math.random()*5-1);
 		}
 		else
@@ -187,12 +194,11 @@ function combatZombies(numZombie){
 	} 
 	for (var i=0;i<numZombie;i++){
 		if (parseInt(Math.random()*50)<player.weapons){
-			player.weapons-=1;
-			weaponDegredation+=1;
+			weaponDegredation.push(player.weapons.pop());
 		};
 	};
 	increaseHealth(0-damage);
-	return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation+" weapon quality defeating them.";
+	return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation.length+" weapon quality defeating them.";
 };
 
 function calculateExtraction(){

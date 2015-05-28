@@ -56,7 +56,7 @@ mapGrid[0][0].defence = 4;
 //the player object tracks all the stats relevent to the player
 var player={
 food : 4;
-weapons : 0;
+weapons : [];
 med : 0;
 defenceSupply : 2;
 health : 100;
