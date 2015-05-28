@@ -44,9 +44,9 @@ function randomLoot(type,name) {
 			case 2:
 			case 3:
 			result+= "You find a boarded up building, it looks like a group of people tried to hold out here.  "
-			if (mapGrid[playerX][playerY].defence<5){
+			if (mapGrid[player.x][player.y].defence<5){
 				result+= "You decide to check the place out, it might be a decent place to sleep for the night.  ";
-				mapGrid[playerX][playerY].defence=5;
+				mapGrid[player.x][player.x].defence=5;
 			}
 			else {
 				result+= "You decide to check out the place for supplies.  ";
@@ -169,11 +169,11 @@ function randomLoot(type,name) {
 			case 1:
 			case 2:
 			result+= "The front of the club is barricaded. Looks like a few people thought it was a good idea to grab a few pints and wait for this all to blow over.  You knock on the door, but don’t hear anything coming from the inside. ";
-			if (player.weapons>1 && mapGrid[playerX][playerY].defence<5){
+			if (player.weapons>1 && mapGrid[player.x][player.y].defence<5){
 				result+= "You climb up to a poorly boarded up window, and bash it in.  Inside you find 2 zombies who must have eaten the rest of the hold outs. "+combatZombies(2)+ " A couple of weapons, and a flat of beans.  And all the booze you can drink. ";
 				player.food+=5;
 				increaseWeapons();
-				mapGrid[playerX][playerY].defence=5;
+				mapGrid[player.x][player.y].defence=5;
 			}
 			else {
 				result+= " You look around for a chance to get inside, but can’t find any easy way in.  A herd of zombies find you, and you decide to leave instead of fighting for a chance to get in. ";

@@ -64,7 +64,7 @@ x : 0,
 y : 0
 };
 
-function popUp("String"){
+function popUp(title,message){
 
 };
 
@@ -204,13 +204,13 @@ function createGrid(location, x, y) {
 
 function healthColour() {
 	var healthcolor = "";
-	if (health > 44) {
+	if (player.health > 44) {
 		healthcolor = "progress-bar-warning";
 	}
 	else {
 		healthcolor = "progress-bar-danger";
 	};
-	if (health > 69) {
+	if (player.health > 69) {
 		healthcolor = "progress-bar-success";
 	};
 	return healthcolor;
@@ -220,11 +220,11 @@ function healthColour() {
 function updatePanel() {
 	$("#health").empty();
 	$("#time").text("Time: " + time + ":00 hours.");
-	$("#health").append('<div class="progress-bar ' + healthColour() + '" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:' + health + '%">' + health + '% Health</div>');
+	$("#health").append('<div class="progress-bar ' + healthColour() + '" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:' + player.health + '%">' + player.health + '% Health</div>');
 	$("#day").text("Day: " + day);
-	$("#medicine").text("Medicine: " + med);
-	$("#defence").text(defenceSupply);
-	$("#weapons").text("Weapons: " + weapons);
+	$("#medicine").text("Medicine: " + player.med);
+	$("#defence").text(player.defenceSupply);
+	$("#weapons").text("Weapons: " + player.weapons.length);
 	$("#food").text("Food: " + player.food);
 	if (health < 1) {
 		alert("Game over!");
@@ -256,6 +256,17 @@ function createGraph() {
 		};
 	};
 };
+function popUp(message){
+	$(".pop-up-message").text(message);
+	$(".pop-up").css("display", "block");
+	$("#map-canvas").animate({height:"80%"});
+	$(".pop-up").animate({height: "10%"});
+	setTimeout(function(){
+			$(".pop-up").css("display", "none");
+	$(".pop-up").animate({height: "0%"});
+	$("#map-canvas").animate({height:"90%"});
+	},4000)
+}
 
 function createArrow(location, direction, x123, y123) {
 	var arrow = ""
@@ -332,19 +343,19 @@ function clearMovementButtons() {
 
 function recenterGrid(locationX, locationY) {
 	clearMovementButtons();
-	playerX = locationX;
-	playerY = locationY;
-	if (playerY + 1 <= gridSize * .5) {
-		createArrow(offsetLatLng(myLatlng, playerX * 1000, playerY * 1000 + 500), "right", playerX, playerY + 1);
+	player.x = locationX;
+	player.y = locationY;
+	if (player.y + 1 <= gridSize * .5) {
+		createArrow(offsetLatLng(myLatlng, player.x * 1000, player.y * 1000 + 500), "right", player.x, player.y + 1);
 	};
-	if (playerY - 1 >= -1 * gridSize * .5) {
-		createArrow(offsetLatLng(myLatlng, playerX * 1000, (playerY - 1) * 1000 + 500), "left", playerX, playerY - 1);;
+	if (player.y - 1 >= -1 * gridSize * .5) {
+		createArrow(offsetLatLng(myLatlng, player.x * 1000, (player.y - 1) * 1000 + 500), "left", player.x, player.y - 1);;
 	};
-	if (playerX - 1 >= -1 * gridSize * .5) {
-		createArrow(offsetLatLng(myLatlng, (playerX - 1) * 1000 + 500, playerY * 1000), "down", playerX - 1, playerY);
+	if (player.x - 1 >= -1 * gridSize * .5) {
+		createArrow(offsetLatLng(myLatlng, (player.x - 1) * 1000 + 500, player.y * 1000), "down", player.x - 1, player.y);
 	};
-	if (playerX + 1 <= gridSize * .5) {
-		createArrow(offsetLatLng(myLatlng, (playerX + 1) * 1000 - 500, playerY * 1000), "up", playerX + 1, playerY);
+	if (player.x + 1 <= gridSize * .5) {
+		createArrow(offsetLatLng(myLatlng, (player.x + 1) * 1000 - 500, player.y * 1000), "up", player.x + 1, player.y);
 	};
 	map.setCenter(offsetLatLng(myLatlng, locationX * 1000, locationY * 1000));
 };
@@ -356,8 +367,8 @@ function populateGrid(cX, cY) {
 		types: ['school', 'pharmacy', 'hospital', 'factory', 'church', 'store', 'restaurant']
 	};
 	var service = new google.maps.places.PlacesService(map);
-	playerX = cX;
-	playerY = cY;
+	player.x = cX;
+	player.y = cY;
 	console.log("Click!");
 	service.nearbySearch(request, callback);
 
@@ -367,19 +378,19 @@ function callback(results, status) {
 	var randomSeed = parseInt(Math.random() * (4)) + 4;
 	if (status == google.maps.places.PlacesServiceStatus.OK) {
 		if (results.length < 5) {
-			mapGrid[playerX][playerY].population = "sparse";
+			mapGrid[player.x][player.y].population = "sparse";
 			addFakeResult("car");
 		}
 		else {
 			if (results.length < 19) {
-				mapGrid[playerX][playerY].population = "medium";
+				mapGrid[player.x][player.y].population = "medium";
 			}
 
 			else {
-				mapGrid[playerX][playerY].population = "dense";
+				mapGrid[player.x][player.y].population = "dense";
 			};
 		};
-		travelCallBack(playerX, playerY)
+		travelCallBack(player.x, player.y)
 		if (randomSeed > results.length) {
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]);
@@ -407,9 +418,9 @@ function callback(results, status) {
 		};
 	}
 	else {
-		mapGrid[playerX][playerY].population = "sparse";
+		mapGrid[player.x][player.y].population = "sparse";
 		addFakeResult("car");
-		travelCallBack(playerX, playerY)
+		travelCallBack(player.x, player.y)
 	};
 
 };
@@ -417,19 +428,19 @@ function callback(results, status) {
 
 function addFakeResult(type) {
 	var marker = new google.maps.Marker({
-		position: offsetLatLng(myLatlng, playerX * 1000 + (300 * parseInt((Math.random() * 3) - 1)), playerY * 1000 + (300 * parseInt((Math.random() * 3) - 1))),
+		position: offsetLatLng(myLatlng, player.x * 1000 + (300 * parseInt((Math.random() * 3) - 1)), player.y * 1000 + (300 * parseInt((Math.random() * 3) - 1))),
 		icon: "png/car.png"
 	});
-	var tempX = playerX;
-	var tempY = playerY;
+	var tempX = player.x;
+	var tempY = player.y;
 	var placeName = "Abadoned Vehicle";
-	var mNum = mapGrid[playerX][playerY].markers.length;
+	var mNum = mapGrid[player.x][player.y].markers.length;
 
 	google.maps.event.addListener(marker, 'click', function() {
 		infowindow.setContent(placeName + '<button type="button" class="btn btn-default btn-lg" onclick="loot(' + tempX + ',' + tempY + ',' + "\'" + type + "\'," + mNum + ',' + "\'" + placeName + "\'" + ')">Loot</button>');
 		infowindow.open(map, this);
 	});
-	mapGrid[playerX][playerY].markers.push(marker);
+	mapGrid[player.x][player.y].markers.push(marker);
 
 };
 
@@ -558,18 +569,18 @@ function createMarker(place) {
 	var type = recognizePlace(place.types);
 	var placeName = place.name;
 	placeName = placeName.replace(/["']/g, "");
-	var mNum = mapGrid[playerX][playerY].markers.length;
+	var mNum = mapGrid[player.x][player.y].markers.length;
 	var marker = new google.maps.Marker({
 		position: place.geometry.location,
 		icon: "png/" + type + ".png"
 	});
-	var tempX = playerX;
-	var tempY = playerY;
+	var tempX = player.x;
+	var tempY = player.y;
 
 	google.maps.event.addListener(marker, 'click', function() {
 		infowindow.setContent(place.name + '<button type="button" class="btn btn-default btn-lg" onclick="loot(' + tempX + ',' + tempY + ',' + "\'" + type + "\'," + mNum + ',' + "\'" + placeName + "\'" + ')">Loot</button>');
 		infowindow.open(map, this);
 	});
 
-	mapGrid[playerX][playerY].markers.push(marker);
+	mapGrid[player.x][player.y].markers.push(marker);
 };

@@ -14,104 +14,105 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script src="jquery-1.11.2.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <link href='style.css' rel='stylesheet'>
-   </head>
-   <body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href='style.css' rel='stylesheet'>
+  </head>
+  <body>
    <nav class="navbar navbar-inverse">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">Corpseburg</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Game</a></li>
-                <li><a href="https://github.com/pjjmd/zombostrat">GitHub</a></li>
-                <li><a href="https://twitter.com/pjjmd">Contact Info</a></li>
-                <li><a href="http://www.reddit.com/r/corpseburg/wiki/index">Help</a></li>
-                <li><a href="http://www.reddit.com/r/corpseburg">Forum</a></li>
-                </li>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div>
-        </nav>
-  <div class="overlay">
-      <div class="report">
-      <h1><div class="report-title">Title of the message. </div></h1>
-      <div class="report-message"><p>Content of the message.</p></div>
-     <button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></h1>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Corpseburg</a>
       </div>
-      </div>
-        <div class="intro">
-          <h1>Welcome to Corpseburg</h1>
-          <h3>The Postapocalyptic Zombie Survival Game set in your neighborhood.</h3>
-          <p>This game uses Google Maps to populate a zombiescape for you to explore, loot and eventually die in!  What fun! </p>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Game</a></li>
+          <li><a href="https://github.com/pjjmd/zombostrat">GitHub</a></li>
+          <li><a href="https://twitter.com/pjjmd">Contact Info</a></li>
+          <li><a href="http://www.reddit.com/r/corpseburg/wiki/index">Help</a></li>
+          <li><a href="http://www.reddit.com/r/corpseburg">Forum</a></li>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<div class="overlay">
+  <div class="report">
+    <h1><div class="report-title">Title of the message. </div></h1>
+    <div class="report-message"><p>Content of the message.</p></div>
+    <button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></h1>
+  </div>
+</div>
+<div class="intro">
+  <h1>Welcome to Corpseburg</h1>
+  <h3>The Postapocalyptic Zombie Survival Game set in your neighborhood.</h3>
+  <p>This game uses Google Maps to populate a zombiescape for you to explore, loot and eventually die in!  What fun! </p>
   <form>
-  Starting Location:
-  <br>
-  <textarea name="location" style="width:80%" rows="1"placeholder="43 Broadview Avenue, Toronto, Ontario, Canada"></textarea>
-  <br>
-  <button type="button" class="btn btn-default btn-lg" onclick='initialize(location.value)'>Start</button>
+    Starting Location:
+    <br>
+    <textarea name="location" style="width:80%" rows="1"placeholder="43 Broadview Avenue, Toronto, Ontario, Canada"></textarea>
+    <br>
+    <button type="button" class="btn btn-default btn-lg" onclick='initialize(location.value)'>Start</button>
   </form>
-        </div>
-      <div class="map" style="display:none">
-        <div id="map-canvas"></div>
-        <div class="statpanel">
-        <table class="table">
+</div>
+<div class="map" style="display:none">
+  <div id="map-canvas"></div>
+  
+<div class="pop-up"><h1><div class="pop-up-message">Hello world</div></h1></div>
+  <div class="statpanel">
+    <table class="table">
       <tbody>
         <tr>
           <td><div id="day">Day: 0</div></td>
           <td><div id="time">Time 8:00</div></td>
           <td><div class="progress"><div id="health">
-    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-    aria-valuemin="0" aria-valuemax="100" style="width:100%">
-      100% Health
-    </div></div>
-  </div></td>
-        </tr>
-        <tr>
-          <td><div id="food">Food: 4 Units</div></td>
-          <td><div id="medicine">Medicine: 0 units</div></td>
-          <td>Defense Materials <div id="defence" style="display:inline">2</div></td>
-        </tr>
-        <tr>
-          <td><div id="weapons">Weapons: 0</div></td>
-          <td><button type="button" class="btn btn-default btn-xs" onclick="scout(0,0)">Scout</button><button type="button" class="btn btn-default btn-xs"onclick="fortify()">Fortify</button><button type="button" class="btn btn-default btn-xs" onclick="sleep()">Sleep</button></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-      </div>
-      </div>
-      
-    </body>
-  
-    <script src="main.js"></script>
-    <script src="gameengine.js"></script>
-    <script src="droptable.js"></script>
-  
-  
-  <!--Start of Tawk.to Script-->
-  <script type="text/javascript">
-  var $_Tawk_API={},$_Tawk_LoadStart=new Date();
-  (function(){
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+            aria-valuemin="0" aria-valuemax="100" style="width:100%">
+            100% Health
+          </div></div>
+        </div></td>
+      </tr>
+      <tr>
+        <td><div id="food">Food: 4 Units</div></td>
+        <td><div id="medicine">Medicine: 0 units</div></td>
+        <td>Defense Materials <div id="defence" style="display:inline">2</div></td>
+      </tr>
+      <tr>
+        <td><div id="weapons">Weapons: 0</div></td>
+        <td><button type="button" class="btn btn-default btn-xs" onclick="scout(0,0)">Scout</button><button type="button" class="btn btn-default btn-xs"onclick="fortify()">Fortify</button><button type="button" class="btn btn-default btn-xs" onclick="sleep()">Sleep</button><button type="button" class="btn btn-default btn-xs" onclick="popUp('thing')">thing</button></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</body>
+
+<script src="main.js"></script>
+<script src="gameengine.js"></script>
+<script src="droptable.js"></script>
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var $_Tawk_API={},$_Tawk_LoadStart=new Date();
+(function(){
   var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
   s1.async=true;
   s1.src='https://embed.tawk.to/554281f12bf2162c5a0d9faa/default';
   s1.charset='UTF-8';
   s1.setAttribute('crossorigin','*');
   s0.parentNode.insertBefore(s1,s0);
-  })();
-  </script>
-  <!--End of Tawk.to Script-->
-    </html>
+})();
+</script>
+<!--End of Tawk.to Script-->
+</html>

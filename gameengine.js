@@ -63,7 +63,7 @@ case "medium":
 	time=8;
 	
 	report("Sleeping on Day "+day,result);
-	switch(day){
+	switch(day) {
 		case 1:
 		report("Pamphlets dropped from the sky","You see a plane fly overhead, dropping hundreds of leaflets over the cityscape.  Picking one up, you read that the city is quaruntined for the next month.  Any survivors are to hold out for the next 30 days, and report to extraction point.  The military will anounce the extraction point 5 days before the quaruntine is lifted.");
 		break;
@@ -176,9 +176,11 @@ return numWalkers;
 function increaseWeapons(){
 //Should be modified to produce a random weapon that the player doesn't have.
 player.weapons.push("Club");
+popUp("You got a club!");
 };
 function increaseWeapons(name){
 	player.weapons.push(name);
+	popUp("You got a "+name+"!");
 };
 function combatZombies(numZombie){
 	var weaponDegredation=[];
