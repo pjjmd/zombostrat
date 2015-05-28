@@ -55,16 +55,18 @@ mapGrid[0][0].defence = 4;
 
 //the player object tracks all the stats relevent to the player
 var player={
-food : 4;
-weapons : [];
-med : 0;
-defenceSupply : 2;
-health : 100;
-x : 0;
-y : 0;
+food : 4,
+weapons : [],
+med : 0,
+defenceSupply : 2,
+health : 100,
+x : 0,
+y : 0
 };
 
+function popUp("String"){
 
+};
 
 function dimLights(){
 	$("body").css("background-color","black");
