@@ -75,7 +75,7 @@ case "medium":
 		case 28:
 		for (var i = -1*gridSize*.5; i < (mapGrid*.5)+1; i++) {
 			for (var q=-1*gridSize*.5; q<(mapGrid*.5)+1; q++){
-				mapGrid[playerX][playerY].scouted=false;
+				mapGrid[i][q].scouted=false;
 			};
 		};
 		report("The dead have shifted","Locations you have been to before are scoutable again.  Maybe you will find more places to loot.");
