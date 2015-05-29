@@ -12,6 +12,9 @@ var extraction = "";
 var exX = 0;
 var exY = 0;
 
+//popup countdown
+var countdown="";
+
 //Variables for interacting with the google map api
 //variable that will hold the map
 var map;
@@ -64,9 +67,6 @@ x : 0,
 y : 0
 };
 
-function popUp(title,message){
-
-};
 
 function dimLights(){
 	$("body").css("background-color","black");
@@ -261,11 +261,13 @@ function createGraph() {
 	};
 };
 function popUp(message){
+	window.clearTimeout(countdown)
 	$(".pop-up-message").text(message);
 	$(".pop-up").css("display", "block");
 	$("#map-canvas").animate({height:"70%"});
 	$(".pop-up").animate({height: "20%"});
-	setTimeout(function(){
+	
+	countdown=setTimeout(function(){
 			$(".pop-up").css("display", "none");
 	$(".pop-up").animate({height: "0%"});
 	$("#map-canvas").animate({height:"90%"});
