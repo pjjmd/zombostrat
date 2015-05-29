@@ -230,7 +230,7 @@ function updatePanel() {
 	$("#weapons").text("Weapon: Unarmed");
 	};
 	$("#food").text("Food: " + player.food);
-	if (health < 1) {
+	if (player.health < 1) {
 		alert("Game over!");
 		window.location.reload();
 	};

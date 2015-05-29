@@ -25,7 +25,7 @@ function sleep() {
 		player.food=0;
 	};
 	if (player.health<100){
-		var healing=player.med+health;
+		var healing=player.med+player.health;
 		if (healing>=100){
 			healing=100;
 		};
