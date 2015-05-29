@@ -1,13 +1,13 @@
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>18) {
-	dimLights();
+		dimLights();
 	};
 	updatePanel();
 };
 
 function sleep() {
-undimLights();
+	undimLights();
 	var result="";
 	if (player.food>=3){
 		player.food-=3;
@@ -40,7 +40,7 @@ undimLights();
 		result+=" The were fewer zombies tonight because you slept in a sparsely populated area.";
 		nightTerrors-=2;
 		break;
-case "medium":
+		case "medium":
 		result+=" The were an average amount of zombies tonight because you slept in a medium populated area.";
 		nightTerrors-=1;
 		break;
@@ -145,7 +145,7 @@ function travel(grid){
 		report("Travel Failed","There aren't enough hours left in the day to attempt this");
 	} else {
 		populateGrid(grid.x,grid.y);
-		};
+	};
 };
 
 function travelCallBack(cX,cY){
@@ -154,22 +154,22 @@ function travelCallBack(cX,cY){
 	}
 	else {
 		advanceTime(1);
-	report("Travel","You made it, on your way you encountered zombies."+combatZombies(calculateStreetWalkers()));
-	recenterGrid(cX,cY);
-};
+		report("Travel","You made it, on your way you encountered zombies."+combatZombies(calculateStreetWalkers()));
+		recenterGrid(cX,cY);
+	};
 };
 function calculateStreetWalkers(){
-var numWalkers=parseInt(Math.random()*3+1);
-if (time>20){
-	numWalkers+=5;
-};
-if (mapGrid[player.x][player.y].population=="dense"){
-	numWalkers+=2;
-};
-if (mapGrid[player.x][player.y].population=="sparse"){
-	numWalkers-=1;
-};
-return numWalkers;
+	var numWalkers=parseInt(Math.random()*3+1);
+	if (time>20){
+		numWalkers+=5;
+	};
+	if (mapGrid[player.x][player.y].population=="dense"){
+		numWalkers+=2;
+	};
+	if (mapGrid[player.x][player.y].population=="sparse"){
+		numWalkers-=1;
+	};
+	return numWalkers;
 };
 
 
@@ -200,59 +200,73 @@ function combatZombies(numZombie){
 		};
 	};
 	increaseHealth(0-damage);
-	return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation.length+" weapon quality defeating them.";
-};
-
-function calculateExtraction(){
-	switch (parseInt(Math.random()*3)+1) {
-		case 1:
-		extraction="North East";
-		exX=5;
-		exY=5;
-		break;
-		case 2:
-		extraction="South East";
-		exX=-5;
-		exY=5;
-		break;
-		case 3:
-		extraction="South West";
-		exX=-5;
-		exY=-5;
-		break;
-		case 4:
-		extraction="North West";
-		exX=5;
-		exY=-5;
-	};
-};
-
-function escape(){
-	if (player.x==exX&&player.y==exY&&day>29){
-		report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
+	if (damage===0&&weaponDegredation.length===0&&player.weapons.length>0){
+		return "With your "+player.weapon[(player.weapon.length-1)]+" you easily dispatch "+numZombie+" zombies.";
 	}
-	else
+	else if (weaponDegredation.length===1){
+		return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost your "+weaponDegredation[0]+"  defeating them.";	
+	}
+	else if (weaponDegredation.length===0 && player.weapons.length>0) {
+		return " You encountered "+numZombie+" zombies. You used your "+player.weapons[player.weapons.length-1]+" to defeat them, and you took "+damage+" damage.";
+	} else if (weaponDegredation.length===0 && player.weapons.length===0)
 	{
-		report("You are not in the right area, or you are too early.","On day 30, please move to the "+extraction);
-	};
-};
-
-function fortify(){
-	if (time>=20){
-		report("Fortifying Failed","It is too late at night to fortify.");
+	 return " You fought "+numZombie+" zombies barehanded. You took "+damage+" damage defeating them.";	
 	}
 	else {
-		if (player.defenceSupply>0){
-			player.defenceSupply-=1;
-			mapGrid[player.x][player.y].defence+=1;
-			advanceTime(2);
-			report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
-		}
-		else {
-			mapGrid[player.x][player.y].defence+=1;
-			advanceTime(4);
-			report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
+	return " You fought "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation.length+" weapons defeating them.";
+	};
+	};
+
+	function calculateExtraction(){
+		switch (parseInt(Math.random()*3)+1) {
+			case 1:
+			extraction="North East";
+			exX=5;
+			exY=5;
+			break;
+			case 2:
+			extraction="South East";
+			exX=-5;
+			exY=5;
+			break;
+			case 3:
+			extraction="South West";
+			exX=-5;
+			exY=-5;
+			break;
+			case 4:
+			extraction="North West";
+			exX=5;
+			exY=-5;
 		};
 	};
-	updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
-};
+
+	function escape(){
+		if (player.x==exX&&player.y==exY&&day>29){
+			report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
+		}
+		else
+		{
+			report("You are not in the right area, or you are too early.","On day 30, please move to the "+extraction);
+		};
+	};
+
+	function fortify(){
+		if (time>=20){
+			report("Fortifying Failed","It is too late at night to fortify.");
+		}
+		else {
+			if (player.defenceSupply>0){
+				player.defenceSupply-=1;
+				mapGrid[player.x][player.y].defence+=1;
+				advanceTime(2);
+				report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
+			}
+			else {
+				mapGrid[player.x][player.y].defence+=1;
+				advanceTime(4);
+				report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
+			};
+		};
+		updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
+	};

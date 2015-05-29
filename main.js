@@ -224,7 +224,11 @@ function updatePanel() {
 	$("#day").text("Day: " + day);
 	$("#medicine").text("Medicine: " + player.med);
 	$("#defence").text(player.defenceSupply);
-	$("#weapons").text("Weapons: " + player.weapons.length);
+	if (player.weapons.length>0){
+	$("#weapons").text("Weapon: "+player.weapons[player.weapons.length-1]);
+	}	else {
+	$("#weapons").text("Weapon: Unarmed");
+	};
 	$("#food").text("Food: " + player.food);
 	if (health < 1) {
 		alert("Game over!");
