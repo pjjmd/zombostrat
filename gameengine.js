@@ -65,7 +65,7 @@ function sleep() {
 	report("Sleeping on Day "+day,result);
 	switch(day) {
 		case 1:
-		report("Pamphlets dropped from the sky","You see a plane fly overhead, dropping hundreds of leaflets over the cityscape.  Picking one up, you read that the city is quaruntined for the next month.  Any survivors are to hold out for the next 30 days, and report to extraction point.  The military will anounce the extraction point 5 days before the quaruntine is lifted.");
+		popUp("The area is quaruntined for the next month, wait until day 25 for details.");
 		break;
 		case 7:
 		case 14:
@@ -76,13 +76,13 @@ function sleep() {
 				mapGrid[i][q].scouted=false;
 			};
 		};
-		report("The dead have shifted","Locations you have been to before are scoutable again.  Maybe you will find more places to loot.");
+		popUp("The dead have shifted. Maybe you will find more places to loot.");
 		break;
 		case 24:
 		calculateExtraction();
 		break;
 		case 25:
-		report("Pamphlets dropped from the sky","Another plane flies overhead.  It drops leaflets, informing you that the extraction zone will be in the: "+extraction+".  Report there alive in 5 days.");
+		popUp("The extraction zone will be in the: "+extraction+" corner of the map.  Report there alive in 5 days.");
 		addExtraction(exX,exY);
 	};
 	updatePanel();

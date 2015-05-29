@@ -263,8 +263,8 @@ function createGraph() {
 function popUp(message){
 	$(".pop-up-message").text(message);
 	$(".pop-up").css("display", "block");
-	$("#map-canvas").animate({height:"80%"});
-	$(".pop-up").animate({height: "10%"});
+	$("#map-canvas").animate({height:"70%"});
+	$(".pop-up").animate({height: "20%"});
 	setTimeout(function(){
 			$(".pop-up").css("display", "none");
 	$(".pop-up").animate({height: "0%"});
