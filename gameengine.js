@@ -238,7 +238,7 @@ var damage=0;
 	
 
 	if (damage===0&&weaponDegredation.length===0&&player.weapons.length>0){
-		return "With your "+player.weapon[0].name+" you easily dispatch "+numZombie+" zombies.";
+		return "With your "+player.weapons[0].name+" you easily dispatch "+numZombie+" zombies.";
 	}
 	else if (weaponDegredation.length===1){
 		return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost your "+weaponDegredation[0]+"  defeating them.";	
