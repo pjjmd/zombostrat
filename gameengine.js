@@ -177,17 +177,20 @@ function Weapon(name, damage, fragility){
 	this.damage=damage;
 	this.fragility=fragility;
 	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
-function use(Weapon){
-	var chance = parseInt(Math.random()*100)+1;
-if (chance < fragility){
-	durability-=1;
-};
-};
+	function use(Weapon){
+		var chance = parseInt(Math.random()*100)+1;
+		if (chance < fragility){
+			durability-=1;
+		};
+	};
 
-function Weapon(name){
-	return new Weapon(name, 5, 50);
+	function Weapon(name){
+		return new Weapon(name, 5, 50);
+	};
 };
-};
+player.weapons.push(new Weapon("Fists",1,0));
+player.weapons.push(new Weapon("Hugs",3,0));
+
 var weaponsLocker=[];
 weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
 weaponsLocker.push(new Weapon("Crowbar", 7, 30));
@@ -204,102 +207,103 @@ weaponsLocker.push(new Weapon("Golf Club", 7, 85));
 
 function increaseWeapons(){
 //Should be modified to produce a random weapon that the player doesn't have.
-	tempweapons = weaponsLocker
-	tempweapons = tempweapons - player.weapons
-	weapget = tempweapons.sample;
-	player.weapons.push(weapget);
-	popUp("You got a "+weapget+"!");
+tempweapons = weaponsLocker
+tempweapons = tempweapons - player.weapons
+weapget = tempweapons.sample;
+player.weapons.push(weapget);
+popUp("You got a "+weapget+"!");
 };
 
 function increaseWeapons(name){
 	player.weapons.push(name);
 	popUp("You got a "+name+"!");
 };
+
 function combatZombies(numZombie){
 	var weaponDegredation=[];
-	var damage=0;
+var bonus=0; //eventually a way to have harder enemies
+var damage=0;
+	//
 	for (var i=0;i<numZombie;i++){
-		if (i<=player.weapons.length) {
-			damage+=parseInt(Math.random()*5-1);
-		}
-		else
-		{
-			damage+=parseInt(Math.random()*2+3);
+		var fightResult=Math.floor(Math.random()*6+2+bonus)-Math.floor(random()*player.strength+player.weapons[0].strength);
+		if (fightResult>0){
+			damage+=fightResult;
 		};
-	} 
-	for (var i=0;i<numZombie;i++){
-		if (parseInt(Math.random()*50)<player.weapons){
-			weaponDegredation.push(player.weapons.pop());
+		var weaponResult=player.weapons[0].use();
+		if (weaponResult!="OK"){
+			weaponDegredation.push(weaponResult);
 		};
 	};
 	increaseHealth(0-damage);
+	
+
 	if (damage===0&&weaponDegredation.length===0&&player.weapons.length>0){
-		return "With your "+player.weapon[(player.weapon.length-1)]+" you easily dispatch "+numZombie+" zombies.";
+		return "With your "+player.weapon[0].name+" you easily dispatch "+numZombie+" zombies.";
 	}
 	else if (weaponDegredation.length===1){
 		return " You encountered "+numZombie+" zombies. You took "+damage+" damage, and lost your "+weaponDegredation[0]+"  defeating them.";	
 	}
 	else if (weaponDegredation.length===0 && player.weapons.length>0) {
-		return " You encountered "+numZombie+" zombies. You used your "+player.weapons[player.weapons.length-1]+" to defeat them, and you took "+damage+" damage.";
+		return " You encountered "+numZombie+" zombies. You used your "+player.weapons[0].name+" to defeat them, and you took "+damage+" damage.";
 	} else if (weaponDegredation.length===0 && player.weapons.length===0)
 	{
-	 return " You fought "+numZombie+" zombies barehanded. You took "+damage+" damage defeating them.";	
+		return " You fought "+numZombie+" zombies barehanded. You took "+damage+" damage defeating them.";	
 	}
 	else {
-	return " You fought "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation.length+" weapons defeating them.";
+		return " You fought "+numZombie+" zombies. You took "+damage+" damage, and lost "+weaponDegredation.length+" weapons defeating them.";
 	};
-	};
+};
 
-	function calculateExtraction(){
-		switch (parseInt(Math.random()*3)+1) {
-			case 1:
-			extraction="North East";
-			exX=5;
-			exY=5;
-			break;
-			case 2:
-			extraction="South East";
-			exX=-5;
-			exY=5;
-			break;
-			case 3:
-			extraction="South West";
-			exX=-5;
-			exY=-5;
-			break;
-			case 4:
-			extraction="North West";
-			exX=5;
-			exY=-5;
-		};
+function calculateExtraction(){
+	switch (parseInt(Math.random()*3)+1) {
+		case 1:
+		extraction="North East";
+		exX=5;
+		exY=5;
+		break;
+		case 2:
+		extraction="South East";
+		exX=-5;
+		exY=5;
+		break;
+		case 3:
+		extraction="South West";
+		exX=-5;
+		exY=-5;
+		break;
+		case 4:
+		extraction="North West";
+		exX=5;
+		exY=-5;
 	};
+};
 
-	function escape(){
-		if (player.x==exX&&player.y==exY&&day>29){
-			report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
-		}
-		else
-		{
-			report("You are not in the right area, or you are too early.","On day 30, please move to the "+extraction);
-		};
+function escape(){
+	if (player.x==exX&&player.y==exY&&day>29){
+		report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
+	}
+	else
+	{
+		report("You are not in the right area, or you are too early.","On day 30, please move to the "+extraction);
 	};
+};
 
-	function fortify(){
-		if (time>=20){
-			report("Fortifying Failed","It is too late at night to fortify.");
+function fortify(){
+	if (time>=20){
+		report("Fortifying Failed","It is too late at night to fortify.");
+	}
+	else {
+		if (player.defenceSupply>0){
+			player.defenceSupply-=1;
+			mapGrid[player.x][player.y].defence+=1;
+			advanceTime(2);
+			report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
 		}
 		else {
-			if (player.defenceSupply>0){
-				player.defenceSupply-=1;
-				mapGrid[player.x][player.y].defence+=1;
-				advanceTime(2);
-				report("Fortifying","You spend two hours boarding up windows and reinforcing doors.");
-			}
-			else {
-				mapGrid[player.x][player.y].defence+=1;
-				advanceTime(4);
-				report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
-			};
+			mapGrid[player.x][player.y].defence+=1;
+			advanceTime(4);
+			report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
 		};
-		updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
 	};
+	updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
+};
