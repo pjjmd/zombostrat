@@ -1,17 +1,16 @@
 function randomLoot(type,name) {
-	var randomSeed= parseInt(Math.random() * (9)+1);
+	var randomSeed= Math.floor(Math.random() * 10) +1;
 	var result="";
 	var lootmed=0;
 	var lootfood=0;
 	var lootsupply=0;
-	var lootTally="You found a total of "+lootmed+" medical supplies, "+lootfood+" units of food and "+lootsupply+" defence supply units";
 	if (time>18){
 		result+="It was dark on your way to  "+name+", "+combatZombies(calculateStreetWalkers())+" ";
 	};
 	switch (type) {
 		case "car":
-		lootfood+=parseInt(Math.random()*2)+1;
-		lootsupply+=parseInt(Math.random()*1)+0;
+		lootfood+=Math.floor(Math.random()*2)+1;
+		lootsupply+=Math.floor(Math.random()*3);
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -45,8 +44,8 @@ function randomLoot(type,name) {
 		}
 		break;
 		case "church":
-		lootmed+=parseInt(Math.random()*2)+1;
-		lootfood+=parseInt(Math.random()*3)+1;
+		lootmed+=Math.floor(Math.random()*2)+1;
+		lootfood+=Math.floor(Math.random()*3)+1;
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -87,7 +86,7 @@ function randomLoot(type,name) {
 		}
 		break;
 		case "factory":
-		lootsupply+=parseInt(Math.random()*5)+1;
+		lootsupply+=Math.floor(Math.random()*5)+1;
 		switch(randomSeed){
 			case 1:
 			case 2:
@@ -105,6 +104,7 @@ function randomLoot(type,name) {
 			case 7:
 			result += "Fighting the undead with a hammer is a little cliche, but this location has a wide variety of tools that will help you in your battles with the undead.";
 			increaseWeapons("Hammer");
+			break;
 			case 8:
 			case 9:
 			case 10:
@@ -120,8 +120,8 @@ function randomLoot(type,name) {
 		};
 		break;
 		case "school":
-		lootfood+=parseInt(Math.random()*3)+1;
-		lootsupply+=parseInt(Math.random()*2)+0;
+		lootfood+=Math.floor(Math.random()*3)+1;
+		lootsupply+=Math.floor(Math.random()*3);
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -155,7 +155,7 @@ function randomLoot(type,name) {
 		};
 		break;
 		case "restaurant":
-		lootfood+=parseInt(Math.random()*4)+1;
+		lootfood+=Math.floor(Math.random()*4)+2;
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -169,6 +169,7 @@ function randomLoot(type,name) {
 			case 7:
 			result+= "This joint was never this busy when it was open, it’s crawling with the dead.  Hoping that means it hasn’t been looted, you try to lure most of the dead away.  You end up having to fight a few.  "+combatZombies(4)+ " You finding a well stocked kitchen!  Enough food for days! ";
 			lootfood+=8;
+			break;
 			case 8:
 			case 9:
 			case 10:
@@ -177,9 +178,9 @@ function randomLoot(type,name) {
 		};
 		break;
 		case "bar":
-		lootmed+=parseInt(Math.random()*1)+0;
-		lootfood+=parseInt(Math.random()*2)+1;
-		lootsupply+=parseInt(Math.random()*1)+0;
+		lootmed+=Math.floor(Math.random()*3);
+		lootfood+=Math.floor(Math.random()*3)+1;
+		lootsupply+=Math.floor(Math.random()*2);
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -213,7 +214,7 @@ function randomLoot(type,name) {
 		};
 		break;
 		case "pharmacy":
-		lootmed+=parseInt(Math.random()*5)+1;
+		lootmed+=Math.floor(Math.random()*5)+1;
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -240,9 +241,9 @@ function randomLoot(type,name) {
 		};
 		break;
 		default:
-		lootmed+=parseInt(Math.random()*2)+0;
-		lootfood+=parseInt(Math.random()*2)+0;
-		lootsupply+=parseInt(Math.random()*2)+0;
+		lootmed+=Math.floor(Math.random()*3);
+		lootfood+=Math.floor(Math.random()*3);
+		lootsupply+=Math.floor(Math.random()*3);
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -268,8 +269,9 @@ function randomLoot(type,name) {
 			lootmed+=10;	
 		};
 	};
+	var lootTally="You found a total of "+lootmed+" medical supplies, "+lootfood+" units of food and "+lootsupply+" defence supply units";
+	result+= ""+lootTally;
 	report("Looting "+name,result);
-	popUp(lootTally);
 	player.food+=lootfood;
 	player.med+=lootmed;
 	player.defenceSupply+=lootsupply;

@@ -172,9 +172,9 @@ function calculateStreetWalkers(){
 	return numWalkers;
 };
 
-function Weapon(name, fragility){ // add damage when it is properly supported
+function Weapon(name, damage, fragility){
 	this.name=name;
-	//this.damage=damage;
+	this.damage=damage;
 	this.fragility=fragility;
 	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
 function use(Weapon){
@@ -185,21 +185,21 @@ if (chance < fragility){
 };
 
 function Weapon(name){
-	return new Weapon(name, 50);
+	return new Weapon(name, 5, 50);
 };
 };
 var weaponsLocker=[];
-weaponsLocker.push(new Weapon("Hunting Knife", 40));
-weaponsLocker.push(new Weapon("Crowbar", 30));
+weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
+weaponsLocker.push(new Weapon("Crowbar", 7, 30));
 weaponsLocker.push(new Weapon("Hammer"));
-weaponsLocker.push(new Weapon("Scissors", 75));
-weaponsLocker.push(new Weapon("Cleaver", 40));
+weaponsLocker.push(new Weapon("Scissors", 5, 75));
+weaponsLocker.push(new Weapon("Cleaver", 6,  40));
 weaponsLocker.push(new Weapon("Baseball Bat"));
-weaponsLocker.push(new Weapon("Pistol", 90));
-weaponsLocker.push(new Weapon("Hatchet", 60));
-weaponsLocker.push(new Weapon("Fireaxe", 35));
-weaponsLocker.push(new Weapon("Metal Pipe", 60));
-weaponsLocker.push(new Weapon("Golf Club", 80));
+weaponsLocker.push(new Weapon("Pistol", 10, 90));
+weaponsLocker.push(new Weapon("Hatchet", 7, 60));
+weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
+weaponsLocker.push(new Weapon("Metal Pipe", 6, 60));
+weaponsLocker.push(new Weapon("Golf Club", 7, 85));
 //Assign weapon objects here. Assign damage value as second value when enabled
 
 function increaseWeapons(){
