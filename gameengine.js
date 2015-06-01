@@ -71,8 +71,8 @@ function sleep() {
 		case 14:
 		case 21:
 		case 28:
-		for (var i = -1*gridSize*.5; i < (mapGrid*.5)+1; i++) {
-			for (var q=-1*gridSize*.5; q<(mapGrid*.5)+1; q++){
+		for (var i = -1*gridSize*.5; i < (gridSize*.5)+1; i++) {
+			for (var q=-1*gridSize*.5; q<(gridSize*.5)+1; q++){
 				mapGrid[i][q].scouted=false;
 			};
 		};
@@ -225,7 +225,7 @@ var bonus=0; //eventually a way to have harder enemies
 var damage=0;
 	//
 	for (var i=0;i<numZombie;i++){
-		var fightResult=Math.floor(Math.random()*6+2+bonus)-Math.floor(random()*player.strength+player.weapons[0].strength);
+		var fightResult=Math.floor(Math.random()*6+2+bonus)-Math.floor(Math.random()*player.strength+player.weapons[0].strength);
 		if (fightResult>0){
 			damage+=fightResult;
 		};
