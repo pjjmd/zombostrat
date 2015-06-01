@@ -172,12 +172,45 @@ function calculateStreetWalkers(){
 	return numWalkers;
 };
 
+function Weapon(name, fragility){ // add damage when it is properly supported
+	this.name=name;
+	//this.damage=damage;
+	this.fragility=fragility;
+	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
+function use(Weapon){
+	var chance = parseInt(Math.random()*100)+1;
+if (chance < fragility){
+	durability-=1;
+};
+};
+
+function Weapon(name){
+	return new Weapon(name, 50);
+};
+};
+var weaponsLocker=[];
+weaponsLocker.push(new Weapon("Hunting Knife", 40));
+weaponsLocker.push(new Weapon("Crowbar", 30));
+weaponsLocker.push(new Weapon("Hammer"));
+weaponsLocker.push(new Weapon("Scissors", 75));
+weaponsLocker.push(new Weapon("Cleaver", 40));
+weaponsLocker.push(new Weapon("Baseball Bat"));
+weaponsLocker.push(new Weapon("Pistol", 90));
+weaponsLocker.push(new Weapon("Hatchet", 60));
+weaponsLocker.push(new Weapon("Fireaxe", 35));
+weaponsLocker.push(new Weapon("Metal Pipe", 60));
+weaponsLocker.push(new Weapon("Golf Club", 80));
+//Assign weapon objects here. Assign damage value as second value when enabled
 
 function increaseWeapons(){
 //Should be modified to produce a random weapon that the player doesn't have.
-player.weapons.push("Club");
-popUp("You got a club!");
+	tempweapons = weaponsLocker
+	tempweapons = tempweapons - player.weapons
+	weapget = tempweapons.sample;
+	player.weapons.push(weapget);
+	popUp("You got a "+weapget+"!");
 };
+
 function increaseWeapons(name){
 	player.weapons.push(name);
 	popUp("You got a "+name+"!");
