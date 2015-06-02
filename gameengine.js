@@ -177,17 +177,46 @@ function Weapon(name, damage, fragility){
 	this.damage=damage;
 	this.fragility=fragility;
 	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
-	function use(Weapon){
+	function use(){
 		var chance = parseInt(Math.random()*100)+1;
-		if (chance < fragility){
-			durability-=1;
+		if (chance < this.fragility){
+			this.durability-=1;
+		};
+		if (this.durability>1){
+return "OK";
+		}
+		else {
+			repopulate(this.name,this.damage,this.fragility,weaponsLocker);
+			destroyWeapon();
+			return this.name;
 		};
 	};
-
-	function Weapon(name){
-		return new Weapon(name, 5, 50);
-	};
 };
+function Weapon(name){
+		return new Weapon(name, 5, 50);
+};
+
+function destroyWeapon(){
+	player.weapons.splice(0,1);
+};
+function hasWeapon(targetArray,weaponName){
+var result=false;
+	for (var i=0;i<targetArray.length;i++){
+		if (targetArray[i].name===weaponName){
+result=true;
+};	};
+return result;
+};
+
+function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
+	if (hasWeapon(weaponName,targetArray)){
+		console.log("Duplicate Weapon Detected");
+	} else {
+		weaponsLocker.push(new Weapon(weaponName,weaponDamage,weaponFragility))
+	};
+
+};
+
 player.weapons.push(new Weapon("Fists",1,0));
 player.weapons.push(new Weapon("Hugs",3,0));
 
