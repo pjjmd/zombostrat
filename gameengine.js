@@ -192,9 +192,7 @@ return "OK";
 		};
 	};
 };
-function Weapon(name){
-		return new Weapon(name, 5, 50);
-};
+
 
 function destroyWeapon(){
 	player.weapons.splice(0,1);
