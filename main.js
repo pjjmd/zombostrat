@@ -64,9 +64,17 @@ med : 0,
 defenceSupply : 2,
 health : 100,
 x : 0,
-y : 0
+y : 0,
+strength:1,
+constitution:1,
+dexterity:1,
+wisdom:1,
+intelegence:1,
+charisma:1
 };
-
+player.weapons.move = function (from, to) {
+  this.splice(to, 0, this.splice(from, 1)[0]);
+};
 
 function dimLights(){
 	$("body").css("background-color","black");
@@ -180,6 +188,7 @@ function showMap() {
 	$(".map").css('display', 'block');
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
+updatePanel();
 };
 
 function hideMap() {
@@ -225,7 +234,7 @@ function updatePanel() {
 	$("#medicine").text("Medicine: " + player.med);
 	$("#defence").text(player.defenceSupply);
 	if (player.weapons.length>0){
-	$("#weapons").text("Weapon: "+player.weapons[player.weapons.length-1]);
+	$("#weapons").text("Weapon: "+player.weapons[0].name);
 	}	else {
 	$("#weapons").text("Weapon: Unarmed");
 	};
@@ -548,10 +557,27 @@ function deleteMarker(mX, mY, x) {
 function report(title, message) {
 	$(".report-title").text(title);
 	$(".report-message").text(message);
+	$(".weapon-form").css("display","none");
+	$(".weapon-confirm").css("display","none");
 	hideMap();
 	updatePanel();
 };
 
+function weaponMenu(){
+	$(".report-title").text("Weapon Equip");
+	$(".report-message").text("Select the weapon you want to equip");
+	hideMap();
+	$(".weapon-form").css("display","block");
+	$(".weapon-confirm").css("display","block");
+	$(".normal-confirm").css("display","none");
+var attach='<form><select id="weapon">';
+for (var i=0; i<player.weapons.length;i++){
+	attach+='<option value="'+i+'">'+player.weapons[i].name+'</option>';
+};
+attach+='</select></form>'
+$(".weapon-form").empty();
+$(".weapon-form").append(attach);
+};
 
 function updateDefence(pX, pY, def) {
 	destroyDefence(pX, pY);
