@@ -176,9 +176,9 @@ function Weapon(name, damage, fragility){
 	this.name=name;
 	this.damage=damage;
 	this.fragility=fragility;
-	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
+	this.durability=10*(0.1*(Math.floor(Math.random()*3)+8));
 function use(Weapon){
-	var chance = parseInt(Math.random()*100)+1;
+	var chance = Math.floor(Math.random()*100)+1;
 if (chance < fragility){
 	durability-=1;
 };
@@ -200,7 +200,6 @@ weaponsLocker.push(new Weapon("Hatchet", 7, 60));
 weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
 weaponsLocker.push(new Weapon("Metal Pipe", 6, 60));
 weaponsLocker.push(new Weapon("Golf Club", 7, 85));
-//Assign weapon objects here. Assign damage value as second value when enabled
 
 function increaseWeapons(){
 //Should be modified to produce a random weapon that the player doesn't have.
