@@ -250,9 +250,9 @@ weaponsLocker.push(new Weapon("Golf Club", 7, 85));
 
 function increaseWeapons(){
 //Should be modified to produce a random weapon that the player doesn't have.
-tempweapons = weaponsLocker
-tempweapons = tempweapons - player.weapons
-weapget = tempweapons.sample;
+tempweapons = weaponsLocker;
+tempweapons = tempweapons - player.weapons;
+var weapget = tempweapons.sample;
 player.weapons.push(weapget);
 popUp("You got a "+weapget+"!");
 };
