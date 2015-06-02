@@ -188,8 +188,6 @@ function showMap() {
 	$(".map").css('display', 'block');
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
-console.log("The weapon selected was number: "+$( "#weapon" ).val());
-player.weapons.move($( "#weapon" ).val(),0);
 updatePanel();
 };
 
@@ -560,15 +558,18 @@ function report(title, message) {
 	$(".report-title").text(title);
 	$(".report-message").text(message);
 	$(".weapon-form").css("display","none");
+	$(".weapon-confirm").css("display","none");
 	hideMap();
 	updatePanel();
 };
 
-function weaponEquip(){
+function weaponMenu(){
 	$(".report-title").text("Weapon Equip");
 	$(".report-message").text("Select the weapon you want to equip");
 	hideMap();
 	$(".weapon-form").css("display","block");
+	$(".weapon-confirm").css("display","block");
+	$(".normal-confirm").css("display","none");
 var attach='<form><select id="weapon">';
 for (var i=0; i<player.weapons.length;i++){
 	attach+='<option value="'+i+'">'+player.weapons[i].name+'</option>';

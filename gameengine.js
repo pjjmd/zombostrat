@@ -177,22 +177,30 @@ function Weapon(name, damage, fragility){
 	this.damage=damage;
 	this.fragility=fragility;
 	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
-	function use(){
-		var chance = parseInt(Math.random()*100)+1;
+	this.use = function () {
+        	var chance = parseInt(Math.random()*100)+1;
 		if (chance < this.fragility){
 			this.durability-=1;
 		};
 		if (this.durability>1){
-return "OK";
+		return "OK";
 		}
 		else {
 			repopulate(this.name,this.damage,this.fragility,weaponsLocker);
 			destroyWeapon();
 			return this.name;
 		};
-	};
+    };
+
 };
 
+function equipWeapon(number){
+	player.weapons.move($( "#weapon" ).val(),0);
+
+	$(".weapon-confirm").css("display","none");
+	$(".normal-confirm").css("display","block");
+	showMap();
+}
 
 function destroyWeapon(){
 	player.weapons.splice(0,1);

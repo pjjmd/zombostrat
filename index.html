@@ -49,8 +49,8 @@
   <div class="report">
     <h3><div class="report-title">Title of the message. </div></h3>
     <div class="report-message"><p>Content of the message.</p></div>
-    <div class="weapon-form"><form><select id="weapon"><option value="0">Fists</option><option value="1">Hugs</option></select></form></div>
-    <button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></h1>
+    <div class="weapon-form"><form><select id="weapon"><option value="0">Fists</option><option value="1">Hugs</option></select></form></div><div class="weapon-confirm"><button type="button" class="btn btn-default" onclick='equipWeapon()'>Confirm</button></div>
+    <div class="normal-confirm"><button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></div></h1>
   </div>
 </div>
 <div class="intro">
@@ -88,7 +88,7 @@
         <td>Defense Materials <div id="defence" style="display:inline">2</div></td>
       </tr>
       <tr>
-        <td><div id="weapons">Weapons: 0</div><button type="button" class="btn btn-default btn-xs" onclick="weaponEquip()">Change</button></td>
+        <td><div id="weapons">Weapons: 0</div><button type="button" class="btn btn-default btn-xs" onclick="weaponMenu()">Change</button></td>
         <td><button type="button" class="btn btn-default btn-xs" onclick="scout(0,0)">Scout</button><button type="button" class="btn btn-default btn-xs"onclick="fortify()">Fortify</button><button type="button" class="btn btn-default btn-xs" onclick="sleep()">Sleep</button></td>
         <td></td>
       </tr>
