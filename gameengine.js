@@ -224,7 +224,7 @@ weaponsLocker.push(new Weapon("Crowbar", 7, 30));
 weaponsLocker.push(new Weapon("Hammer"));
 weaponsLocker.push(new Weapon("Scissors", 5, 75));
 weaponsLocker.push(new Weapon("Cleaver", 6,  40));
-weaponsLocker.push(new Weapon("Baseball Bat"));
+weaponsLocker.push(new Weapon("Baseball Bat",5,50));
 weaponsLocker.push(new Weapon("Pistol", 10, 90));
 weaponsLocker.push(new Weapon("Hatchet", 7, 60));
 weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
