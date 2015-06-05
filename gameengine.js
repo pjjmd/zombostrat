@@ -172,11 +172,25 @@ function calculateStreetWalkers(){
 	return numWalkers;
 };
 
+function shuffle(array) {
+	var currentindex = array.length, tempvalue, randomindex;
+
+	while (0 !== currentindex) {
+		randomindex = Math.floor(Math.random() * currentindex);
+		currentindex -= 1;
+
+		tempvalue = array[currentindex];
+		array[currentindex] = array[randomindex];
+		array[randomindex] = tempvalue;
+	}
+	return array;
+};
+
 function Weapon(name, damage, fragility){
 	this.name=name;
 	this.damage=damage;
 	this.fragility=fragility;
-	this.durability=10*(0.1*(parseInt(Math.random()*10)+8));
+	this.durability=10*(0.1*(Math.floor(Math.random()*3)+8));
 	this.use = function () {
         	var chance = parseInt(Math.random()*100)+1;
 		if (chance < this.fragility){
@@ -238,20 +252,29 @@ weaponsLocker.push(new Weapon("Hatchet", 7, 60));
 weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
 weaponsLocker.push(new Weapon("Metal Pipe", 6, 60));
 weaponsLocker.push(new Weapon("Golf Club", 7, 85));
-//Assign weapon objects here. Assign damage value as second value when enabled
 
 function increaseWeapons(){
-//Should be modified to produce a random weapon that the player doesn't have.
-tempweapons = weaponsLocker;
-tempweapons = tempweapons - player.weapons;
-var weapget = tempweapons.sample;
-player.weapons.push(weapget);
-popUp("You got a "+weapget+"!");
+	if (weaponsLocker.length > 0){
+		shuffle(weaponsLocker);
+		player.weapons.push(weaponsLocker.splice(0, 1));
+	}
+	else {
+		var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
+		player.weapons.push(new Weapon(weap));
+	};
 };
 
 function increaseWeapons(name){
-	player.weapons.push(name);
-	popUp("You got a "+name+"!");
+	for (var i=0;i<weaponsLocker.length;i++){
+		if (weaponsLocker[i].name===name){
+			player.weapons.push(weaponsLocker.splice(i, 1));
+		}
+		else {
+			var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
+			player.weapons.push(new Weapon(weap));
+		};
+
+	};
 };
 
 function combatZombies(numZombie){
