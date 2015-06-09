@@ -255,11 +255,11 @@ weaponsLocker.push(new Weapon("Golf Club", 7, 85));
 function increaseWeapons(){
 	if (weaponsLocker.length > 0){
 		shuffle(weaponsLocker);
-		player.weapons.push(weaponsLocker.splice(0, 1));
+		player.weapons.push(weaponsLocker.splice(0, 1)[0]);
 	}
 	else {
 		var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
-		player.weapons.push(new Weapon(weap.name));
+		increaseWeapons(weap.name);
 	};
 };
 
@@ -273,7 +273,7 @@ function increaseWeapons(name){
 	};
 	 if (!found){
 			var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
-			player.weapons.push(new Weapon(weap));
+			player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
 		};
 };
 
