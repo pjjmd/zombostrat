@@ -132,7 +132,7 @@ function randomLoot(type,name) {
 			case 4:
 			case 5:
 			result+= "Shop class!  You quickly salvage a couple basic weapons from the location. ";
-			increaseWeapons();
+			increaseWeapons("Hammer");
 			break;
 			case 6:
 			case 7:

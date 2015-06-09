@@ -253,17 +253,6 @@ weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
 weaponsLocker.push(new Weapon("Metal Pipe", 6, 60));
 weaponsLocker.push(new Weapon("Golf Club", 7, 85));
 
-function increaseWeapons(){
-	if (weaponsLocker.length > 0){
-		shuffle(weaponsLocker);
-		player.weapons.push(weaponsLocker.splice(0, 1)[0]);
-		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
-	}
-	else {
-		var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
-		increaseWeapons(weap.name);
-	};
-};
 
 function increaseWeapons(name){
 	var found=false;
@@ -275,7 +264,7 @@ function increaseWeapons(name){
 		};
 	};
 	 if (!found){
-			var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
+			var weap = weaponsLocker[Math.floor(Math.random()*weaponsLocker.length)];
 			player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
 		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 		};
@@ -287,7 +276,9 @@ var bonus=0; //eventually a way to have harder enemies
 var damage=0;
 	//
 	for (var i=0;i<numZombie;i++){
-		var fightResult=Math.floor(Math.random()*6+2+bonus)-Math.floor(Math.random()*player.strength+player.weapons[0].strength);
+		var playerResult=Math.random()*player.strength+player.weapons[0].damage;
+		var fightResult=Math.floor((Math.random()*6+2+bonus)-playerResult);
+		console.log("Fight result: " + fightResult);
 		if (fightResult>0){
 			damage+=fightResult;
 		};
@@ -340,7 +331,7 @@ function calculateExtraction(){
 	};
 };
 
-function escape(){
+function escapeGame(){
 	if (player.x==exX&&player.y==exY&&day>29){
 		report("You escape!","You win! I hope you enjoyed the game. Thank you for playing!");
 	}

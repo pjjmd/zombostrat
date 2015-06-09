@@ -474,7 +474,7 @@ function addExtraction(exX, exY) {
 
 
 	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.setContent("Extraction Zone" + '<button type="button" class="btn btn-default btn-lg" onclick="escape()">Evacuate</button>');
+		infowindow.setContent("Extraction Zone" + '<button type="button" class="btn btn-default btn-lg" onclick="escapeGame()">Evacuate</button>');
 		infowindow.open(map, this);
 	});
 	map.setCenter(offsetLatLng(myLatlng, locationX * 1000, locationY * 1000));
