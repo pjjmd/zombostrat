@@ -202,6 +202,7 @@ function Weapon(name, damage, fragility){
 		else {
 			repopulate(this.name,this.damage,this.fragility,weaponsLocker);
 			destroyWeapon();
+			popUp("You lost your "+this.name);
 			return this.name;
 		};
     };
@@ -256,6 +257,7 @@ function increaseWeapons(){
 	if (weaponsLocker.length > 0){
 		shuffle(weaponsLocker);
 		player.weapons.push(weaponsLocker.splice(0, 1)[0]);
+		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 	}
 	else {
 		var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
@@ -269,11 +271,13 @@ function increaseWeapons(name){
 		if (weaponsLocker[i].name===name){
 			player.weapons.push(weaponsLocker.splice(i, 1)[0]);
 			found=true;
-		}
+			popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
+		};
 	};
 	 if (!found){
 			var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
 			player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
+		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 		};
 };
 
