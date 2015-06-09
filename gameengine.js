@@ -238,7 +238,6 @@ function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
 };
 
 player.weapons.push(new Weapon("Fists",1,0));
-player.weapons.push(new Weapon("Hugs",3,0));
 
 var weaponsLocker=[];
 weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
@@ -260,21 +259,22 @@ function increaseWeapons(){
 	}
 	else {
 		var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
-		player.weapons.push(new Weapon(weap));
+		player.weapons.push(new Weapon(weap.name));
 	};
 };
 
 function increaseWeapons(name){
+	var found=false;
 	for (var i=0;i<weaponsLocker.length;i++){
 		if (weaponsLocker[i].name===name){
-			player.weapons.push(weaponsLocker.splice(i, 1));
+			player.weapons.push(weaponsLocker.splice(i, 1)[0]);
+			found=true;
 		}
-		else {
+	};
+	 if (!found){
 			var weap = player.weapons[Math.floor(Math.random()*player.weapons.length)];
 			player.weapons.push(new Weapon(weap));
 		};
-
-	};
 };
 
 function combatZombies(numZombie){
