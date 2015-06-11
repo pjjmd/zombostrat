@@ -1,3 +1,17 @@
+function Acheivement(name,description){
+	this.name=name;
+	this.completed=false;
+	this.description=description;
+};
+var acheivements=[];
+acheivements.push(new Acheivement("Hamburgler","Visit the Golden Arches."));
+acheivements.push(new Acheivement("Hoarder","Have 10 days of food."));
+acheivements.push(new Acheivement("Zombie Puncher","Defeat 50 Zombies Barehanded"));
+acheivements.push(new Acheivement("Fort Kickass","Have a 15 Defence Fort"));
+acheivements.push(new Acheivement("Dying is Fun","Join the legions of the dead"));
+
+
+
 function advanceTime(ammount){
 	time+=ammount;
 	if (time>18) {
@@ -97,7 +111,6 @@ function increaseHealth(number){
 	};
 };
 
-
 function loot(buildingX,buildingY,type,markerNum,buildingName){
 	var distance=Math.abs(buildingX-player.x)+Math.abs(buildingY-player.y) 
 	if (time+2+(distance*2)>24) {
@@ -192,12 +205,12 @@ function Weapon(name, damage, fragility){
 	this.fragility=fragility;
 	this.durability=10*(0.1*(Math.floor(Math.random()*3)+8));
 	this.use = function () {
-        	var chance = parseInt(Math.random()*100)+1;
+		var chance = parseInt(Math.random()*100)+1;
 		if (chance < this.fragility){
 			this.durability-=1;
 		};
 		if (this.durability>1){
-		return "OK";
+			return "OK";
 		}
 		else {
 			repopulate(this.name,this.damage,this.fragility,weaponsLocker);
@@ -205,7 +218,7 @@ function Weapon(name, damage, fragility){
 			popUp("You lost your "+this.name);
 			return this.name;
 		};
-    };
+	};
 
 };
 
@@ -220,13 +233,15 @@ function equipWeapon(number){
 function destroyWeapon(){
 	player.weapons.splice(0,1);
 };
+
 function hasWeapon(targetArray,weaponName){
-var result=false;
+	var result=false;
 	for (var i=0;i<targetArray.length;i++){
 		if (targetArray[i].name===weaponName){
-result=true;
-};	};
-return result;
+			result=true;
+		};	
+	};
+	return result;
 };
 
 function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
@@ -235,24 +250,22 @@ function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
 	} else {
 		weaponsLocker.push(new Weapon(weaponName,weaponDamage,weaponFragility))
 	};
-
 };
 
-player.weapons.push(new Weapon("Fists",1,0));
+player.weapons.push(new Weapon("Fists",3,0));
 
 var weaponsLocker=[];
-weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
-weaponsLocker.push(new Weapon("Crowbar", 7, 30));
-weaponsLocker.push(new Weapon("Hammer"));
+weaponsLocker.push(new Weapon("Hunting Knife", 5, 40));
+weaponsLocker.push(new Weapon("Crowbar", 5, 30));
+weaponsLocker.push(new Weapon("Hammer",4,30));
 weaponsLocker.push(new Weapon("Scissors", 5, 75));
-weaponsLocker.push(new Weapon("Cleaver", 6,  40));
+weaponsLocker.push(new Weapon("Cleaver", 5,  40));
 weaponsLocker.push(new Weapon("Baseball Bat",5,50));
 weaponsLocker.push(new Weapon("Pistol", 10, 90));
-weaponsLocker.push(new Weapon("Hatchet", 7, 60));
-weaponsLocker.push(new Weapon("Fireaxe", 8, 35));
-weaponsLocker.push(new Weapon("Metal Pipe", 6, 60));
-weaponsLocker.push(new Weapon("Golf Club", 7, 85));
-
+weaponsLocker.push(new Weapon("Hatchet", 5, 60));
+weaponsLocker.push(new Weapon("Fireaxe", 6, 35));
+weaponsLocker.push(new Weapon("Metal Pipe", 5, 60));
+weaponsLocker.push(new Weapon("Golf Club", 6, 85));
 
 function increaseWeapons(name){
 	var found=false;
@@ -263,11 +276,11 @@ function increaseWeapons(name){
 			popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 		};
 	};
-	 if (!found){
-			var weap = weaponsLocker[Math.floor(Math.random()*weaponsLocker.length)];
-			player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
+	if (!found){
+		var weap = weaponsLocker[Math.floor(Math.random()*weaponsLocker.length)];
+		player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
 		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
-		};
+	};
 };
 
 function combatZombies(numZombie){
@@ -277,7 +290,7 @@ var damage=0;
 	//
 	for (var i=0;i<numZombie;i++){
 		var playerResult=Math.random()*player.strength+player.weapons[0].damage;
-		var fightResult=Math.floor((Math.random()*6+2+bonus)-playerResult);
+		var fightResult=Math.floor((Math.random()*6+3+bonus)-playerResult);
 		console.log("Fight result: " + fightResult);
 		if (fightResult>0){
 			damage+=fightResult;
@@ -359,4 +372,43 @@ function fortify(){
 		};
 	};
 	updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
+};
+
+function completeAcheivement(name){
+	for (var i=0;i>acheivements.length;i++){
+		if (acheivements[i].name===name){
+if (!acheivements[i].complete){
+			acheivements[i].complete=true;
+			popUp("You completed the acheivement "+name);
+	localStorage.setItem("acheivements",acheivements);
+	};
+		};
+	};
+};
+
+function checkAcheivements(){
+	if (localStorage.getItem("acheivements") != null) {
+		for (var i=0;i>localStorage.acheivements.length;i++){
+			if (localStorage.acheivements[i].complete){
+				completeAcheivement(localStorage.acheivements[i].name);
+			};
+		};
+	};
+	localStorage.setItem("acheivements",acheivements);
+};
+
+function updateAcheivements(){
+	$('#acheivement').empty();
+	checkAcheivements();
+	var holder="";
+	for (var i=0;i>acheivements.length;i++){
+		if (acheivements[i].complete){
+			holder+="<li><div class=complete>"+acheivements[i].name+"</div></li>";
+		}
+		else {
+			holder+="<li><div class=incomplete>"+acheivements[i].name+"</div></li>";
+		};
+	};
+	console.log("test"+holder);
+	$('#acheivement').text(holder);
 };

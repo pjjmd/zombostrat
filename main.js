@@ -76,6 +76,8 @@ player.weapons.move = function (from, to) {
   this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
+$(document).ready(function() {updateAcheivemments()});
+
 function dimLights(){
 	$("body").css("background-color","black");
 };
@@ -91,9 +93,7 @@ function initialize(location) {
 	}
 	else {
 		codeAddress(location);
-	};
-
-	
+	};	
 };
 
 function codeAddress(address) {
@@ -237,6 +237,7 @@ function updatePanel() {
 	$("#food").text("Food: " + player.food);
 	if (player.health < 1) {
 		alert("Game over!");
+		completeAcheivement("Dying is Fun");
 		window.location.reload();
 	};
 }
