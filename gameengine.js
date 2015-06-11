@@ -242,6 +242,7 @@ player.weapons.push(new Weapon("Fists",1,0));
 
 var weaponsLocker=[];
 weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
+weaponsLocker.push(new Weapon("Chef's Knife", 7, 80));
 weaponsLocker.push(new Weapon("Crowbar", 7, 30));
 weaponsLocker.push(new Weapon("Hammer"));
 weaponsLocker.push(new Weapon("Scissors", 5, 75));

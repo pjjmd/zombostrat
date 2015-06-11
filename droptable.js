@@ -21,7 +21,7 @@ function randomLoot(type,name) {
 			break;
 			case 4:
 			result+= "The rest of the car looks barren and looted, but the trunk remains closed and locked. ";
-			if (player.weapons.length>0){
+			if (player.weapons.length>1){
 				result+= "You manage to pry open the trunk and find a bounty of boards, nails and construction tools. ";
 				lootsupply+=4;
 			}
@@ -31,11 +31,21 @@ function randomLoot(type,name) {
 			break;
 			case 5:
 			case 6:
-			result+= "The former driver of this vehicle is seatbelted in.  He's dead, but lunges at you when you aproach the vehicle. "+combatZombies(1)+" After dealing with the restrained zombie, you find he has a particularly nasty hunting knife on his belt.";
+			result+= "The former driver of this vehicle is seatbelted in.  He's dead, but lunges at you when you approach the vehicle. "+combatZombies(1)+" After dealing with the restrained zombie, you find he has a particularly nasty hunting knife on his belt.";
 			increaseWeapons("Hunting Knife");
 			break;
 			case 7:
 			case 8:
+			result+= "You come across an abandoned police car, a search doesn't amount to much save for some bandages in the glove compartment, but the trunk is still locked. ";
+			lootmed+=2;
+			if (player.weapons.length>1){
+				result+= "It takes some time and makes quite a bit of noise, attracting a couple of zombies from nearby. "+combatZombies(2)+" Once they're dealt with you finish prying the trunk open and find a pistol with some bullets. Hard to argue with that kind of firepower.";
+				increaseWeapons("Pistol");
+			}
+			else {
+				result+= "You struggle and bash at the trunk with your hands, but it seems to be attracting too much attention, better get out before the zombies find you.";
+			}
+			break;
 			case 9:
 			case 10:
 			result+= "The vehicle is still mobile, although it's difficult to envision taking it too far given the state of the roads.  Still, it could be helpful for defensive purposes. And there is a flat of instant noodles in the back, score!";
@@ -72,10 +82,13 @@ function randomLoot(type,name) {
 			break;
 			case 7:
 			case 8:
+			result+= "This church seemed to have been undergoing some sort of construction or renovations. You find a wide assortment of building supplies and tools- as well as the workers they previously belonged to. "+combatZombies(3)+" After dealing with them, this cache of supplies is yours for the taking.";
+			lootsupply+=8;
+			break;
 			case 9:
 			case 10:
 			result+= "An apocalyptic message is scrolled on a sign outside the door.  The end times are upon us, it reminds you.  The battered down front door of the building doesn’t do much to dissuade you of this notion.  As you look inside, you can see a terribly gorey sight.  Suddenly dozens of zombies stream out.  You look down at your weapons… ";
-			if (player.weapons.length>4) {
+			if (player.weapons.length>2) {
 				result+="And proceed to clear the horde. "+combatZombies(12)+ " After clearing the church, you find a large cache of food and medicine that the people who died here never got a chance to use.";
 				lootfood+=5;
 				lootmed+=25;
@@ -89,6 +102,9 @@ function randomLoot(type,name) {
 		lootsupply+=Math.floor(Math.random()*5)+1;
 		switch(randomSeed){
 			case 1:
+			result+= "This particular factory looks like it hasn't been occupied for a long time. Cobwebs and dust have accumulated in every nook and cranny. After searching for some time you find a metal pipe, after picking it up you quickly lose your nerve and flee. Something seems off in there.";
+			increaseWeapons("Metal Pipe");
+			break;
 			case 2:
 			case 3:
 			result+= "The doors to this factory have been smashed open and it looks to have been looted, a quick inspection however reveals a first aid kit, looks like the looters were less than thorough in their search. ";
@@ -109,7 +125,7 @@ function randomLoot(type,name) {
 			case 9:
 			case 10:
 			result+= "The site seems mostly abandoned, I guess if a place doesn’t have food or weapons, people don’t swarm to it during an apocalypse.  You make off with a giant pile of defensive supplies, off to reinforce your location.  You bring with you as much as you can carry, but half way along your trip, you attract the attention of a throng of zombies. ";
-			if (player.weapons.length>0) {
+			if (player.weapons.length>1) {
 				result+= "You put down the supplies momentarily, readying yourself to deal with the dead before they become more numerous. "+combatZombies(4); 
 				lootsupply+=6;
 			}
@@ -124,6 +140,10 @@ function randomLoot(type,name) {
 		lootsupply+=Math.floor(Math.random()*3);
 		switch (randomSeed){
 			case 1:
+			result+= "You find what you can only assume is the nurses office. Bandages, medicine, some clean water and a zombie nurse to boot! "+combatZombies+" You rush off with your stolen bounty before more undead faculty find you.";
+			lootmed+=5;
+			lootfood+=1;
+			break;
 			case 2:
 			case 3:
 			result+= "Class is out for the apocalypse.  Desks and chairs might not make great weapons, but they are sturdy and modular enough for some easy defensive structures.  You cart back a number of them to your base. ";
@@ -144,7 +164,7 @@ function randomLoot(type,name) {
 			case 9:
 			case 10:
 			result+= "The cafeteria has been thoroughly ransacked, but there is a snack machine on the second floor just begging to get smashed and share a wealth of chocolate bars with you. ";
-			if (player.weapons.length>0){
+			if (player.weapons.length>1){
 				result+= " You smash the glass and make off like a champion. ";
 				lootfood+=4;
 			} else {
@@ -165,6 +185,9 @@ function randomLoot(type,name) {
 			break;
 			case 4:
 			case 5:
+			result+= "The front of this restaurant is fairly covered in dismembered zombies, you tentatively edge towards the back room and find the person who appears to be responsible. Looks like he couldn't fight off all of his stores patrons, but his knife certainly looks like it could do some damage still.";
+			increaseWeapons("Chef's Knife");
+			break;
 			case 6:
 			case 7:
 			result+= "This joint was never this busy when it was open, it’s crawling with the dead.  Hoping that means it hasn’t been looted, you try to lure most of the dead away.  You end up having to fight a few.  "+combatZombies(4)+ " You finding a well stocked kitchen!  Enough food for days! ";
@@ -185,7 +208,7 @@ function randomLoot(type,name) {
 			case 1:
 			case 2:
 			result+= "The front of the club is barricaded. Looks like a few people thought it was a good idea to grab a few pints and wait for this all to blow over.  You knock on the door, but don’t hear anything coming from the inside. ";
-			if (player.weapons>1 && mapGrid[player.x][player.y].defence<5){
+			if (player.weapons.length>1 && mapGrid[player.x][player.y].defence<5){
 				result+= "You climb up to a poorly boarded up window, and bash it in.  Inside you find 2 zombies who must have eaten the rest of the hold outs. "+combatZombies(2)+ " A couple of weapons, and a flat of beans.  And all the booze you can drink. ";
 				lootfood+=4;
 				increaseWeapons();
@@ -197,7 +220,7 @@ function randomLoot(type,name) {
 			break;
 			case 3:
 			case 4:
-			result+= "The kitchen has been looted, and an investigation of the store room finds a pair of people who drank themselves to death. You do find a baseball bat behind the bar tho, so it’s not a total loss. ";
+			result+= "The kitchen has been looted, and an investigation of the store room finds a pair of people who drank themselves to death. You do find a baseball bat behind the bar though, so it’s not a total loss. ";
 			increaseWeapons("Baseball Bat");
 			break;
 			case 5:
