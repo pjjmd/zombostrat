@@ -21,7 +21,7 @@ function randomLoot(type,name) {
 			break;
 			case 4:
 			result+= "The rest of the car looks barren and looted, but the trunk remains closed and locked. ";
-			if (player.weapons.length>0){
+			if (player.weapons.length>1){
 				result+= "You manage to pry open the trunk and find a bounty of boards, nails and construction tools. ";
 				lootsupply+=4;
 			}
@@ -75,7 +75,7 @@ function randomLoot(type,name) {
 			case 9:
 			case 10:
 			result+= "An apocalyptic message is scrolled on a sign outside the door.  The end times are upon us, it reminds you.  The battered down front door of the building doesn’t do much to dissuade you of this notion.  As you look inside, you can see a terribly gorey sight.  Suddenly dozens of zombies stream out.  You look down at your weapons… ";
-			if (player.weapons.length>4) {
+			if (player.weapons.length>2) {
 				result+="And proceed to clear the horde. "+combatZombies(12)+ " After clearing the church, you find a large cache of food and medicine that the people who died here never got a chance to use.";
 				lootfood+=5;
 				lootmed+=25;
@@ -109,7 +109,7 @@ function randomLoot(type,name) {
 			case 9:
 			case 10:
 			result+= "The site seems mostly abandoned, I guess if a place doesn’t have food or weapons, people don’t swarm to it during an apocalypse.  You make off with a giant pile of defensive supplies, off to reinforce your location.  You bring with you as much as you can carry, but half way along your trip, you attract the attention of a throng of zombies. ";
-			if (player.weapons.length>0) {
+			if (player.weapons.length>1) {
 				result+= "You put down the supplies momentarily, readying yourself to deal with the dead before they become more numerous. "+combatZombies(4); 
 				lootsupply+=6;
 			}
@@ -144,7 +144,7 @@ function randomLoot(type,name) {
 			case 9:
 			case 10:
 			result+= "The cafeteria has been thoroughly ransacked, but there is a snack machine on the second floor just begging to get smashed and share a wealth of chocolate bars with you. ";
-			if (player.weapons.length>0){
+			if (player.weapons.length>1){
 				result+= " You smash the glass and make off like a champion. ";
 				lootfood+=4;
 			} else {
@@ -185,7 +185,7 @@ function randomLoot(type,name) {
 			case 1:
 			case 2:
 			result+= "The front of the club is barricaded. Looks like a few people thought it was a good idea to grab a few pints and wait for this all to blow over.  You knock on the door, but don’t hear anything coming from the inside. ";
-			if (player.weapons>1 && mapGrid[player.x][player.y].defence<5){
+			if (player.weapons.length>1 && mapGrid[player.x][player.y].defence<5){
 				result+= "You climb up to a poorly boarded up window, and bash it in.  Inside you find 2 zombies who must have eaten the rest of the hold outs. "+combatZombies(2)+ " A couple of weapons, and a flat of beans.  And all the booze you can drink. ";
 				lootfood+=4;
 				increaseWeapons();
