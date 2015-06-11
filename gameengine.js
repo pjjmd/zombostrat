@@ -255,9 +255,16 @@ function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
 player.weapons.push(new Weapon("Fists",3,0));
 
 var weaponsLocker=[];
+<<<<<<< HEAD
 weaponsLocker.push(new Weapon("Hunting Knife", 5, 40));
 weaponsLocker.push(new Weapon("Crowbar", 5, 30));
 weaponsLocker.push(new Weapon("Hammer",4,30));
+=======
+weaponsLocker.push(new Weapon("Hunting Knife", 6, 40));
+weaponsLocker.push(new Weapon("Chef's Knife", 7, 80));
+weaponsLocker.push(new Weapon("Crowbar", 7, 30));
+weaponsLocker.push(new Weapon("Hammer"));
+>>>>>>> 63cbf83481783acfb165588626a93ef3a79ca283
 weaponsLocker.push(new Weapon("Scissors", 5, 75));
 weaponsLocker.push(new Weapon("Cleaver", 5,  40));
 weaponsLocker.push(new Weapon("Baseball Bat",5,50));
