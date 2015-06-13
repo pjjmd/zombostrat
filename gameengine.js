@@ -1,19 +1,27 @@
-function Acheivement(name,description){
+function Achievement(name,description,effectText,functionArgument){
 	this.name=name;
 	this.completed=false;
 	this.description=description;
+	this.effectText=effectText;
+	this.doThing=functionArgument;
 };
-var acheivements=[];
-acheivements.push(new Acheivement("Hamburgler","Visit the Golden Arches."));
-acheivements.push(new Acheivement("Hoarder","Have 10 days of food."));
-acheivements.push(new Acheivement("Zombie Puncher","Defeat 50 Zombies Barehanded"));
-acheivements.push(new Acheivement("Fort Kickass","Have a 15 Defence Fort"));
-acheivements.push(new Acheivement("Dying is Fun","Join the legions of the dead"));
 
-
+var achievements=[];
+achievements.push(new Achievement("Dying is Fun","Join the legions of the dead","+10 Starting Medicine",function() {player.med+=10}));
+achievements.push(new Achievement("Hamburgler","Visit the Golden Arches.","+2 to Starting Food",function() {player.food+=2}));
+achievements.push(new Achievement("Hoarder","Have 10 days of food.","+2 to Constitution",function() {player.constitution+=2}));
+achievements.push(new Achievement("Zombie Puncher","Defeat 50 Zombies Barehanded","+2 to Strength",function() {player.strength+=2}));
+var unarmedKills=0;
+achievements.push(new Achievement("Fort Kickass","Have a 15 Defence Fort","+2 to Starting Fortress Defence",function() {mapGrid[0][0].defence+=2}));
+achievements.push(new Achievement("What does the scouter say?","Scout over 9 locations","+2 to Wisdom",function() {player.wisdom+=2}));
+var scouts=0;
 
 function advanceTime(ammount){
-	time+=ammount;
+	var tempvalue=ammount;
+	if (ammount<1){
+		tempvalue=1;
+	};
+	time+=tempvalue;
 	if (time>18) {
 		dimLights();
 	};
@@ -23,10 +31,13 @@ function advanceTime(ammount){
 function sleep() {
 	undimLights();
 	var result="";
+	if (player.food>29){
+		completeAchievement("Hoarder");
+	}
 	if (player.food>=3){
 		player.food-=3;
 		result+="You ate your fill tonight, regaining 10 health.";
-		increaseHealth(10);
+		increaseHealth(player.constitution);
 	} else {
 		if (food==0){
 			increaseHealth(-20);
@@ -145,9 +156,13 @@ function scout(scoutX,scoutY){
 		}
 		else {
 			report("Scouting","You've been all over the area, there are a few places you hope have some supplies.")
-			advanceTime(3);
+			advanceTime(Math.floor(3-((player.wisdom-10)/2)));
 			fillSpaces(player.x,player.y);
 			mapGrid[player.x][player.y].scouted=true;
+			scouts+=1;
+			if (scouts>9){
+				completeAchievement("What does the scouter say?");
+			}
 		};
 	};
 	updatePanel();
@@ -289,11 +304,18 @@ var bonus=0; //eventually a way to have harder enemies
 var damage=0;
 	//
 	for (var i=0;i<numZombie;i++){
-		var playerResult=Math.random()*player.strength+player.weapons[0].damage;
-		var fightResult=Math.floor((Math.random()*6+3+bonus)-playerResult);
+		var playerResult=(Math.random()*((player.strength-8)/2))+player.weapons[0].damage;
+		var zombieResult=(Math.random()*6)+3+bonus;
+		var fightResult=Math.floor(zombieResult-playerResult);
 		console.log("Fight result: " + fightResult);
 		if (fightResult>0){
 			damage+=fightResult;
+		};
+		if (player.weapons[0].name="Fists"){
+			unarmedKills+=1;
+			if (unarmedKills>49){
+				completeAchievement("Zombie Puncher");
+			};
 		};
 		var weaponResult=player.weapons[0].use();
 		if (weaponResult!="OK"){
@@ -370,45 +392,58 @@ function fortify(){
 			advanceTime(4);
 			report("Fortifying","Without any defensive supplies to help you, you start to clear away zombies from the immediate area. Better to fight them in broad daylight."+combatZombies(calculateStreetWalkers()+3));
 		};
+		if (mapGrid[player.x][player.y].defence>9){
+			completeAchievement("Fort Kickass");
+		};
 	};
 	updateDefence(player.x,player.y,mapGrid[player.x][player.y].defence);
 };
 
-function completeAcheivement(name){
-	for (var i=0;i>acheivements.length;i++){
-		if (acheivements[i].name===name){
-if (!acheivements[i].complete){
-			acheivements[i].complete=true;
-			popUp("You completed the acheivement "+name);
-	localStorage.setItem("acheivements",acheivements);
-	};
-		};
-	};
-};
-
-function checkAcheivements(){
-	if (localStorage.getItem("acheivements") != null) {
-		for (var i=0;i>localStorage.acheivements.length;i++){
-			if (localStorage.acheivements[i].complete){
-				completeAcheivement(localStorage.acheivements[i].name);
+function completeAchievement(name){
+	for (var i=0;i<achievements.length;i++){
+		if (achievements[i].name===name){
+			if (!achievements[i].completed){
+				achievements[i].completed=true;
+				popUp("You completed the achievement "+name);
+				localStorage["achievements"] = JSON.stringify(achievements);
 			};
 		};
 	};
-	localStorage.setItem("acheivements",acheivements);
 };
 
-function updateAcheivements(){
-	$('#acheivement').empty();
-	checkAcheivements();
-	var holder="";
-	for (var i=0;i>acheivements.length;i++){
-		if (acheivements[i].complete){
-			holder+="<li><div class=complete>"+acheivements[i].name+"</div></li>";
-		}
-		else {
-			holder+="<li><div class=incomplete>"+acheivements[i].name+"</div></li>";
+function resetAchievements(){
+	for (var i=0;i<achievements.length;i++){
+		achievements[i].completed=false;
+	};
+	localStorage["achievements"]=JSON.stringify(achievements);
+	updateAchievements();
+}
+
+function checkAchievements(){
+	if (localStorage.getItem("achievements") != null) {
+		var tempvalue=JSON.parse(localStorage["achievements"]);
+		for (var i=0;i<tempvalue.length;i++){
+			if (tempvalue[i].completed){
+				completeAchievement(tempvalue[i].name);
+			};
 		};
 	};
-	console.log("test"+holder);
-	$('#acheivement').text(holder);
+	localStorage["achievements"] = JSON.stringify(achievements);
 };
+
+function updateAchievements(){
+	$('#achievementsList').empty();
+	var holder="<table style='width:100%'><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr>";
+	for (var i=0;i<achievements.length;i++){
+		if (achievements[i].completed){
+			holder+="<tr><td>"+achievements[i].name+"</td><td>+achievements[i].description+</td><td>"+achievements[i].effectText+"</td></tr>";
+		}
+		else {
+			holder+="<tr><td>"+achievements[i].name+"</td><td>Locked</td><td>"+achievements[i].effectText+"</td></tr>";
+		};
+	};
+	holder+="</table>"
+	
+	$('#achievementsList').append(holder);
+};
+

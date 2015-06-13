@@ -1,4 +1,8 @@
 function randomLoot(type,name) {
+if (name==="McDonalds" || name==="McCafe"){
+	completeAchievement("Hamburgler");
+};
+
 	var randomSeed= Math.floor(Math.random() * 10) +1;
 	var result="";
 	var lootmed=0;

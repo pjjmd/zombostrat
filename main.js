@@ -33,9 +33,9 @@ var mapGrid = new Array(gridSize);
 for (var i = -.5*gridSize; i < .5*gridSize+1; i++) {
 	mapGrid[i] = new Array(gridSize);
 //it then creates a second array for each of the first, so that there is effectively a 2d grid
-	for (var q = -5; q < 6; q++) {
+for (var q = -5; q < 6; q++) {
 //every mapgrid object gets a bunch of variables, they are all held in an object
-		mapGrid[i][q] = {
+mapGrid[i][q] = {
 			//rect holds the google api pointer for the shape
 			rect: "",
 			//what the built up defence is in a given area
@@ -58,25 +58,39 @@ mapGrid[0][0].defence = 4;
 
 //the player object tracks all the stats relevent to the player
 var player={
-food : 4,
-weapons : [],
-med : 0,
-defenceSupply : 2,
-health : 100,
-x : 0,
-y : 0,
-strength:1,
-constitution:1,
-dexterity:1,
-wisdom:1,
-intelegence:1,
-charisma:1
+	food : 4,
+	weapons : [],
+	med : 0,
+	defenceSupply : 2,
+	health : 100,
+	x : 0,
+	y : 0,
+	strength:10,
+	constitution:10,
+	dexterity:10,
+	wisdom:10,
+	intelegence:10,
+	charisma:10
 };
 player.weapons.move = function (from, to) {
-  this.splice(to, 0, this.splice(from, 1)[0]);
+	this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
-$(document).ready(function() {updateAcheivemments()});
+$(document).ready(function() {prepareIntroPage()});
+
+function prepareIntroPage(){
+	checkAchievements();
+	updateAchievements();
+	implementAchievements();
+};
+
+function implementAchievements(){
+	for (var i=0;i<achievements.length;i++){
+		if (achievements[i].completed){
+			achievements[i].doThing();
+		};
+	};
+};
 
 function dimLights(){
 	$("body").css("background-color","black");
@@ -89,7 +103,7 @@ function undimLights(){
 function initialize(location) {
 	geocoder = new google.maps.Geocoder();
 	if (location===""){
-	codeAddress("52 Broadview Avenue, Toronto, Ontario");	
+		codeAddress("52 Broadview Avenue, Toronto, Ontario");	
 	}
 	else {
 		codeAddress(location);
@@ -188,7 +202,7 @@ function showMap() {
 	$(".map").css('display', 'block');
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
-updatePanel();
+	updatePanel();
 };
 
 function hideMap() {
@@ -237,7 +251,7 @@ function updatePanel() {
 	$("#food").text("Food: " + player.food);
 	if (player.health < 1) {
 		alert("Game over!");
-		completeAcheivement("Dying is Fun");
+		completeAchievement("Dying is Fun");
 		window.location.reload();
 	};
 }
@@ -274,9 +288,9 @@ function popUp(message){
 	$(".pop-up").animate({height: "20%"});
 	
 	countdown=setTimeout(function(){
-			$(".pop-up").css("display", "none");
-	$(".pop-up").animate({height: "0%"});
-	$("#map-canvas").animate({height:"90%"});
+		$(".pop-up").css("display", "none");
+		$(".pop-up").animate({height: "0%"});
+		$("#map-canvas").animate({height:"90%"});
 	},4000)
 }
 
@@ -284,48 +298,48 @@ function createArrow(location, direction, x123, y123) {
 	var arrow = ""
 	switch (direction) {
 		case "down":
-			var cords = [
-				offsetLatLng(location, -200, 000),
-				offsetLatLng(location, -125, 050),
-				offsetLatLng(location, -125, 025),
-				offsetLatLng(location, -75, 25),
-				offsetLatLng(location, -75, -25),
-				offsetLatLng(location, -125, -25),
-				offsetLatLng(location, -125, -50)
-			];
-			break;
+		var cords = [
+		offsetLatLng(location, -200, 000),
+		offsetLatLng(location, -125, 050),
+		offsetLatLng(location, -125, 025),
+		offsetLatLng(location, -75, 25),
+		offsetLatLng(location, -75, -25),
+		offsetLatLng(location, -125, -25),
+		offsetLatLng(location, -125, -50)
+		];
+		break;
 		case "right":
-			var cords = [
-				offsetLatLng(location, 00, 200),
-				offsetLatLng(location, 50, 125),
-				offsetLatLng(location, 25, 125),
-				offsetLatLng(location, 25, 75),
-				offsetLatLng(location, -25, 75),
-				offsetLatLng(location, -25, 125),
-				offsetLatLng(location, -50, 125)
-			];
-			break;
+		var cords = [
+		offsetLatLng(location, 00, 200),
+		offsetLatLng(location, 50, 125),
+		offsetLatLng(location, 25, 125),
+		offsetLatLng(location, 25, 75),
+		offsetLatLng(location, -25, 75),
+		offsetLatLng(location, -25, 125),
+		offsetLatLng(location, -50, 125)
+		];
+		break;
 		case "up":
-			var cords = [
-				offsetLatLng(location, 200, 000),
-				offsetLatLng(location, 125, 050),
-				offsetLatLng(location, 125, 025),
-				offsetLatLng(location, 75, 25),
-				offsetLatLng(location, 75, -25),
-				offsetLatLng(location, 125, -25),
-				offsetLatLng(location, 125, -50)
-			];
-			break;
+		var cords = [
+		offsetLatLng(location, 200, 000),
+		offsetLatLng(location, 125, 050),
+		offsetLatLng(location, 125, 025),
+		offsetLatLng(location, 75, 25),
+		offsetLatLng(location, 75, -25),
+		offsetLatLng(location, 125, -25),
+		offsetLatLng(location, 125, -50)
+		];
+		break;
 		case "left":
-			var cords = [
-				offsetLatLng(location, 00, -200),
-				offsetLatLng(location, 50, -125),
-				offsetLatLng(location, 25, -125),
-				offsetLatLng(location, 25, -75),
-				offsetLatLng(location, -25, -75),
-				offsetLatLng(location, -25, -125),
-				offsetLatLng(location, -50, -125)
-			];
+		var cords = [
+		offsetLatLng(location, 00, -200),
+		offsetLatLng(location, 50, -125),
+		offsetLatLng(location, 25, -125),
+		offsetLatLng(location, 25, -75),
+		offsetLatLng(location, -25, -75),
+		offsetLatLng(location, -25, -125),
+		offsetLatLng(location, -50, -125)
+		];
 	};
 	movementButtons.push(new google.maps.Polygon({
 		paths: cords,
@@ -336,7 +350,6 @@ function createArrow(location, direction, x123, y123) {
 		fillOpacity: 0.65,
 		map: map
 	}));
-	console.log("Length= " + movementButtons.length)
 	google.maps.event.addListener(movementButtons[(movementButtons.length - 1)], 'mousedown', function() {
 		travel({
 			x: x123,
@@ -381,7 +394,6 @@ function populateGrid(cX, cY) {
 	var service = new google.maps.places.PlacesService(map);
 	player.x = cX;
 	player.y = cY;
-	console.log("Click!");
 	service.nearbySearch(request, callback);
 
 };
@@ -488,49 +500,49 @@ function recognizePlace(list) {
 		switch (list[i]) {
 			case "hardware_store":
 			case "factory":
-				result = "factory";
-				i = list.length;
-				break;
+			result = "factory";
+			i = list.length;
+			break;
 			case "grocery_or_supermarket":
 			case "grocery":
-				result = "grocery"
-				i = list.length;
-				break;
+			result = "grocery"
+			i = list.length;
+			break;
 			case "gas_station":
-				result = "gas_station";
-				i = list.length;
-				break;
+			result = "gas_station";
+			i = list.length;
+			break;
 			case "cafe":
-				result = "cafe";
-				i = list.length;
-				break;
+			result = "cafe";
+			i = list.length;
+			break;
 			case "doctor":
 			case "hospital":
 			case "pharmacy":
-				result = "pharmacy";
-				i = list.length;
-				break;
+			result = "pharmacy";
+			i = list.length;
+			break;
 			case "food":
 			case "restaurant":
-				result = "restaurant";
-				i = list.length;
-				break;
+			result = "restaurant";
+			i = list.length;
+			break;
 			case "school":
 			case "university":
-				result = "school";
-				i = list.length;
-				break;
+			result = "school";
+			i = list.length;
+			break;
 			case "church":
 			case "synagogue":
 			case "mosque":
-				result = "church";
-				i = list.length;
-				break;
+			result = "church";
+			i = list.length;
+			break;
 			case "bar":
 			case "nightclub":
-				result = "bar";
-				i = list.length;
-				break;
+			result = "bar";
+			i = list.length;
+			break;
 		};
 	};
 	return result;
@@ -567,13 +579,13 @@ function weaponMenu(){
 	$(".weapon-form").css("display","block");
 	$(".weapon-confirm").css("display","block");
 	$(".normal-confirm").css("display","none");
-var attach='<form><select id="weapon">';
-for (var i=0; i<player.weapons.length;i++){
-	attach+='<option value="'+i+'">'+player.weapons[i].name+'</option>';
-};
-attach+='</select></form>'
-$(".weapon-form").empty();
-$(".weapon-form").append(attach);
+	var attach='<form><select id="weapon">';
+	for (var i=0; i<player.weapons.length;i++){
+		attach+='<option value="'+i+'">'+player.weapons[i].name+'</option>';
+	};
+	attach+='</select></form>'
+	$(".weapon-form").empty();
+	$(".weapon-form").append(attach);
 };
 
 function updateDefence(pX, pY, def) {
