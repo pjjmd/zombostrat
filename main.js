@@ -203,6 +203,7 @@ function showMap() {
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
 	updatePanel();
+	updateDefence(0, 0, mapgrid[player.x][player.y].defence);
 };
 
 function hideMap() {

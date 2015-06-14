@@ -218,7 +218,7 @@ function Weapon(name, damage, fragility){
 	this.name=name;
 	this.damage=damage;
 	this.fragility=fragility;
-	this.durability=10*(0.1*(Math.floor(Math.random()*3)+8));
+	this.durability=Math.floor(10*(0.1*(Math.floor(Math.random()*7)+4)));
 	this.use = function () {
 		var chance = parseInt(Math.random()*100)+1;
 		if (chance < this.fragility){
@@ -270,31 +270,40 @@ function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
 player.weapons.push(new Weapon("Fists",3,0));
 
 var weaponsLocker=[];
-weaponsLocker.push(new Weapon("Hunting Knife", 5, 40));
-weaponsLocker.push(new Weapon("Crowbar", 5, 30));
-weaponsLocker.push(new Weapon("Hammer",4,30));
-weaponsLocker.push(new Weapon("Chef's Knife", 7, 80));
-weaponsLocker.push(new Weapon("Scissors", 5, 75));
+weaponsLocker.push(new Weapon("Hunting Knife", 5, 50));
+weaponsLocker.push(new Weapon("Crowbar", 5, 40));
+weaponsLocker.push(new Weapon("Hammer",4,40));
+weaponsLocker.push(new Weapon("Chef's Knife", 6, 60));
+weaponsLocker.push(new Weapon("Cleaver", 7, 70));
+weaponsLocker.push(new Weapon("Scissors", 5, 85));
 weaponsLocker.push(new Weapon("Baseball Bat",5,50));
 weaponsLocker.push(new Weapon("Pistol", 10, 90));
-weaponsLocker.push(new Weapon("Hatchet", 5, 60));
-weaponsLocker.push(new Weapon("Fireaxe", 6, 35));
-weaponsLocker.push(new Weapon("Metal Pipe", 5, 60));
+weaponsLocker.push(new Weapon("Hatchet", 6, 60));
+weaponsLocker.push(new Weapon("Fireaxe", 8, 45));
+weaponsLocker.push(new Weapon("Metal Pipe", 5, 50));
 weaponsLocker.push(new Weapon("Golf Club", 6, 85));
 
 function increaseWeapons(name){
 	var found=false;
-	for (var i=0;i<weaponsLocker.length;i++){
-		if (weaponsLocker[i].name===name){
-			player.weapons.push(weaponsLocker.splice(i, 1)[0]);
-			found=true;
+	if (typeof name==='undefined'){
+var tempvalue=Math.floor(Math.random()*weaponsLocker.length);
+console.log(tempvalue);
+player.weapons.push(weaponsLocker.splice(tempvalue, 1)[0]);
+popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
+	}
+	else {
+		for (var i=0;i<weaponsLocker.length;i++){
+			if (weaponsLocker[i].name===name){
+				player.weapons.push(weaponsLocker.splice(i, 1)[0]);
+				found=true;
+				popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
+			};
+		};
+		if (!found){
+			var weap = weaponsLocker[Math.floor(Math.random()*weaponsLocker.length)];
+			player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
 			popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 		};
-	};
-	if (!found){
-		var weap = weaponsLocker[Math.floor(Math.random()*weaponsLocker.length)];
-		player.weapons.push(new Weapon(name,weap.damage,weap.fragility));
-		popUp("You got a "+player.weapons[(player.weapons.length-1)].name);
 	};
 };
 
@@ -305,13 +314,13 @@ var damage=0;
 	//
 	for (var i=0;i<numZombie;i++){
 		var playerResult=(Math.random()*((player.strength-8)/2))+player.weapons[0].damage;
-		var zombieResult=(Math.random()*6)+3+bonus;
+		var zombieResult=(Math.random()*6)+5+bonus;
 		var fightResult=Math.floor(zombieResult-playerResult);
 		console.log("Fight result: " + fightResult);
 		if (fightResult>0){
 			damage+=fightResult;
 		};
-		if (player.weapons[0].name="Fists"){
+		if (player.weapons[0].name==="Fists"){
 			unarmedKills+=1;
 			if (unarmedKills>49){
 				completeAchievement("Zombie Puncher");
@@ -436,7 +445,7 @@ function updateAchievements(){
 	var holder="<table style='width:100%'><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr>";
 	for (var i=0;i<achievements.length;i++){
 		if (achievements[i].completed){
-			holder+="<tr><td>"+achievements[i].name+"</td><td>+achievements[i].description+</td><td>"+achievements[i].effectText+"</td></tr>";
+			holder+="<tr><td>"+achievements[i].name+"</td><td>"+achievements[i].description+"</td><td>"+achievements[i].effectText+"</td></tr>";
 		}
 		else {
 			holder+="<tr><td>"+achievements[i].name+"</td><td>Locked</td><td>"+achievements[i].effectText+"</td></tr>";
