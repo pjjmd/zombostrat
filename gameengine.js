@@ -12,7 +12,7 @@ achievements.push(new Achievement("Hamburgler","Visit the Golden Arches.","+2 to
 achievements.push(new Achievement("Hoarder","Have 10 days of food.","+2 to Constitution",function() {player.constitution+=2}));
 achievements.push(new Achievement("Zombie Puncher","Defeat 50 Zombies Barehanded","+2 to Strength",function() {player.strength+=2}));
 var unarmedKills=0;
-achievements.push(new Achievement("Fort Kickass","Have a 15 Defence Fort","+2 to Starting Fortress Defence",function() {mapGrid[0][0].defence+=2}));
+achievements.push(new Achievement("Fort Kickass","Have a Level 10 Defence Fort","+2 to Starting Defence Equipment",function() {player.defenceSupply+=2}));
 achievements.push(new Achievement("What does the scouter say?","Scout over 9 locations","+2 to Wisdom",function() {player.wisdom+=2}));
 var scouts=0;
 

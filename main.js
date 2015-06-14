@@ -189,6 +189,7 @@ function codeAddress(address) {
 			populateGrid(0, 0);
 			showMap();
 			report("Welcome to Corpseburg", "The center grid is your location, use the arrow buttons on the grid to move and the scout button to find places to loot. More zombies are out at night, so keep an eye on the clock, and find a safe place to sleep when the sun goes down.")
+			updateDefence(0, 0, mapgrid[player.x][player.y].defence);
 		}
 		else {
 			alert('Geocode was not successful for the following reason: ' + status);
@@ -203,7 +204,6 @@ function showMap() {
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
 	updatePanel();
-	updateDefence(0, 0, mapgrid[player.x][player.y].defence);
 };
 
 function hideMap() {
