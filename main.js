@@ -566,7 +566,8 @@ function deleteMarker(mX, mY, x) {
 
 function report(title, message) {
 	$(".report-title").text(title);
-	$(".report-message").text(message);
+$(".report-message").empty();
+	$(".report-message").append(message);
 	$(".weapon-form").css("display","none");
 	$(".weapon-confirm").css("display","none");
 	hideMap();
