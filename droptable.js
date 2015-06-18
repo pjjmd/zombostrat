@@ -21,13 +21,13 @@ if (name==="McDonalds" || name==="McCafe"){
 			case 3:
 			result+= "You find a first aid kit in the trunk, as well as a couple bottles of water.";
 			lootfood+=1;
-			lootmed+=10;	
+			lootmed+=5;	
 			break;
 			case 4:
 			result+= "The rest of the car looks barren and looted, but the trunk remains closed and locked. ";
 			if (player.weapons.length>1){
 				result+= "You manage to pry open the trunk and find a bounty of boards, nails and construction tools. ";
-				lootsupply+=4;
+				lootsupply+=2;
 			}
 			else {
 				result+= "Without a proper way to get the trunk open quickly, you're forced to flee before you attract too much notice. ";
@@ -66,7 +66,7 @@ if (name==="McDonalds" || name==="McCafe"){
 			case 3:
 			result+= "You find a boarded up building, it looks like a group of people tried to hold out here.  "
 			if (mapGrid[player.x][player.y].defence<5){
-				result+= "You decide to check the place out, it might be a decent place to sleep for the night.  ";
+				result+= "You decide to check the place out, it might be a decent place to sleep for the night. You move your base here. ";
 				mapGrid[player.x][player.x].defence=5;
 			}
 			else {
@@ -81,13 +81,13 @@ if (name==="McDonalds" || name==="McCafe"){
 			break;
 			case 6:
 			result+= "The doors to the church are flung wide open, it seems as if it has been thoroughly looted.  While you can’t find any food or weapons, a search of what was a play room for children reveals a untouched first aid kit.  Thankful for your luck, you wheel to encounter three zombies.  ";
-			lootmed+=2;
+			lootmed+=4;
 			result+=combatZombies(3);
 			break;
 			case 7:
 			case 8:
 			result+= "This church seemed to have been undergoing some sort of construction or renovations. You find a wide assortment of building supplies and tools- as well as the workers they previously belonged to. "+combatZombies(3)+" After dealing with them, this cache of supplies is yours for the taking.";
-			lootsupply+=8;
+			lootsupply+=4;
 			break;
 			case 9:
 			case 10:
@@ -112,7 +112,7 @@ if (name==="McDonalds" || name==="McCafe"){
 			case 2:
 			case 3:
 			result+= "The doors to this factory have been smashed open and it looks to have been looted, a quick inspection however reveals a first aid kit, looks like the looters were less than thorough in their search. ";
-			lootmed+=3;
+			lootmed+=5;
 			break;
 			case 4:
 			result += "You find basic some heavy equipment here, as well as a few wooden pallets.  Excellent equipment for securing a defensive site!";
@@ -121,11 +121,14 @@ if (name==="McDonalds" || name==="McCafe"){
 			break;
 			case 5:
 			case 6:
-			case 7:
-			result += "Fighting the undead with a hammer is a little cliche, but this location has a wide variety of tools that will help you in your battles with the undead.";
+			result += "Fighting the undead with a hammer is a little cliche, but this location has a wide variety of tools that will help you in your battles with the undead, as well as help set up defences around the base.";
+			lootsupply+=1;
 			increaseWeapons("Hammer");
 			break;
+			case 7:
 			case 8:
+		result += "Row upon row of pallets lay here unattended.  All the flimsy wood and nails you could possibly want for boarding up windows and doors, just like in the movies!"
+		lootsupply+=5;
 			case 9:
 			case 10:
 			result+= "The site seems mostly abandoned, I guess if a place doesn’t have food or weapons, people don’t swarm to it during an apocalypse.  You make off with a giant pile of defensive supplies, off to reinforce your location.  You bring with you as much as you can carry, but half way along your trip, you attract the attention of a throng of zombies. ";
@@ -160,12 +163,15 @@ if (name==="McDonalds" || name==="McCafe"){
 			break;
 			case 6:
 			case 7:
-			result+= "Art supplies!  Whoever said you shouldn’t run with scissors clearly hadn’t survived the zombie apocalypse. You gain makeshift weapons and defensive supplies."
+			result+= "Art supplies!  Whoever said you shouldn’t run with scissors clearly hadn’t survived the zombie apocalypse. You gain makeshift weapons and defensive supplies.";
 			increaseWeapons("Scissors");
 			lootsupply+=2;
 			break;
 			case 8:
 			case 9:
+			result+="Upon reflection, the stalls in the bathroom are really just modular metal plates designed to be easily attachable.  With a bit of elbow grease, you liberate a few panels for base defence.";
+			lootsupply+=4;
+			break;
 			case 10:
 			result+= "The cafeteria has been thoroughly ransacked, but there is a snack machine on the second floor just begging to get smashed and share a wealth of chocolate bars with you. ";
 			if (player.weapons.length>1){
@@ -182,6 +188,8 @@ if (name==="McDonalds" || name==="McCafe"){
 		lootfood+=Math.floor(Math.random()*4)+2;
 		switch (randomSeed){
 			case 1:
+			result+="Tables and chairs have been strewn about,  the dining room, and there is a terrible stench coming from the kitchen.  You don't think you want to eat anything that comes out of there, but some of the tables can make a decent barricade for tonight.";
+			lootsupply+=2;
 			case 2:
 			case 3:
 			result+= "This place is pretty picked over, all the food is spoiled or missing.  That being said, it looks like the chef’s tools are still intact.  You try to decide between the solid metal frying pans, or the well maintained butcher’s cleaver. Practicality wins over shlap stick. ";
@@ -191,6 +199,7 @@ if (name==="McDonalds" || name==="McCafe"){
 			case 5:
 			result+= "The front of this restaurant is fairly covered in dismembered zombies, you tentatively edge towards the back room and find the person who appears to be responsible. Looks like he couldn't fight off all of his stores patrons, but his knife certainly looks like it could do some damage still.";
 			increaseWeapons("Chef's Knife");
+			lootfood+=3;
 			break;
 			case 6:
 			case 7:
@@ -201,13 +210,13 @@ if (name==="McDonalds" || name==="McCafe"){
 			case 9:
 			case 10:
 			result+= "While this place is devoid of zombies, a terrible smell is coming from the kitchen.  Fearing the worst, you open the door, only to find piles of rotten food.  You hold your breath, and are able to grab a few things. ";
-			lootfood+=1;
+			lootfood+=3;
 		};
 		break;
 		case "bar":
 		lootmed+=Math.floor(Math.random()*3);
 		lootfood+=Math.floor(Math.random()*3)+1;
-		lootsupply+=Math.floor(Math.random()*2);
+		lootsupply+=Math.floor(Math.random()*1);
 		switch (randomSeed){
 			case 1:
 			case 2:
@@ -296,7 +305,7 @@ if (name==="McDonalds" || name==="McCafe"){
 			lootmed+=10;	
 		};
 	};
-	var lootTally="You found a total of "+lootmed+" medical supplies, "+lootfood+" units of food and "+lootsupply+" defence supply units";
+	var lootTally="<li>You found a total of "+lootmed+" medical supplies.</li><li>You found "+lootfood+" meals. </li><li>You found "+lootsupply+" defence supply units.</li>";
 	result+= ""+lootTally;
 	report("Looting "+name,result);
 	player.food+=lootfood;
