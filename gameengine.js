@@ -188,6 +188,13 @@ function travelCallBack(cX,cY){
 };
 function calculateStreetWalkers(){
 	var numWalkers=parseInt(Math.random()*3+1);
+
+	if (day>7){
+		numWalkers+=2;
+	};
+	if (day>14){
+		numWalkers+=1;
+	};
 	if (time>20){
 		numWalkers+=5;
 	};
