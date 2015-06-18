@@ -63,6 +63,15 @@ z-index:3;
     right: 0;
 }
 
-#achievements {
+#achievementsList {
+    text-align:left;
+}
+
+#help p  {
+margin-left:1%;
+    text-align:left;
+}
+#help li  {
+    margin-left:5%;
     text-align:left;
 }

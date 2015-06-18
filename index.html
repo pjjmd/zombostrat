@@ -39,6 +39,16 @@
     <link href='style.css' rel='stylesheet'>
   </head>
   <body>
+<!-- Facebook share button js-->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!-- Facebook share button js-->
    <nav class="navbar navbar-inverse">
     <div class="container">
       <div class="navbar-header">
@@ -55,7 +65,7 @@
           <li class="active"><a href="#">Game</a></li>
           <li><a href="https://github.com/pjjmd/zombostrat">GitHub</a></li>
           <li><a href="https://twitter.com/pjjmd">Contact Info</a></li>
-          <li><a href="http://www.reddit.com/r/corpseburg/wiki/index">Help</a></li>
+          <li><a href="#help">Help</a></li>
           <li><a href="http://www.reddit.com/r/corpseburg">Forum</a></li>
         </li>
       </ul>
@@ -82,6 +92,8 @@
     <button type="button" class="btn btn-default btn-lg" onclick='initialize(location.value)'>Start</button>
   </form>
   <br>
+<div class="fb-share-button" data-href="https://www.corpseburg.com" data-layout="button" onclick="console.log"></div>
+  <p>Like this game? Why not share it with your friends?</p>
 <!-- Project Wonderful Ad Box Code -->
 <div style="text-align:center;"><div style="display:inline-block;" id="pw_adbox_76618_5_0"></div></div>
 <script type="text/javascript"></script>
@@ -92,14 +104,21 @@
 <div id="achievements">
 <h2>Achievements</h2>
 <ol><div id="achievementsList">
-  <li>Dying is Fun</li>
-  <li>Fists of Steel</li>
-  <li>Hamburgler</li>
-  <li>Take me to Church</li>
-  <li>Master of Defence</li>
-  <li>Hoarder</li>
+  <table style="width:100%"><tbody><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr><tr><td>Dying is Fun</td><td>Join the legions of the dead</td><td>+10 Starting Medicine</td></tr><tr><td>Hamburgler</td><td>Visit the Golden Arches.</td><td>+2 to Starting Food</td></tr><tr><td>Hoarder</td><td>Have 10 days of food.</td><td>+2 to Constitution</td></tr><tr><td>Zombie Puncher</td><td>Defeat 50 Zombies Barehanded</td><td>+2 to Strength</td></tr><tr><td>Fort Kickass</td><td>Have a Level 10 Defence Fort</td><td>+2 to Starting Defence Equipment</td></tr><tr><td>What does the scouter say?</td><td>Scout over 9 locations</td><td>+2 to Wisdom</td></tr></tbody></table>
 </ol></div>
 <button type="button" class="btn btn-default" onclick='resetAchievements()'>Reset Achievements</button>
+<div id="help">
+<h2>Help</h2>
+<p>The goal of corpseburg is to survive until day 30s of quaruntine in a location of your choosing, then make it to an extrction point that will randomly appear in one of the 4 corners of the map.  To do this you will need to scavenge food, weapons, and defensive supplies from your surroundings.  Using the scout button will locate local shops in your area that might have some supplies. Restaurants are likely to have food, factories are a great place to find defensive supplies.  Explore your surroundings while avoiding the undead.  If you do get injured, you can use medicine to heal at night.  Speaking of night, keep an eye on the clock, when the sun goes down it becomes much harder to avoid the hordes of zombies.  You should prepare a fortified camp to sleep in each night. </p>
+<h3>Stats, Weapons, and Achievements</h3>
+<p>As you explore your surroundings, you will find weapons that can help keep you safe from the undead. Be sure to equip them by clicking the 'change' button, but be aware that weapons degrade with use. Some weapons tend to last much longer than others.</p>
+<p>As you play the game, you will unlock acheivments which will change how you play the game on your next run through.  Achievements can either give you additional starting items, or increase your stats.  Here is a quick summary of what your stats do in game: </p>
+<li>Strength: Increases the damage you do in combat, making you less likely to take damage from zombies.</li>
+<li>Dexterity: Decrease the ammount of time certain scouting actions take.</li>
+<li>Constitution: Increases the ammount you heal at night.</li>
+<li>Inteligence: Increases the effect your defensive preperations have.</li>
+<li>Wits: Helps you search more quickly, may help you find better locations to loot.</li>
+</div>
 </div>
 <div class="map" style="display:none">
   <div id="map-canvas"></div>
