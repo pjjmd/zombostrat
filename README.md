@@ -1,3 +1,4 @@
 # zombostrat
-a AR game using google maps and zombies.
-currently hosted at http://jjmacdonald.com/zombiegame
+A zombie game using google maps and google places apis.
+Built using a lot of JS and jQuery, and a pinch of CSS.
+currently hosted at http://corpseburg.com
