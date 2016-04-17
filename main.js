@@ -1,11 +1,9 @@
-var directory="zstrat";
-
 var gameDetails= {
 };
 var motd=["Strength lowers the amount of damage you take from encountering zombies.","Wisdom lowers the amount of random encounters you receive.","Constitution increases the amount you heal naturally each night.","Intelligence increases the effectiveness of medicine.","Dexterity decreases the amount of zombies you encounter randomly.","A fortress of level 5 or higher cannot be destroyed in a single night.","Consider supporting future development on Patreon.","Dying is fun","Yes, zombies can swim.","Try different starting locations.","Is one of the translations wrong? Let me know the correction!","Some weapons are more fragile that others. Guns loose durability faster than anything else."];
 var messages=["Click on 'scout' to find buildings to loot","Be sure to sleep once it gets dark",""];
 //the default size of the play grid
-var gridSize = 10;
+var gridSize = 20;
 var repopulating=true;
 //the day the game is currently on
 var day = 0;
@@ -32,11 +30,11 @@ var myLatlng;
 
 //the map grid array creates an object to hold details for each grid space on the array
 var mapGrid = new Array(gridSize);
-//if gridsize is 10, than this loop goes from -5 to 5
+//if gridSize is 10, than this loop goes from -5 to 5
 for (var i = -.5*gridSize; i < .5*gridSize+1; i++) {
 	mapGrid[i] = new Array(gridSize);
 //it then creates a second array for each of the first, so that there is effectively a 2d grid
-for (var q = -5; q < 6; q++) {
+for (var q = (gridSize/2)*-1; q < (gridSize/2)+1; q++) {
 //every mapgrid object gets a bunch of variables, they are all held in an object
 mapGrid[i][q] = {
 			//rect holds the google api pointer for the shape
@@ -389,8 +387,8 @@ function offsetLatLng(latLng, north, east) {
 };
 
 function createGraph() {
-	for (var gridX = -5; gridX < 6; gridX++) {
-		for (var gridY = -5; gridY < 6; gridY++) {
+	for (var gridX = (gridSize/2)*-1; gridX < (gridSize/2)+1; gridX++) {
+		for (var gridY = (gridSize/2)*-1; gridY < (gridSize/2)+1; gridY++) {
 			createGrid(offsetLatLng(myLatlng, gridX * 1000, gridY * 1000), gridX, gridY);
 		};
 	};
@@ -604,7 +602,7 @@ function callback(results, status) {
 function addFakeResult(type) {
 	var marker = new google.maps.Marker({
 		position: offsetLatLng(myLatlng, player.x * 1000 + (300 * parseInt((Math.random() * 3) - 1)), player.y * 1000 + (300 * parseInt((Math.random() * 3) - 1))),
-		icon: directory+"/png/car.png"
+		icon: "png/car.png"
 	});
 	var tempX = player.x;
 	var tempY = player.y;
@@ -633,7 +631,7 @@ function addExtraction(exX, exY) {
 	var marker = new google.maps.Marker({
 		map: map,
 		position: offsetLatLng(myLatlng, exX * 1000, exY * 1000),
-		icon: directory+"/png/award.png"
+		icon: "png/award.png"
 	});
 
 
@@ -761,7 +759,7 @@ function updateDefence(pX, pY, def) {
 		var marker = new google.maps.Marker({
 			map: map,
 			position: offsetLatLng(myLatlng, pX * 1000, pY * 1000),
-			icon: directory+"/png/fort.png"
+			icon: "png/fort.png"
 		});
 		infowindow = new google.maps.InfoWindow();
 		google.maps.event.addListener(marker, 'click', function() {
@@ -780,7 +778,7 @@ function createMarker(place,pX,pY) {
 	var mNum = mapGrid[pX][pY].markers.length;
 	var marker = new google.maps.Marker({
 		position: place.geometry.location,
-		icon: directory+"/png/" + type + ".png"
+		icon: "png/" + type + ".png"
 	});
 	var tempX = pX;
 	var tempY = pY;
@@ -796,7 +794,7 @@ function newGame(){
 	gameDetails= {
 	};
 //the default size of the play grid
-gridSize = 10;
+gridSize = 20;
 //the day the game is currently on
 day = 0;
 //the time of day the game is currently at, 24 hour clock
@@ -822,11 +820,11 @@ myLatlng="";
 
 //the map grid array creates an object to hold details for each grid space on the array
 mapGrid = new Array(gridSize);
-//if gridsize is 10, than this loop goes from -5 to 5
+//if gridSize is 10, than this loop goes from -5 to 5
 for (var i = -.5*gridSize; i < .5*gridSize+1; i++) {
 	mapGrid[i] = new Array(gridSize);
 //it then creates a second array for each of the first, so that there is effectively a 2d grid
-for (var q = -5; q < 6; q++) {
+for (var q = (gridSize/2)*-1; q < (gridSize/2)+1; q++) {
 //every mapgrid object gets a bunch of variables, they are all held in an object
 mapGrid[i][q] = {
 			//rect holds the google api pointer for the shape
