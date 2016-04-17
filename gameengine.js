@@ -274,9 +274,12 @@ function repopulate(weaponName,weaponDamage,weaponFragility,targetArray){
 	};
 };
 
-player.weapons.push(new Weapon("Fists",3,0));
+
 
 var weaponsLocker=[];
+function setupWeapons(){
+player.weapons.push(new Weapon("Fists",3,0));
+weaponLocker=[];
 weaponsLocker.push(new Weapon("Hunting Knife", 5, 50));
 weaponsLocker.push(new Weapon("Crowbar", 5, 40));
 weaponsLocker.push(new Weapon("Hammer",4,40));
@@ -289,7 +292,7 @@ weaponsLocker.push(new Weapon("Hatchet", 6, 60));
 weaponsLocker.push(new Weapon("Fireaxe", 8, 45));
 weaponsLocker.push(new Weapon("Metal Pipe", 5, 50));
 weaponsLocker.push(new Weapon("Golf Club", 6, 85));
-
+};
 function increaseWeapons(name){
 	var found=false;
 	if (typeof name==='undefined'){

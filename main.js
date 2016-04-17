@@ -72,16 +72,21 @@ var player={
 	intelegence:10,
 	charisma:10
 };
+
 player.weapons.move = function (from, to) {
 	this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
+
 $(document).ready(function() {prepareIntroPage()});
 
 function prepareIntroPage(){
+	newGame();
 	checkAchievements();
 	updateAchievements();
 	implementAchievements();
+	showIntro();
+	undimLights();
 };
 
 function implementAchievements(){
@@ -181,15 +186,15 @@ function codeAddress(address) {
 				center: myLatlng,
 				styles: stylesArray
 			};
+			showMap();
 			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 			map.setCenter(results[0].geometry.location);
 			createGraph();
 			recenterGrid(0, 0);
 			updateDefence(0, 0, 4);
 			populateGrid(0, 0);
-			showMap();
-			report("Welcome to Corpseburg", "The center grid is your location, use the arrow buttons on the grid to move and the scout button to find places to loot. More zombies are out at night, so keep an eye on the clock, and find a safe place to sleep when the sun goes down.")
-			updateDefence(0, 0, mapgrid[player.x][player.y].defence);
+			report("Welcome to Corpseburg", "The center grid is your location, use the arrow buttons on the grid to move and the scout button to find places to loot. More zombies are out at night, so keep an eye on the clock, and find a safe place to sleep when the sun goes down.");
+			updateDefence(0, 0, mapGrid[player.x][player.y].defence);
 		}
 		else {
 			alert('Geocode was not successful for the following reason: ' + status);
@@ -203,13 +208,30 @@ function showMap() {
 	$(".map").css('display', 'block');
 	$(".overlay").css('display', 'none');
 	$(".report").css('display', 'none');
+	$(".outro").css('display','none');
 	updatePanel();
 };
 
+function showIntro(){
+$(".outro").css('display','none');
+	$(".map").css('display','none');
+	$(".report").css('display','none');
+	$(".intro").css('display','block');
+	$(".overlay").css('display','none');
+};
 function hideMap() {
+	$(".outro").css('display','none');
 	$(".overlay").css('display', 'block');
 	$(".report").css('display', 'block');
 };
+function displayOutro(){
+	$(".outro").css('display','block');
+	$(".map").css('display','none');
+	$(".report").css('display','none');
+	$(".intro").css('display','none');
+	$(".overlay").css('display','none');
+};
+
 
 function createGrid(location, x, y) {
 	mapGrid[x][y].rect = new google.maps.Rectangle({
@@ -251,11 +273,18 @@ function updatePanel() {
 	$("#weapons").text("Weapon: "+player.weapons[0].name+" Strength: "+player.weapons[0].damage+" Durability: "+ player.weapons[0].durability+"0%");
 	$("#food").text("Food: " + player.food);
 	if (player.health < 1) {
-		alert("Game over!");
-		completeAchievement("Dying is Fun");
-		window.location.reload();
+		gameOver();
 	};
 }
+
+function gameOver(){
+
+	completeAchievement("Dying is Fun");
+	checkAchievements();
+	updateAchievements();
+	implementAchievements();
+displayOutro();
+};
 
 function offsetLatLng(latLng, north, east) {
 	//Position, decimal degrees
@@ -626,4 +655,83 @@ function createMarker(place) {
 	});
 
 	mapGrid[player.x][player.y].markers.push(marker);
+};
+function newGame(){
+gameDetails= {
+};
+//the default size of the play grid
+gridSize = 10;
+//the day the game is currently on
+day = 0;
+//the time of day the game is currently at, 24 hour clock
+time = 8;
+
+//Collection of variables to track the xy grid co-ords of the extraction point
+extraction = "";
+exX = 0;
+exY = 0;
+
+
+//Variables for interacting with the google map api
+//variable that will hold the map
+map=null;
+// variable that info windows are created in
+infowindow="";
+//the array that holds the markers on the map, (each one has an info windo attached to it)
+markers = [];
+//a placeholder variable that helps calculate the starting location via google maps geolocation call
+geocoder="";
+//the variable that holds the center of the map in google map API latlng form
+myLatlng="";
+
+//the map grid array creates an object to hold details for each grid space on the array
+mapGrid = new Array(gridSize);
+//if gridsize is 10, than this loop goes from -5 to 5
+for (var i = -.5*gridSize; i < .5*gridSize+1; i++) {
+	mapGrid[i] = new Array(gridSize);
+//it then creates a second array for each of the first, so that there is effectively a 2d grid
+for (var q = -5; q < 6; q++) {
+//every mapgrid object gets a bunch of variables, they are all held in an object
+mapGrid[i][q] = {
+			//rect holds the google api pointer for the shape
+			rect: "",
+			//what the built up defence is in a given area
+			defence: 0,
+			//if the map grid has been scouted
+			scouted: false,
+			density: "sparse",
+			defenceMarker: "start",
+			markers: [],
+			population: "sparse"
+		};
+	};
+};
+//an array to hold the 4 buttons to move the character screen
+movementButtons = [];
+
+
+//Sets up the initial defence of the first sector
+mapGrid[0][0].defence = 4;
+
+//the player object tracks all the stats relevent to the player
+player={
+	food : 4,
+	weapons : [],
+	med : 0,
+	defenceSupply : 2,
+	health : 100,
+	x : 0,
+	y : 0,
+	strength:10,
+	constitution:10,
+	dexterity:10,
+	wisdom:10,
+	intelegence:10,
+	charisma:10
+};
+setupWeapons();
+
+player.weapons.move = function (from, to) {
+	this.splice(to, 0, this.splice(from, 1)[0]);
+};
 };

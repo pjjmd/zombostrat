@@ -1,21 +1,4 @@
   <!DOCTYPE html>
-<!-- Project Wonderful Ad Box Loader -->
-<script type="text/javascript">
-   (function(){function pw_load(){
-      if(arguments.callee.z)return;else arguments.callee.z=true;
-      var d=document;var s=d.createElement('script');
-      var x=d.getElementsByTagName('script')[0];
-      s.type='text/javascript';s.async=true;
-      s.src='//www.projectwonderful.com/pwa.js';
-      x.parentNode.insertBefore(s,x);}
-   if (window.attachEvent){
-    window.attachEvent('DOMContentLoaded',pw_load);
-    window.attachEvent('onload',pw_load);}
-   else{
-    window.addEventListener('DOMContentLoaded',pw_load,false);
-    window.addEventListener('load',pw_load,false);}})();
-</script>
-<!-- End Project Wonderful Ad Box Loader -->
   <html>
   <head>
     <title>Corpseburg | The Zombie Survival Game set in your neighborhood </title>
@@ -39,39 +22,6 @@
     <link href='style.css' rel='stylesheet'>
   </head>
   <body>
-<!-- Facebook share button js-->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<!-- Facebook share button js-->
-   <nav class="navbar navbar-inverse">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Corpseburg</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Game</a></li>
-          <li><a href="https://github.com/pjjmd/zombostrat">GitHub</a></li>
-          <li><a href="https://twitter.com/pjjmd">Contact Info</a></li>
-          <li><a href="#help">Help</a></li>
-          <li><a href="http://www.reddit.com/r/corpseburg">Forum</a></li>
-        </li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
 <div class="overlay">
   <div class="report">
     <h3><div class="report-title">Title of the message. </div></h3>
@@ -81,7 +31,7 @@
   </div>
 </div>
 <div class="intro">
-  <h1>Welcome to Corpseburg</h1>
+<img src="http://corpseburg.com/test/hero.png">
   <h3>The Postapocalyptic Zombie Survival Game set in your neighborhood.</h3>
   <p>This game uses Google Maps to populate a zombiescape for you to explore, loot and eventually die in!  What fun! </p>
   <form>
@@ -92,35 +42,26 @@
     <button type="button" class="btn btn-default btn-lg" onclick='initialize(location.value)'>Start</button>
   </form>
   <br>
-<div class="fb-share-button" data-href="https://www.corpseburg.com" data-layout="button" onclick="console.log"></div>
-<br><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.corpseburg.com" data-text="I just played Corpseburg, the zombie survival game set in _______!" data-count="none">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  <p>Like this game? Why not share it with your friends?</p>
-<!-- Project Wonderful Ad Box Code -->
-<div style="text-align:center;"><div style="display:inline-block;" id="pw_adbox_76618_5_0"></div></div>
-<script type="text/javascript"></script>
-<noscript><div style="text-align:center;"><div style="display:inline-block;"><map name="admap76618" id="admap76618"><area href="http://www.projectwonderful.com/out_nojs.php?r=0&c=0&id=76618&type=5" shape="rect" coords="0,0,728,90" title="" alt="" target="_blank" /></map>
-<table cellpadding="0" cellspacing="0" style="width:728px;border-style:none;background-color:#ffffff;"><tr><td><img src="http://www.projectwonderful.com/nojs.php?id=76618&type=5" style="width:728px;height:90px;border-style:none;" usemap="#admap76618" alt="" /></td></tr><tr><td style="background-color:#ffffff;" colspan="1"><center><a style="font-size:10px;color:#0000ff;text-decoration:none;line-height:1.2;font-weight:bold;font-family:Tahoma, verdana,arial,helvetica,sans-serif;text-transform: none;letter-spacing:normal;text-shadow:none;white-space:normal;word-spacing:normal;" href="http://www.projectwonderful.com/advertisehere.php?id=76618&type=5" target="_blank">Ads by Project Wonderful!  Your ad here, right now: $0</a></center></td></tr></table></div></div>
-</noscript>
-<!-- End Project Wonderful Ad Box Code -->
-<div id="achievements">
+
+<div id="help">
+<h2>Help</h2>
+<p>The goal of Corpseburg is to survive until day 30s of quarantine in a location of your choosing, then make it to an extraction point that will randomly appear in one of the 4 corners of the map.  To do this you will need to scavenge food, weapons, and defensive supplies from your surroundings.  Using the scout button will locate local shops in your area that might have some supplies. Restaurants are likely to have food, factories are a great place to find defensive supplies.  Explore your surroundings while avoiding the undead.  If you do get injured, you can use medicine to heal at night.  Speaking of night, keep an eye on the clock, when the sun goes down it becomes much harder to avoid the hordes of zombies.  You should prepare a fortified camp to sleep in each night. </p>
+</div>
+</div>
+<div class="outro" style="display:none;text-align:center;"><div id="achievements">
+<h1>Game Over! </h1>
+<p>Death has claimed you. If you can make it to day 30 and make it to the evac point, you win!  Any achievements you earned during gameplay will make future attempts easier.</p>
+<button type="button" style="margin-right:5%;" class="btn btn-default" onclick='prepareIntroPage()'>New Game</button><button type="button" class="btn btn-default" onclick='resetAchievements()'>Reset Achievements</button> 
 <h2>Achievements</h2>
 <ol><div id="achievementsList">
   <table style="width:100%"><tbody><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr><tr><td>Dying is Fun</td><td>Join the legions of the dead</td><td>+10 Starting Medicine</td></tr><tr><td>Hamburgler</td><td>Visit the Golden Arches.</td><td>+2 to Starting Food</td></tr><tr><td>Hoarder</td><td>Have 10 days of food.</td><td>+2 to Constitution</td></tr><tr><td>Zombie Puncher</td><td>Defeat 50 Zombies Barehanded</td><td>+2 to Strength</td></tr><tr><td>Fort Kickass</td><td>Have a Level 10 Defence Fort</td><td>+2 to Starting Defence Equipment</td></tr><tr><td>What does the scouter say?</td><td>Scout over 9 locations</td><td>+2 to Wisdom</td></tr></tbody></table>
-</ol></div>
-<button type="button" class="btn btn-default" onclick='resetAchievements()'>Reset Achievements</button>
-<div id="help">
-<h2>Help</h2>
-<p>The goal of corpseburg is to survive until day 30s of quaruntine in a location of your choosing, then make it to an extrction point that will randomly appear in one of the 4 corners of the map.  To do this you will need to scavenge food, weapons, and defensive supplies from your surroundings.  Using the scout button will locate local shops in your area that might have some supplies. Restaurants are likely to have food, factories are a great place to find defensive supplies.  Explore your surroundings while avoiding the undead.  If you do get injured, you can use medicine to heal at night.  Speaking of night, keep an eye on the clock, when the sun goes down it becomes much harder to avoid the hordes of zombies.  You should prepare a fortified camp to sleep in each night. </p>
-<h3>Stats, Weapons, and Achievements</h3>
-<p>As you explore your surroundings, you will find weapons that can help keep you safe from the undead. Be sure to equip them by clicking the 'change' button, but be aware that weapons degrade with use. Some weapons tend to last much longer than others.</p>
-<p>As you play the game, you will unlock acheivments which will change how you play the game on your next run through.  Achievements can either give you additional starting items, or increase your stats.  Here is a quick summary of what your stats do in game: </p>
+</ol>
+<p>As you play the game, you will unlock achievements which will change how you play the game on your next run through.  Achievements can either give you additional starting items, or increase your stats.  Here is a quick summary of what your stats do in game: </p>
 <li>Strength: Increases the damage you do in combat, making you less likely to take damage from zombies.</li>
-<li>Dexterity: Decrease the ammount of time certain scouting actions take.</li>
-<li>Constitution: Increases the ammount you heal at night.</li>
-<li>Inteligence: Increases the effect your defensive preperations have.</li>
-<li>Wits: Helps you search more quickly, may help you find better locations to loot.</li>
-</div>
+<li>Dexterity: Decrease the amount of time certain scouting actions take.</li>
+<li>Constitution: Increases the amount you heal at night.</li>
+<li>Intelligence: Increases the effect your defensive preparations have.</li>
+<li>Wits: Helps you search more quickly, may help you find better locations to loot.</li></div>
 </div>
 <div class="map" style="display:none">
   <div id="map-canvas"></div>
@@ -159,18 +100,4 @@
 <script src="gameengine.js"></script>
 <script src="droptable.js"></script>
 
-
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var $_Tawk_API={},$_Tawk_LoadStart=new Date();
-(function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/554281f12bf2162c5a0d9faa/default';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
 </html>
