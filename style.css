@@ -15,24 +15,39 @@ text-align:center;
 .map {
 	float:right;
   	width: 100%;
-height:80%;
+    height:100%;
 }
 
-.navbar {
-margin-bottom:0px;
+
+.pop-up-message{
+    white-space:nowrap;
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);    
+    transform:translateX(100%);
+    /* Apply animation to this element */  
+    -moz-animation: pop-up-message 25s linear infinite;
+    -webkit-animation: pop-up-message 25s linear infinite;
+    animation: pop-up-message 25s linear infinite;
 }
-
-.pop-up{
-display:none;
-    height:0%;
-    text-algin:center;
-    text-align:center;
-    background-color:#232c31;
-    margin-left:15%;
-    width:60%;
-    left: 0px;
-    top: 0px;
-
+@-moz-keyframes pop-up-message {
+ 0%   { -moz-transform: translateX(100%); }
+ 100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes pop-up-message {
+ 0%   { -webkit-transform: translateX(100%); }
+ 100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes pop-up-message {
+ 0%   { 
+ -moz-transform: translateX(100%); /* Firefox bug fix */
+ -webkit-transform: translateX(100%); /* Firefox bug fix */
+ transform: translateX(100%);       
+ }
+ 100% { 
+ -moz-transform: translateX(-100%); /* Firefox bug fix */
+ -webkit-transform: translateX(-100%); /* Firefox bug fix */
+ transform: translateX(-100%); 
+ }
 }
 
 .report{

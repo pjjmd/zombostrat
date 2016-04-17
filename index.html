@@ -5,11 +5,11 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-    html, body, #map-canvas {
-      height: 90%;
-      margin: 0px;
-      padding: 0px
-    }
+      html, body, #map-canvas {
+        height: 400px;
+        margin: 0px;
+        padding: 0px
+      }
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script src="jquery-1.11.2.min.js"></script>
@@ -20,82 +20,104 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link href='style.css' rel='stylesheet'>
-  </head>
-  <body>
-<div class="overlay">
-  <div class="report">
-    <h3><div class="report-title">Title of the message. </div></h3>
-    <div class="report-message"><p>Content of the message.</p></div>
-    <div class="weapon-form"><form><select id="weapon"><option value="0">Fists</option><option value="1">Hugs</option></select></form></div><div class="weapon-confirm"><button type="button" class="btn btn-default" onclick='equipWeapon()'>Confirm</button></div>
-    <div class="normal-confirm"><button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></div></h1>
+  </head> 
+<body style="overflow:hidden">
+  <div class="overlay">
+
+    <div class="report">
+      <h3><div class="report-title">Title of the message. </div></h3>
+      <div class="report-message"><p>Content of the message.</p></div>
+      <div class="normal-confirm"><button type="button" class="btn btn-default" onclick='showMap()'>Confirm</button></div></h1>
+    </div>
+  </div>
+  <div class="displayZone" style="width:100%; height:100%;display:none;overflow:hidden;">
+   <div style="text-align:center;"><h1>Player Menu</h1></div>
+   <div class="statsDisplay" style="width:40%;display:block; float:left;">
+  <h2>Character Screen</h2>
+     <table class="table">
+        <tbody>
+          <tr><td>Strength: </td><td><div id="str">10</div></td></tr>
+          <tr><td>Dexterity: </td><td><div id="dex">10</div></td></tr>
+          <tr><td>Constitution: </td><td><div id="con">10</div></td></tr>
+          <tr><td>Intelligence: </td><td><div id="int">10</div></td></tr>
+          <tr><td>Wisdom: </td><td><div id="wis">10</div></td></tr>
+</tbody></table>
+
+     </div>
+     <div class="weaponsDisplay" style="width:60%;display:block;float:right;">
+      <h2>Weapons</h2>
+       <div class="listWeapons">
+        <table class="table">
+        <tbody>
+        <tr><td><div id="w0s0"></div></td><td><div id="w0s1"></div></td><td><div id="w0s2"></div></td><td><div id="w0s3">Equiped</div></td><td><div id="01s4">Equiped</div></td></tr>
+        <tr><td><div id="w1s0"></div></td><td><div id="w1s1"></div></td><td><div id="w1s2"></div></td><td><div id="w1s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(1)">Equip</button></div></td><td><div id="w1s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(1)">Discard</button></div></td></tr>
+        <tr><td><div id="w2s0"></div></td><td><div id="w2s1"></div></td><td><div id="w2s2"></div></td><td><div id="w2s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(2)">Equip</button></div></td><td><div id="w2s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(2)">Discard</button></div></td></tr>
+        <tr><td><div id="w3s0"></div></td><td><div id="w3s1"></div></td><td><div id="w3s2"></div></td><td><div id="w3s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(3)">Equip</button></div></td><td><div id="w3s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(3)">Discard</button></div></td></tr>
+        <tr><td><div id="w4s0"></div></td><td><div id="w4s1"></div></td><td><div id="w4s2"></div></td><td><div id="w4s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(4)">Equip</button></div></td><td><div id="w4s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(4)">Discard</button></div></td></tr>
+        <tr><td><div id="w5s0"></div></td><td><div id="w5s1"></div></td><td><div id="w5s2"></div></td><td><div id="w5s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(5)">Equip</button></div></td><td><div id="w5s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(5)">Discard</button></div></td></tr>
+        <tr><td><div id="w6s0"></div></td><td><div id="w6s1"></div></td><td><div id="w6s2"></div></td><td><div id="w6s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(6)">Equip</button></div></td><td><div id="w6s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(6)">Discard</button></div></td></tr>
+        <tr><td><div id="w7s0"></div></td><td><div id="w7s1"></div></td><td><div id="w7s2"></div></td><td><div id="w7s3"><button type="button" class="btn btn-default btn-xs" onclick="equipWeapon(7)">Equip</button></div></td><td><div id="w7s4"><button type="button" class="btn btn-default btn-xs" onclick="destroyWeapon(7)">Discard</button></div></td></tr>
+        </tbody></table>
+       </div>  
+     </div>
+            <div style="clear:both;text-align:center;"><button type="button" id="close" class="btn btn-default" onclick='showMap()'>Close menu</button></div>
+   </div>
+   <div class="intro" style="overflow:hidden;">
+    <div class="translate">Translate Game?<img src="png/flag_japan.png" onclick='translateGame("japan")'><img src="png/flag_russia.png" onclick='translateGame("russia")'><img src="png/flag_brasil.png" onclick='translateGame("brasil")'><img src="png/flag_germany.png" onclick='translateGame("germany")'><img src="png/flag_canada.png" onclick='translateGame("canada")'><img src="png/flag_china.png" onclick='translateGame("china")'><img src="png/flag_korea.png" onclick='translateGame("korea")'></div>
+    <img src="http://corpseburg.com/test/hero.png">
+    <h4><bold>The Postapocalyptic Zombie Survival Game set in your neighborhood.</bold></h4>
+    <p>This game uses Google Maps to populate a zombiescape for you to explore, loot and eventually die in!  What fun! </p>
+    <form>
+      <div id="startinglocation" style="display:inline">Starting Location</div>:
+      <br>
+      <textarea name="location" style="width:80%" rows="1"placeholder="43 Broadview Avenue, Toronto, Ontario, Canada"></textarea>
+      <br>
+      <button type="button" id="start" class="btn btn-default" onclick='initialize(location.value)'>Start</button>
+    </form>
+  </div>
+  <div class="outro" style="display:none;text-align:center;">
+    <div id="achievements">
+      <h3><div class="report-title">Title of the message. </div></h3>
+      <div class="report-message"><p>Content of the message.</p></div>
+      <h2>Game Over!</h2>
+      <button type="button" style="margin-right:5%;" id="newgame"class="btn btn-default" onclick='prepareIntroPage()'>New Game</button><button type="button" class="btn btn-default" id="resetachievements" onclick='resetAchievements()'>Reset Achievements</button> 
+      <h2>Achievements</h2>
+      <ol><div id="achievementsList">
+      <p>Achievements apply to all subsequent games, they are very important.</p>
+        <table style="width:100%"><tbody><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr><tr><td>Dying is Fun</td><td>Join the legions of the dead</td><td>+10 Starting Medicine</td></tr><tr><td>Hamburgler</td><td>Visit the Golden Arches.</td><td>+2 to Starting Food</td></tr><tr><td>Hoarder</td><td>Have 10 days of food.</td><td>+2 to Constitution</td></tr><tr><td>Zombie Puncher</td><td>Defeat 50 Zombies Barehanded</td><td>+2 to Strength</td></tr><tr><td>Fort Kickass</td><td>Have a Level 10 Defence Fort</td><td>+2 to Starting Defence Equipment</td></tr><tr><td>What does the scouter say?</td><td>Scout over 9 locations</td><td>+2 to Wisdom</td></tr></tbody></table>
+      </ol>  
+  </ol></div></div>
+  <div class="map" style="display:none;overflow:hidden;">
+    <div id="map-canvas"></div>
+    <div class="pop-up" style="display:none"><div class="pop-up-message">Welcome to Corpseburg</div></div>
+    <div class="statpanel">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td><div id="day" style="float:left; margin-right:5px;">Day: 0</div><div id="time">Time 8:00</div></td>
+            <td><div id="fort"></div></td>
+            <td><div class="progress"><div id="health">
+              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+              aria-valuemin="0" aria-valuemax="100" style="width:100%;margin-bottom:0px;">
+              100% Health
+            </div></div>
+          </div></td>
+        </tr>
+        <tr>
+          <td><div id="food">Food: 4 Units</div></td>
+          <td><div id="medicine">Medicine: 0 units</div></td>
+          <td><div id="defence" style="display:inline">Defense Materials 2</div></td>
+        </tr>
+        <tr>
+          <td><div style="display:inline" id="weapons"></div><button id="menu" type="button" class="btn btn-default btn-xs" onclick="weaponMenu()">Player Menu</button></td>
+          <td><button id="scout" type="button" class="btn btn-default btn-xs" onclick="scout(0,0)">Scout</button><button type="button" class="btn btn-default btn-xs" id="fortify" onclick="fortify()">Fortify</button><button id="sleep" type="button" class="btn btn-default btn-xs" onclick="sleep()">Sleep</button></td>
+          <td><div id="kills">Kills: 0</div></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-<div class="intro">
-<img src="http://corpseburg.com/test/hero.png">
-  <h3>The Postapocalyptic Zombie Survival Game set in your neighborhood.</h3>
-  <p>This game uses Google Maps to populate a zombiescape for you to explore, loot and eventually die in!  What fun! </p>
-  <form>
-    Starting Location:
-    <br>
-    <textarea name="location" style="width:80%" rows="1"placeholder="43 Broadview Avenue, Toronto, Ontario, Canada"></textarea>
-    <br>
-    <button type="button" class="btn btn-default btn-lg" onclick='initialize(location.value)'>Start</button>
-  </form>
-  <br>
-
-<div id="help">
-<h2>Help</h2>
-<p>The goal of Corpseburg is to survive until day 30s of quarantine in a location of your choosing, then make it to an extraction point that will randomly appear in one of the 4 corners of the map.  To do this you will need to scavenge food, weapons, and defensive supplies from your surroundings.  Using the scout button will locate local shops in your area that might have some supplies. Restaurants are likely to have food, factories are a great place to find defensive supplies.  Explore your surroundings while avoiding the undead.  If you do get injured, you can use medicine to heal at night.  Speaking of night, keep an eye on the clock, when the sun goes down it becomes much harder to avoid the hordes of zombies.  You should prepare a fortified camp to sleep in each night. </p>
-</div>
-</div>
-<div class="outro" style="display:none;text-align:center;"><div id="achievements">
-<h1>Game Over! </h1>
-<p>Death has claimed you. If you can make it to day 30 and make it to the evac point, you win!  Any achievements you earned during gameplay will make future attempts easier.</p>
-<button type="button" style="margin-right:5%;" class="btn btn-default" onclick='prepareIntroPage()'>New Game</button><button type="button" class="btn btn-default" onclick='resetAchievements()'>Reset Achievements</button> 
-<h2>Achievements</h2>
-<ol><div id="achievementsList">
-  <table style="width:100%"><tbody><tr><th>Achievement name</th><th>Description</th><th>Effect</th></tr><tr><td>Dying is Fun</td><td>Join the legions of the dead</td><td>+10 Starting Medicine</td></tr><tr><td>Hamburgler</td><td>Visit the Golden Arches.</td><td>+2 to Starting Food</td></tr><tr><td>Hoarder</td><td>Have 10 days of food.</td><td>+2 to Constitution</td></tr><tr><td>Zombie Puncher</td><td>Defeat 50 Zombies Barehanded</td><td>+2 to Strength</td></tr><tr><td>Fort Kickass</td><td>Have a Level 10 Defence Fort</td><td>+2 to Starting Defence Equipment</td></tr><tr><td>What does the scouter say?</td><td>Scout over 9 locations</td><td>+2 to Wisdom</td></tr></tbody></table>
-</ol>
-<p>As you play the game, you will unlock achievements which will change how you play the game on your next run through.  Achievements can either give you additional starting items, or increase your stats.  Here is a quick summary of what your stats do in game: </p>
-<li>Strength: Increases the damage you do in combat, making you less likely to take damage from zombies.</li>
-<li>Dexterity: Decrease the amount of time certain scouting actions take.</li>
-<li>Constitution: Increases the amount you heal at night.</li>
-<li>Intelligence: Increases the effect your defensive preparations have.</li>
-<li>Wits: Helps you search more quickly, may help you find better locations to loot.</li></div>
-</div>
-<div class="map" style="display:none">
-  <div id="map-canvas"></div>
-  
-  <div class="pop-up"><h3><div class="pop-up-message">Hello world</div></h3></div>
-  <div class="statpanel">
-    <table class="table">
-      <tbody>
-        <tr>
-          <td><div id="day">Day: 0</div></td>
-          <td><div id="time">Time 8:00</div></td>
-          <td><div class="progress"><div id="health">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-            aria-valuemin="0" aria-valuemax="100" style="width:100%">
-            100% Health
-          </div></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div id="food">Food: 4 Units</div></td>
-        <td><div id="medicine">Medicine: 0 units</div></td>
-        <td>Defense Materials <div id="defence" style="display:inline">2</div></td>
-      </tr>
-      <tr>
-        <td><div style="display:inline" id="weapons">Weapons: 0</div>   <button type="button" class="btn btn-default btn-xs" onclick="weaponMenu()">Change</button></td>
-        <td><button type="button" class="btn btn-default btn-xs" onclick="scout(0,0)">Scout</button><button type="button" class="btn btn-default btn-xs"onclick="fortify()">Fortify</button><button type="button" class="btn btn-default btn-xs" onclick="sleep()">Sleep</button></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
 </body>
-
 <script src="main.js"></script>
 <script src="gameengine.js"></script>
 <script src="droptable.js"></script>
